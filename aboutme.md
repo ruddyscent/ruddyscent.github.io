@@ -1,16 +1,11 @@
 ---
 layout: page
-title: About me
-subtitle: Why you'd want to go on a date with me
+title: 소개글
+subtitle: 블로그를 준비하며
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+제 이름은 전경원입니다. 많은 분들이 본명 대신에 멋진 닉네임을 사용하지만 전 그런 창의력이 없는 것 같아요. 그래서 그냥 본명을 쓰기로 했습니다.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+나이가 들수록 혼자 있는 시간이 소중한 것 같아요. 혼자 있는 시간이 많아질수록, 혼자 있는 시간을 더 즐길 수 있게 되는 것 같아요. 아마도 여기에는 제가 혼자 있는 시간을 즐기는 방법이 담겨 있는 것 같아요.
 
-What else do you need?
-
-### My story
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](https://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+그리고 거의 매일 운동을 하는 편입니다. 운동 기록은 유튜브의 [@오늘와드](https://www.youtube.com/@오늘와드) 채널에서 확인하실 수 있습니다.
