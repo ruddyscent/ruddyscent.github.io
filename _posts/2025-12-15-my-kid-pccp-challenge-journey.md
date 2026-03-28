@@ -2,9 +2,9 @@
 layout: post
 title: 내 아이의 코딩전문역량인증시험 도전기
 subtitle: 어린이에게 알고리즘을 가르치는 방법과 부모의 역할
-cover-img: /assets/img/path.jpg
-thumbnail-img: /assets/img/thumb.png
-share-img: /assets/img/path.jpg
+cover-img: /assets/img/develop.jpeg
+thumbnail-img: /assets/img/csharp.png
+share-img: /assets/img/develop.jpeg
 tags: [tutoring, algorithm, csharp, pccp]
 author: 전경원
 ---
