@@ -9,7 +9,7 @@ tags: [csharp, pccp]
 author: 전경원
 ---
 
-프로그래머스의 코딩테스트 문제를 풀다보면 최신 버전의 C# 기능을 쓸 수 없다는 것을 알게된다.
+[프로그래머스의 코딩테스트](https://school.programmers.co.kr/learn/challenges) 문제를 풀다보면 최신 버전의 C# 기능을 쓸 수 없다는 것을 알게된다.
 
 예를 들어서, 대표적으로 [`PriorityQueue`](https://learn.microsoft.com/ko-kr/dotnet/api/system.collections.generic.priorityqueue-2)를 쓸 수 없다.
 
