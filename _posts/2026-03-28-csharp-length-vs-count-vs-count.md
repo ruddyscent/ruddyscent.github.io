@@ -10,8 +10,6 @@ tags: [csharp, linq, collection, performance, codingtest]
 author: 전경원
 ---
 
-# C#에서 Length, Count, Count()의 차이
-
 C#에서 컬렉션의 크기를 구할 때 `Length`, `Count`, `Count()` 중 어떤 것을 사용해야 할지 헷갈리는 경우가 많습니다. 이 세 가지는 모두 "요소 개수"를 반환하지만, 적용 대상과 내부 동작, 성능이 서로 다릅니다.
 
 정확히 구분하지 않으면 성능 문제로 이어질 수 있으므로, 각각의 차이를 명확히 이해할 필요가 있습니다.

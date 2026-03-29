@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "프로그래머스의 코딩테스트 C# 버전 확인"
-subtitle: "C# 환경의 버전 확인"
+title: 프로그래머스의 코딩테스트 C# 버전 확인
+subtitle: C# 환경의 버전 확인
 cover-img: /assets/img/develop.jpeg
 thumbnail-img: /assets/img/csharp.png
 share-img: /assets/img/develop.jpeg
@@ -18,6 +18,11 @@ author: 전경원
 > **지원되는 기능과 지원되지 않는 기능을 미리 파악해 두는 것**
 
 문제는, 프로그래머스의 코딩테스트 환경에서는 터미널 접근이 불가능하다는 점이다.  `dotnet --version` 같은 명령으로 확인할 수 없다.  그렇다면 직접 코드로 확인하는 수밖에 없다.
+
+## 들어가기 전에
+사실은 프로그래머스는 C# 컴파일러 버전을 공개하고 있습니다. 코딩테스트 연습 인터페이스의 오른쪽 위에 있는 **컴파일 옵션**을 클릭하면, 지원하는 언어의 컴파일러 버전과 컴파일 커맨드를 확인할 수 있습니다. C#의 컴파일러와 컴파일 커맨드는 아래와 같습니다.
+- **컴파일러**: Mono C# Compiler 6.10.0
+- **컴파일 커맨드**: mcs -out:FILENAME -r:System.dll
 
 ## 런타임 버전 확인하기
 
