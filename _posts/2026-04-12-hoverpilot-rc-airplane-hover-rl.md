@@ -13,15 +13,19 @@ RC 비행에서 **hover**는 단순한 기술이 아니다.  기체를 수직으
 
 ![RC 비행기가 수직 자세를 유지하며 hover를 수행하는 모습](/assets/img/hover-pilot/rc-airplane-hover-field.png)
 
-사람 기준으로도 어려운 비행 기술이다.  그럼 이걸 **강화학습으로 학습시킬 수 있을까?**
+사람 기준으로도 어려운 비행 기술이다.  그럼 이걸 **강화학습(Reinforcement Learning, RL)**으로 학습시킬 수 있을까?
+
+> [강화학습](https://spinningup.openai.com/en/latest/)은 에이전트가 환경과 상호작용하며 보상(reward)을 최대화하는 방향으로 학습하는 머신러닝 방법이다.
 
 ## HoverPilot
 
 이번에 시작한 프로젝트의 이름은 **HoverPilot**이다. 이 프로젝트의 목표는 다음과 같다.
 
-> RealFlight 시뮬레이터 위에서 강화학습 에이전트가 RC 비행기의 hover를 스스로 학습하도록 만드는 것
+> [RealFlight](https://www.realflight.com/) 시뮬레이터 위에서 강화학습 에이전트가 RC 비행기의 hover를 스스로 학습하도록 만드는 것
 
-시스템 구성은 SITL(Software In The Loop) 구조와 유사하다.  시뮬레이터에서 상태를 읽고, 학습된 에이전트가 action을 결정해서 조종 입력으로 전달하는 형태다.
+시스템 구성은 SITL(Software In The Loop) 구조와 유사하다.  시뮬레이터에서 상태(state)를 읽고, 학습된 에이전트가 행동(action)을 결정해서 조종 입력으로 전달하는 형태다.
+
+> [SITL](https://ardupilot.org/dev/docs/sitl-simulator-software-in-the-loop.html)은 실제 하드웨어 없이, 시뮬레이터를 통해 소프트웨어를 테스트하는 방식이다.  
 
 ![SITL 구조를 응용한 시스템 구성](/assets/img/hover-pilot/dev-setup-sketch.png)
 
@@ -30,19 +34,19 @@ RC 비행에서 **hover**는 단순한 기술이 아니다.  기체를 수직으
 강화학습은 **게임 잘하는 AI**를 넘어서 **연속 제어 문제**에서 진짜 힘을 발휘한다. hover는 그 대표적인 문제다.
 
 - 상태는 연속적이고
-- action도 연속적이며
+- 행동도 연속적이며
 - 정답이 명확하지 않고
 - 안정성이 핵심이다
 
-이건 RL이 잘하는 영역이다.
+이건 강화학습이 잘하는 영역이다.
 
 ## 접근 방식
 
-전체 시스템은 Gymnasium 환경으로 래핑한다.
+전체 시스템은 [Gymnasium](https://gymnasium.farama.org/) 환경으로 래핑한다.
 
 - 상태는 RealFlight Link를 통해 읽고
-- action은 Software Radio를 통해 전달한다
-- reward는 hover 유지와 안정성을 기준으로 설계한다
+- 행동은 Software Radio를 통해 전달한다
+- 보상은 hover 유지와 안정성을 기준으로 설계한다
 
 그리고 처음부터 full control을 학습시키지 않는다.  RealFlight의 Hover Trainer 기능을 활용해서 조종면을 단계적으로 열어가는 방식으로 진행한다.
 
@@ -66,7 +70,7 @@ TODO 리스트는 다음과 같다.
 
 이후에는
 
-- reward 튜닝
+- 보상 튜닝
 - curriculum learning
 - 안정성 개선
 
