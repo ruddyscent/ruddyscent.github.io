@@ -40,7 +40,7 @@ RC 비행에서 **hover**는 단순한 기술이 아니다.  기체를 수직으
 
 전체 시스템은 Gymnasium 환경으로 래핑한다.
 
-- 상태는 FlightAxis를 통해 읽고
+- 상태는 RealFlight Link를 통해 읽고
 - action은 Software Radio를 통해 전달한다
 - reward는 hover 유지와 안정성을 기준으로 설계한다
 
@@ -59,7 +59,7 @@ RC 비행에서 **hover**는 단순한 기술이 아니다.  기체를 수직으
 
 TODO 리스트는 다음과 같다.
 
-- FlightAxis 인터페이스 구현
+- RealFlight Link 인터페이스 구현
 - Software Radio 구현
 - Gymnasium 환경 완성
 - baseline 정책 학습 (PPO 또는 SAC)
