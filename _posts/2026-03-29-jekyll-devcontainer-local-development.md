@@ -33,11 +33,12 @@ VScode를 실행하고, F1을 클릭해서 커맨드 팔레트를 엽니다. "De
 Ctrl+` 키를 눌러 터미널을 열고, Jekyll 서버를 구동합니다.
 
 ```bash
-bundle exec jekyll serve --host 0.0.0.0 --livereload
+bundle exec jekyll serve --host 0.0.0.0 --livereload --future
 ```
 사용한 옵션은 다음과 같은 의미입니다:
 - `--host 0.0.0.0`: * 컨테이너 외부(로컬 호스트)에서 접속할 수 있도록 허용하는 필수 옵션입니다.
 - `--livereload`: 파일 수정 시 브라우저가 자동으로 새로고침합니다.
+- `--future`: 미래 날짜로 설정된 게시물도 포함하여 빌드합니다.
 
 ## 4. 브라우저에서 접속
 
