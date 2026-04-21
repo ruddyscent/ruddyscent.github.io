@@ -12,7 +12,7 @@ tags:
 - python
 - sitl
 thumbnail-img: /assets/img/toy-plane.png
-title: HoverPilot --- Gymnasium 인터페이스로 환경을 재구성하다
+title: HoverPilot - Gymnasium 인터페이스로 환경을 재구성하다
 ---
 
 [이전 글](/2026-04-17-hoverpilot-reward-design/)에서는 hover를 위한 reward와 termination 조건을 정리했다. 이제 남은 일은 이 조각들을 하나의 **강화학습 환경(environment)**으로 묶는 것이다. 그래야 PPO나 SAC 같은 알고리즘이 HoverPilot을 일반적인 Gymnasium 환경처럼 다룰 수 있다.
