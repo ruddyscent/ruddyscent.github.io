@@ -49,6 +49,14 @@ git diff --cached | xclip -selection clipboard
 
 `git diff --cached`는 현재 스테이징된 변경 사항만 보여 준다. 리뷰 요청 전에 diff를 복사해야 할 때는 macOS에서는 `pbcopy`, Linux에서는 `xclip` 조합이 편하다.
 
+macOS 터미널(iTerm2)에서 SSH로 Linux 서버에 접속해 작업할 때도 비슷하게 쓸 수 있다. 서버의 `~/.bashrc`에 아래 함수를 추가해 두면, 원격 서버에서 실행한 결과를 로컬 macOS의 클립보드로 보낼 수 있다.
+
+```bash
+pbcopy() {
+  base64 | tr -d '\n' | sed 's/.*/\x1b]52;c;&\x07/'
+}
+```
+
 ## 4. 커밋
 
 스테이징된 변경 사항을 기록할 때 사용한다.
