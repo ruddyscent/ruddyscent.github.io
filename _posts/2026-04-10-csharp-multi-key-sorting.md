@@ -4,7 +4,7 @@ title: C#에서 다중 정렬 (Multi-Level Sorting) 제대로 이해하기
 subtitle: 특정 인덱스를 기준으로 문자열 정렬하는 방법
 tags: [csharp, sorting, linq, algorithm, coding-test]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/csharp.png
+thumbnail-img: /assets/img/csharp.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---

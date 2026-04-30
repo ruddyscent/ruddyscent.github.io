@@ -4,7 +4,7 @@ title: "C#에서 2차원 배열: int[,] vs int[][]"
 subtitle: 2차원 배열의 차이점과 사용법
 tags: [csharp, array, 2d-array, jagged-array, multidimensional-array]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/csharp.png
+thumbnail-img: /assets/img/csharp.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---

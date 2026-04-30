@@ -4,7 +4,7 @@ title: Jetson Xavier NX에서 Docker Compose로 NGC 컨테이너 실행하기
 subtitle: 권한 문제, Compose 플러그인, NVIDIA runtime까지
 tags: [jetson, docker, docker-compose, nvidia, ngc, linux, xavier-nx]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/docker.png
+thumbnail-img: /assets/img/docker.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---

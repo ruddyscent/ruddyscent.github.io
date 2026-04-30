@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Dev Container Codex OAuth port forwarding conflict diagram</title>
+  <desc id="desc">A hand-drawn outline diagram showing a browser on the host calling localhost port 1455. The host port is already forwarded to dev container A, so dev container B cannot receive the same callback through that host port.</desc>
+  <defs>
+    <filter id="handdrawn">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="11" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.9" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#b91c1c" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <style>
+      .paper { fill: #fffdf7; }
+      .ink {
+        fill: none;
+        stroke: #1f2937;
+        stroke-width: 3.1;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        filter: url(#handdrawn);
+      }
+      .thin { stroke-width: 2.1; }
+      .dash { stroke-dasharray: 9 9; }
+      .red { stroke: #b91c1c; }
+      .muted { stroke: #6b7280; }
+      .accent { stroke: #2563eb; }
+      .note {
+        fill: #1f2937;
+        font-family: "Nanum Pen Script", "Comic Sans MS", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        font-size: 25px;
+      }
+      .small { font-size: 21px; }
+      .tiny { font-size: 18px; fill: #4b5563; }
+      .label { font-size: 30px; font-weight: 700; }
+      .danger { fill: #b91c1c; }
+      .blue { fill: #2563eb; }
+    </style>
+  </defs>
+
+  <rect class="paper" width="1200" height="720" />
+
+  <g transform="translate(54 42)">
+    <text class="note label" x="0" y="0">문제 상황: 호스트 localhost:1455는 하나뿐이다</text>
+    <text class="note small" x="0" y="36">컨테이너마다 내부 1455는 따로 있지만, 브라우저 콜백은 같은 호스트 포트로 돌아온다.</text>
+  </g>
+
+  <!-- Host area -->
+  <g>
+    <rect class="ink" x="50" y="108" width="500" height="540" rx="18" />
+    <path class="ink thin" d="M76 164 C178 154, 310 156, 524 164" />
+    <text class="note label" x="82" y="150">Host OS</text>
+
+    <rect class="ink" x="92" y="228" width="178" height="122" rx="14" />
+    <path class="ink thin" d="M108 262 C145 256, 208 258, 253 262" />
+    <circle class="ink thin" cx="116" cy="246" r="5" />
+    <circle class="ink thin" cx="134" cy="246" r="5" />
+    <circle class="ink thin" cx="152" cy="246" r="5" />
+    <text class="note" x="118" y="300">Browser</text>
+    <text class="note tiny" x="118" y="326">OAuth callback</text>
+
+    <rect class="ink accent" x="330" y="235" width="160" height="100" rx="13" />
+    <text class="note blue" x="362" y="276">host</text>
+    <text class="note blue" x="357" y="308">:1455</text>
+
+    <path class="ink" marker-end="url(#arrow)" d="M270 290 C294 288, 308 288, 330 288" />
+
+    <path class="ink thin muted" d="M110 438 C210 421, 360 421, 500 438" />
+    <text class="note small" x="120" y="484">브라우저는 항상 여기로 돌아온다</text>
+    <text class="note tiny" x="120" y="514">http://localhost:1455/auth/callback</text>
+  </g>
+
+  <!-- Container area -->
+  <g>
+    <rect class="ink" x="642" y="108" width="508" height="540" rx="18" />
+    <path class="ink thin" d="M668 164 C770 154, 910 156, 1124 164" />
+    <text class="note label" x="674" y="150">Dev Containers</text>
+
+    <rect class="ink" x="694" y="218" width="388" height="142" rx="16" />
+    <text class="note" x="728" y="262">Container A</text>
+    <text class="note tiny" x="728" y="292">포워딩이 먼저 연결됨</text>
+    <rect class="ink accent" x="902" y="250" width="122" height="70" rx="12" />
+    <text class="note blue" x="934" y="294">:1455</text>
+
+    <rect class="ink" x="694" y="435" width="388" height="142" rx="16" />
+    <text class="note" x="728" y="479">Container B</text>
+    <text class="note tiny" x="728" y="509">콜백을 기다리는 중</text>
+    <rect class="ink accent" x="902" y="467" width="122" height="70" rx="12" />
+    <text class="note blue" x="934" y="511">:1455</text>
+  </g>
+
+  <!-- Arrow lane -->
+  <path class="ink" marker-end="url(#arrow)" d="M490 284 C570 236, 650 240, 902 284" />
+  <text class="note small" x="570" y="228">이미 사용 중</text>
+
+  <path class="ink red dash" marker-end="url(#arrow-red)" d="M490 316 C576 410, 668 487, 902 502" />
+  <path class="ink red" d="M610 405 L644 439 M645 405 L611 439" />
+  <text class="note danger small" x="565" y="475">같은 포트라 충돌</text>
+
+  <!-- Outcome -->
+  <g>
+    <path class="ink thin" d="M92 612 C250 592, 512 594, 760 612" />
+    <text class="note small" x="102" y="640">결과: Container B의 로그인 콜백은 도착하지 않거나, 다른 컨테이너로 간다.</text>
+  </g>
+</svg>

@@ -3,7 +3,7 @@ layout: post
 title: 프로그래머스의 코딩테스트 C# 버전 확인
 subtitle: C# 환경의 버전 확인
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/csharp.png
+thumbnail-img: /assets/img/csharp.webp
 share-img: /assets/img/develop.jpeg
 tags: [csharp, pccp]
 author: 전경원

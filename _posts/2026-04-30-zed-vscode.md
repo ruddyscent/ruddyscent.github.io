@@ -4,7 +4,7 @@ title: ML 엔지니어가 본 Zed와 VSCode — 빠르지만 아직은 대체재
 subtitle: Dev Container와 Jupyter가 기본인 작업 환경에서 Zed를 써본 기록
 tags: [vscode, zed, editor, developer-tools, devcontainer, jupyter, machine-learning]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/vscode.png
+thumbnail-img: /assets/img/vscode.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---

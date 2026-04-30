@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Dev Container Codex credential bind mount diagram</title>
+  <desc id="desc">A hand-drawn outline diagram showing the host ~/.codex directory mounted into multiple dev containers as /home/vscode/.codex, so each container can use the existing Codex auth token without opening an OAuth callback port.</desc>
+  <defs>
+    <filter id="handdrawn">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="19" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.9" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#15803d" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <style>
+      .paper { fill: #fffdf7; }
+      .ink {
+        fill: none;
+        stroke: #1f2937;
+        stroke-width: 3.1;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        filter: url(#handdrawn);
+      }
+      .thin { stroke-width: 2.1; }
+      .dash { stroke-dasharray: 9 9; }
+      .muted { stroke: #6b7280; }
+      .accent { stroke: #2563eb; }
+      .green { stroke: #15803d; }
+      .red { stroke: #b91c1c; }
+      .note {
+        fill: #1f2937;
+        font-family: "Nanum Pen Script", "Comic Sans MS", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        font-size: 25px;
+      }
+      .small { font-size: 21px; }
+      .tiny { font-size: 18px; fill: #4b5563; }
+      .label { font-size: 30px; font-weight: 700; }
+      .blue { fill: #2563eb; }
+      .good { fill: #15803d; }
+      .danger { fill: #b91c1c; }
+    </style>
+  </defs>
+
+  <rect class="paper" width="1200" height="720" />
+
+  <g transform="translate(54 42)">
+    <text class="note label" x="0" y="0">더 나은 해결책: 호스트의 Codex 자격증명을 컨테이너에 마운트한다</text>
+    <text class="note small" x="0" y="36">OAuth 콜백 포트 1455를 다시 열지 않고, 이미 로그인된 auth.json을 그대로 쓴다.</text>
+  </g>
+
+  <!-- Host area -->
+  <g>
+    <rect class="ink" x="50" y="112" width="455" height="536" rx="18" />
+    <path class="ink thin" d="M76 168 C168 158, 294 160, 480 168" />
+    <text class="note label" x="82" y="154">Host OS</text>
+
+    <rect class="ink accent" x="118" y="236" width="310" height="210" rx="16" />
+    <path class="ink thin accent" d="M145 276 C198 268, 282 270, 400 276" />
+    <text class="note blue" x="150" y="262">~/.codex/</text>
+    <text class="note small" x="154" y="314">auth.json</text>
+    <text class="note tiny" x="154" y="344">OAuth token</text>
+    <text class="note small" x="154" y="384">config.toml</text>
+    <text class="note small" x="154" y="424">sessions/</text>
+
+    <path class="ink green" d="M132 506 C210 486, 332 488, 442 506" />
+    <text class="note good small" x="142" y="548">호스트에서 이미 로그인 완료</text>
+  </g>
+
+  <!-- Container area -->
+  <g>
+    <rect class="ink" x="662" y="112" width="488" height="536" rx="18" />
+    <path class="ink thin" d="M688 168 C790 158, 922 160, 1124 168" />
+    <text class="note label" x="694" y="154">Dev Containers</text>
+
+    <rect class="ink" x="710" y="220" width="380" height="140" rx="16" />
+    <text class="note" x="744" y="264">Container A</text>
+    <rect class="ink accent" x="896" y="252" width="146" height="70" rx="12" />
+    <text class="note blue tiny" x="912" y="280">/home/vscode</text>
+    <text class="note blue tiny" x="930" y="306">/.codex</text>
+
+    <rect class="ink" x="710" y="440" width="380" height="140" rx="16" />
+    <text class="note" x="744" y="484">Container B</text>
+    <rect class="ink accent" x="896" y="472" width="146" height="70" rx="12" />
+    <text class="note blue tiny" x="912" y="500">/home/vscode</text>
+    <text class="note blue tiny" x="930" y="526">/.codex</text>
+  </g>
+
+  <!-- Mount arrows -->
+  <path class="ink green" marker-end="url(#arrow-green)" d="M428 298 C544 244, 630 248, 896 286" />
+  <text class="note good small" x="520" y="236">bind mount</text>
+
+  <path class="ink green" marker-end="url(#arrow-green)" d="M428 388 C548 478, 632 502, 896 506" />
+  <text class="note good small" x="520" y="476">같은 자격증명 공유</text>
+
+  <!-- No port conflict note -->
+  <g>
+    <path class="ink red dash" d="M562 574 C632 552, 706 552, 782 574" />
+    <text class="note danger small" x="554" y="618">OAuth 콜백 없음</text>
+    <text class="note danger tiny" x="590" y="646">1455 포트 경쟁도 없음</text>
+  </g>
+
+  <!-- Small browser intentionally out of flow -->
+  <g>
+    <rect class="ink muted" x="142" y="578" width="138" height="48" rx="10" />
+    <text class="note tiny" x="166" y="608">Browser</text>
+    <path class="ink muted dash" d="M296 602 C370 598, 420 598, 492 602" />
+    <path class="ink red" d="M376 586 L404 614 M405 586 L377 614" />
+  </g>
+</svg>

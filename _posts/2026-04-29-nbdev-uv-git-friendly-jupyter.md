@@ -4,7 +4,7 @@ title: 노트북을 Git에 깔끔하게 올리기
 subtitle: 노트북 diff에서 출력·메타데이터를 자동으로 걷어내기
 tags: [nbdev, jupyter, git, git-hooks, uv, pre-commit, python]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/git.png
+thumbnail-img: /assets/img/git.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---

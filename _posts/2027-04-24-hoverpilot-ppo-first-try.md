@@ -10,7 +10,7 @@ tags:
 - gymnasium
 - python
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/toy-plane.png
+thumbnail-img: /assets/img/toy-plane.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---

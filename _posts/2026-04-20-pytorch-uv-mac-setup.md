@@ -4,7 +4,7 @@ title: Apple Silicon 맥에서 PyTorch를 uv로 설치하고 사용하는 방법
 subtitle: brew로 uv를 설치하고 Apple Silicon에서 PyTorch와 MPS까지 바로 확인하기
 tags: [python, pytorch, uv, mac, apple-silicon, machine-learning]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/python.png
+thumbnail-img: /assets/img/python.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---

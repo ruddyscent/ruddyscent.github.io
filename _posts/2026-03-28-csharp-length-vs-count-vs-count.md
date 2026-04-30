@@ -4,7 +4,7 @@ title: C#에서 Length, Count, Count()의 차이
 subtitle: 배열, 컬렉션, LINQ에서 요소 개수를 구하는 올바른 방법과 성능 차이
 description: C#의 Length, Count, Count() 차이를 정확히 정리합니다. 배열과 문자열, List와 Dictionary 같은 컬렉션, IEnumerable와 LINQ에서 어떤 방법을 써야 하는지와 O(1), O(n) 성능 차이를 설명합니다.
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/csharp.png
+thumbnail-img: /assets/img/csharp.webp
 share-img: /assets/img/develop.jpeg
 tags: [csharp, linq, collection, performance, codingtest]
 author: 전경원

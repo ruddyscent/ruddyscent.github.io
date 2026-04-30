@@ -11,7 +11,7 @@ tags:
 - realflight
 - python
 - sitl
-thumbnail-img: /assets/img/toy-plane.png
+thumbnail-img: /assets/img/toy-plane.webp
 title: HoverPilot - Gymnasium 인터페이스로 환경을 재구성하다
 ---
 
