@@ -103,3 +103,18 @@ _config.yml     # 사이트 설정
 ## 포스트 날짜
 
 일부 포스트는 미래 날짜(2027-)로 예약되어 있다. GitHub Pages는 미래 날짜 포스트를 빌드 시점 기준으로 공개하므로, 날짜가 미래여도 포스트 파일이 `_posts/`에 있으면 빌드에 포함된다.
+
+## 커밋 메시지 형식
+
+- 형식: `type(scope): 요약` — `docs(blog)`, `docs`, `feat(blog)`, `fix`, `chore(devcontainer)` 등 Conventional Commits 접두사를 쓴다.
+- 요약은 "무엇을 바꿨는지"보다 "왜 바꿨는지"에 가깝게 쓴다.
+- 변경 사항이 여러 개면 본문을 문단이 아니라 하이픈 목록으로 정리한다. 각 항목은 하나의 변경/이유를 명령형으로 짧게 쓴다.
+- 변경이 한 가지뿐이면 목록 없이 요약 한 줄로 끝낸다 (예: `docs: rewrite subtitle to sound less like AI slop`).
+
+```
+docs(blog): reframe Zed vs VSCode post as workflow split, not verdict
+
+- Replace dismissive "Zed falls short" framing with role-based delegation between the two editors
+- Route Dev Container and Jupyter workflows to VSCode's proven integration instead of calling them Zed gaps
+- Link LSP to its spec on first mention
+```
