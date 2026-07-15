@@ -4,8 +4,8 @@ title: Xcode에서 Codex 로그인이 안 될 때 해결하기
 subtitle: Xcode의 문제인 줄 알았지만, 원인은 Codex CLI 설정 파일에 있었다
 tags: [xcode, codex, openai, oauth, troubleshooting, macos]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/develop.jpeg
-share-img: /assets/img/develop.jpeg
+thumbnail-img: /assets/img/chatgpt.webp
+share-img: /assets/img/chatgpt.webp
 author: 전경원
 ---
 
