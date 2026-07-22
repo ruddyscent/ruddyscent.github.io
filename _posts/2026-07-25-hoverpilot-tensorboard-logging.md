@@ -134,6 +134,10 @@ uv run tensorboard --logdir runs
 
 그다음 브라우저에서 `http://localhost:6006`으로 접속하면 된다.
 
+![브라우저에서 연 TensorBoard 대시보드. eval/avg_reward, eval/avg_length와 train/action/aileron_mean 등 scalar 카드가 5,000 스텝 시점 기준으로 나열되어 있다.](/assets/img/hover-pilot/tensorboard-dashboard.png)
+
+_TIME SERIES 탭에서 eval과 train 지표가 카드 형태로 나열된다. 왼쪽에서 run을 선택하고, 위쪽 검색창으로 태그를 필터링해 원하는 지표만 골라볼 수 있다._
+
 만약 로그를 남기지 않고 빠르게 학습만 돌리고 싶다면 아래처럼 실행할 수 있다.
 
 ```bash
