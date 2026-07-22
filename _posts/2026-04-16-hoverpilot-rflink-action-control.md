@@ -9,7 +9,7 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-[이전 글](/2026-04-13-hoverpilot-rflink-setup/)에서는 RealFlight Link를 통해 상태를 읽어올 수 있었다.  이제 한 단계 더 나아가서, 실제로 **조종 신호(action)를 보내는 단계**로 넘어간다. 이 단계를 통해 시스템은 단방향이 아니라, **state와 action이 오가는 루프**를 이루게 된다.
+[이전 글](/2026-04-15-hoverpilot-rflink-read-state/)에서는 RealFlight Link를 통해 상태를 읽어올 수 있었다.  이제 한 단계 더 나아가서, 실제로 **조종 신호(action)를 보내는 단계**로 넘어간다. 이 단계를 통해 시스템은 단방향이 아니라, **state와 action이 오가는 루프**를 이루게 된다.
 
 ## RealFlight Link는 양방향 인터페이스다
 
@@ -164,21 +164,6 @@ while True:
 time.sleep(0.1)
 ```
 
-## 코드 확인
-
-이 단계까지 구현한 코드는 아래 태그에서 확인할 수 있다.
-
-- Repository: https://github.com/ruddyscent/hoverpilot
-- Tag: `rflink-action-control`
-
-코드를 내려받으려면 아래처럼 체크아웃하면 된다.
-
-```bash
-git clone https://github.com/ruddyscent/hoverpilot.git
-cd hoverpilot
-git checkout rflink-action-control
-```
-
 ## 여기까지 한 일
 
 이제 RealFlight Link를 통해 조종 신호를 보내고, 그에 대한 상태 응답을 다시 받아오는 **상호작용이 가능한 제어 루프의 출발점**을 갖추게 됐다.  구체적으로 다음 요소들이 준비되었다.
@@ -190,10 +175,15 @@ git checkout rflink-action-control
 
 ## 다음 단계
 
-지만 아직 강화학습 환경으로 바로 사용할 수 있는 상태는 아니다.  지금은 action을 보낼 수 있고 state를 받을 수도 있지만, 학습 루프를 구성하려면 그 사이를 이어주는 요소들이 더 필요하다.  다음으로 정리해야 할 것은 세 가지다.
+하지만 아직 강화학습 환경으로 바로 사용할 수 있는 상태는 아니다.  지금은 action을 보낼 수 있고 state를 받을 수도 있지만, 학습 루프를 구성하려면 그 사이를 이어주는 요소들이 더 필요하다.  다음으로 정리해야 할 것은 세 가지다.
 
 - reward 설계
 - observation 정의
 - Gymnasium 환경 구성
 
 reward는 에이전트가 어떤 행동을 좋은 것으로 배워야 하는지 알려주는 기준이 되고,  observation은 정책이 어떤 상태 정보를 입력으로 사용할지 결정한다.  그리고 마지막으로 Gymnasium 환경까지 갖추면, 지금 만든 RealFlight Link 인터페이스를 강화학습 코드와 자연스럽게 연결할 수 있게 된다.
+
+## 함께 보기
+
+- GitHub 저장소: [hover-pilot](https://github.com/ruddyscent/hover-pilot)
+- 이번 글 기준 구현: [rflink-action-control](https://github.com/ruddyscent/hover-pilot/releases/tag/rflink-action-control)
