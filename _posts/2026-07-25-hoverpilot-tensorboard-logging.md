@@ -132,7 +132,7 @@ TensorBoard는 다음처럼 띄운다.
 uv run tensorboard --logdir runs
 ```
 
-그다음 브라우저에서 `http://localhost:6006`으로 접속하면 된다.
+그다음 브라우저에서 `http://localhost:6006`으로 접속하면 TensorBoard 대시보드를 볼 수 있다.
 
 ![브라우저에서 연 TensorBoard 대시보드. eval/avg_reward, eval/avg_length와 train/action/aileron_mean 등 scalar 카드가 5,000 스텝 시점 기준으로 나열되어 있다.](/assets/img/hover-pilot/tensorboard-dashboard.png)
 
