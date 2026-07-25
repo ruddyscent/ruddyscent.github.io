@@ -21,10 +21,8 @@ author: Kyungwon Chun
 
 navbar-links:
   About Me: "aboutme"
-  Resources:
-    - Beautiful Jekyll: "https://beautifuljekyll.com"
-    - Learn markdown: "https://www.markdowntutorial.com/"
-  Author's home: "https://ruddyscent.github.io"
+  My Projects: "projects"
+  Tags: "tags"
 
 ################
 # --- Logo --- #
