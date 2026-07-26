@@ -26,6 +26,8 @@ Gymnasium은 그 문제를 아주 단순한 두 함수로 정리한다.
 - `reset()`은 episode(에피소드) 시작 상태를 반환한다
 - `step(action)`은 행동 적용 후 다음 상태, reward, 종료 여부를 반환한다
 
+이 두 함수가 만드는 반복 구조는 에이전트와 환경이 상태·행동·보상을 주고받는 agent-environment interface([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)를 코드로 그대로 옮긴 것이다.
+
 겉보기에는 단순하지만, HoverPilot 입장에서는 이 인터페이스가 중요하다. RealFlight Link와 직접 대화하는 복잡성을 환경 안으로 밀어 넣고, 바깥에서는 **표준 RL 환경처럼 보이게 만드는 경계면**이 되기 때문이다.
 
 ## 환경의 역할

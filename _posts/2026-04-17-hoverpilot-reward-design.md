@@ -9,7 +9,7 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-[이전 글](/2026-04-16-hoverpilot-rflink-action-control/)까지 진행하면서 state와 action은 이미 연결해 두었다. 이제 남은 것은 강화학습에서 가장 중요한 요소 중 하나인 **보상 함수(reward)**를 설계하는 일이다. reward는 에이전트의 행동이 **목표하는 상태에 얼마나 가까운지**를 알려주는 기준이며, 학습이 어떤 방향으로 진행될지를 결정한다. 결국 reward를 어떻게 설계하느냐에 따라 최종 학습 결과도 크게 달라진다.
+[이전 글](/2026-04-16-hoverpilot-rflink-action-control/)까지 진행하면서 state와 action은 이미 연결해 두었다. 이제 남은 것은 강화학습에서 가장 중요한 요소 중 하나인 **보상 함수(reward)**를 설계하는 일이다. reward는 에이전트의 행동이 **목표하는 상태에 얼마나 가까운지**를 알려주는 기준이며, 학습이 어떤 방향으로 진행될지를 결정한다. 목표를 스칼라 신호 하나로 압축해 전달할 수 있다는 전제는 reward hypothesis([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)에 뿌리를 둔다. 결국 reward를 어떻게 설계하느냐에 따라 최종 학습 결과도 크게 달라진다.
 
 ## Reward 설계의 관점
 
@@ -87,7 +87,7 @@ reward를 잘게 나눠두면, 나중에 어떤 행동이 학습을 방해하는
 
 ## Boundary와 종료 조건
 
-RealFlight의 Airplane Hover Trainer에서는 boundary를 벗어나면 episode가 끝난다.
+RealFlight의 Airplane Hover Trainer에서는 boundary를 벗어나면 episode가 끝난다. 이렇게 자연스러운 종료 상태가 있는 과제는 episodic task([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.4절)에 해당한다.
 
 ![](/assets/img/hover-pilot/boundary-violation-crash.png)
 

@@ -46,7 +46,7 @@ _HoverPilot에서 PPO가 돌아가는 전체 흐름. 좋은 조종 입력은 조
 
 ## PPO 구현의 뼈대
 
-한 줄로 말하면, **조종사(actor)와 평가자(critic)가 한 몸에 들어 있는 구조**다. 관찰값이 들어오면 actor는 "이 상황에서 어떤 입력을 낼까"를 결정하고, critic은 "지금 상황이 얼마나 괜찮은가"를 점수(value)로 매긴다.
+한 줄로 말하면, **조종사(actor)와 평가자(critic)가 한 몸에 들어 있는 구조**다. 관찰값이 들어오면 actor는 "이 상황에서 어떤 입력을 낼까"를 결정하고, critic은 "지금 상황이 얼마나 괜찮은가"를 점수(value)로 매긴다. 정책(actor)과 가치 함수(critic)를 함께 두고 서로를 개선하는 이 구조가 actor-critic 방법([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 13.5절)이다.
 
 HoverPilot에서는 이 둘을 같은 네트워크 안에 두고, 앞쪽의 shared MLP는 함께 쓴다. 그 뒤에서 한 갈래는 행동 분포를 만드는 actor로, 다른 갈래는 상태 가치를 추정하는 critic으로 나뉜다.
 
@@ -60,7 +60,7 @@ _HoverPilot의 Actor-Critic 구조. 관찰값에서 공통 표현을 만든 뒤,
 
 한 줄로 말하면, **정책은 매번 행동을 한 점으로 찍지 않고 "대략 이쯤에서 뽑겠다"는 분포를 만든다.** actor는 네 개 조종 축에 대한 평균과 분산을 만들고, 그 정규분포에서 매 스텝 행동을 샘플링한다.
 
-이렇게 무작위성을 남겨두는 이유는 탐색 때문이다. 초기에 완전히 결정적인 정책으로 출발하면 같은 입력만 반복하게 되는데, 그러면 기체를 회복시키는 방향의 조종 입력은 영영 시도되지 않는다.
+이렇게 무작위성을 남겨두는 이유는 탐색 때문이다. 초기에 완전히 결정적인 정책으로 출발하면 같은 입력만 반복하게 되는데, 그러면 기체를 회복시키는 방향의 조종 입력은 영영 시도되지 않는다. 알고 있는 최선의 행동만 반복할지, 아직 안 해본 행동을 시도해볼지의 균형은 강화학습 전체를 관통하는 exploration-exploitation trade-off([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 2장)다.
 
 샘플링된 행동은 그대로 쓰지 않고, RealFlight 쪽에서 허용하는 행동 공간 범위 안으로 clip해서 적용한다. 아래 그림에서 중요한 흐름은 `mean/std`에서 행동을 뽑고, 네 조종 채널로 나눈 뒤, 실제 환경에 넣기 전에 범위를 맞춘다는 점이다.
 
@@ -74,7 +74,7 @@ _연속 행동을 한 점으로 고정하지 않고 분포에서 샘플링하면
 
 한 줄로 말하면, **현재 정책을 일정 시간 동안 굴려서 그동안의 경험을 한 묶음으로 저장한다.** 이 경험 묶음을 롤아웃이라고 부른다.
 
-DQN처럼 오래된 경험까지 다시 꺼내 쓰는 replay buffer를 두는 알고리즘과 달리, PPO는 짧은 길이의 최근 경험을 모아 업데이트하고 버린다. 그림으로 보면 현재 정책이 RealFlight에 행동을 넣고, 환경에서 돌아온 결과를 timestep 순서대로 표에 쌓는 과정이다.
+DQN처럼 오래된 경험까지 다시 꺼내 쓰는 replay buffer를 두는 알고리즘과 달리, PPO는 짧은 길이의 최근 경험을 모아 업데이트하고 버린다. 이 차이는 지금 따르고 있는 정책이 만든 경험만 학습에 쓰는 on-policy와, 다른 정책이 만든 과거 경험도 재사용하는 off-policy의 구분([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 5.5절, 11장)에 해당한다. 그림으로 보면 현재 정책이 RealFlight에 행동을 넣고, 환경에서 돌아온 결과를 timestep 순서대로 표에 쌓는 과정이다.
 
 ![HoverPilot PPO에서 롤아웃을 수집하는 흐름. 현재 정책으로 RealFlight step을 반복하면서 obs, action, reward, done, value, log_prob를 timestep별로 모아 롤아웃 버퍼에 저장하고, done=True가 나오면 reset하며, 모은 최근 경험은 업데이트에 사용한 뒤 버린다.](/assets/img/hover-pilot/rollout-buffer-lineart.png)
 
@@ -82,7 +82,7 @@ _PPO는 오래된 경험을 계속 재사용하기보다, 현재 정책으로 �
 
 롤아웃 버퍼에는 매 스텝의 `observation`, `action`, `reward`, 에피소드가 끝났는지 표시하는 `done`, critic의 value 추정값, 그리고 그때의 `log_prob`를 같이 담는다. `done`은 value bootstrap을 끊는 기준이 된다. 정해진 롤아웃 길이에 도달했을 뿐 에피소드가 계속되는 상황이라면 마지막 상태의 value를 이어 쓰지만, 에피소드가 실제로 끝났다면 그 뒤의 value는 0으로 처리해야 한다.
 
-> **value bootstrap**은 “아직 보지 못한 미래”를 critic의 예상값으로 이어 붙이는 방법이다. 한 스텝의 return 추정값은 $G_t = r_t + \gamma V(s_{t+1})$로 계산한다. 예를 들어 보상이 1, 다음 상태의 value가 5, 할인율 $\gamma$가 0.99라면 return 추정값은 $1 + 0.99 \times 5 = 5.95$가 된다. 단, 에피소드가 실제로 끝난 경우에는 다음 상태의 value를 0으로 두어 더 이상 이어 붙이지 않는다.
+> **value bootstrap**은 “아직 보지 못한 미래”를 critic의 예상값으로 이어 붙이는 방법이다. 한 스텝의 return 추정값은 $G_t = r_t + \gamma V(s_{t+1})$로 계산한다. 예를 들어 보상이 1, 다음 상태의 value가 5, 할인율 $\gamma$가 0.99라면 return 추정값은 $1 + 0.99 \times 5 = 5.95$가 된다. 단, 에피소드가 실제로 끝난 경우에는 다음 상태의 value를 0으로 두어 더 이상 이어 붙이지 않는다. 실제 리턴을 끝까지 굴리는 대신 critic의 추정값으로 앞당겨 잘라 쓰는 이 방식은 TD(temporal-difference) 학습의 부트스트래핑([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 6.1절)이고, $\gamma$로 미래 보상을 깎아 더하는 부분은 할인(discounting, 3.3절)이다.
 
 ## 모은 경험에서 advantage를 어떻게 계산하나
 

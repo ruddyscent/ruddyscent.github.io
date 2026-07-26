@@ -9,7 +9,7 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-[이전 글](/2026-04-15-hoverpilot-rflink-read-state/)에서는 RealFlight Link를 통해 상태를 읽어올 수 있었다.  이제 한 단계 더 나아가서, 실제로 **조종 신호(action)를 보내는 단계**로 넘어간다. 이 단계를 통해 시스템은 단방향이 아니라, **state와 action이 오가는 루프**를 이루게 된다.
+[이전 글](/2026-04-15-hoverpilot-rflink-read-state/)에서는 RealFlight Link를 통해 상태를 읽어올 수 있었다.  이제 한 단계 더 나아가서, 실제로 **조종 신호(action)를 보내는 단계**로 넘어간다. 이 단계를 통해 시스템은 단방향이 아니라, **state와 action이 오가는 루프**를 이루게 된다. 에이전트와 환경이 상태·행동을 주고받는 이 구조는 강화학습의 기본 골격인 agent-environment interface([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)와 같다.
 
 ## RealFlight Link는 양방향 인터페이스다
 
@@ -181,7 +181,7 @@ time.sleep(0.1)
 - observation 정의
 - Gymnasium 환경 구성
 
-reward는 에이전트가 어떤 행동을 좋은 것으로 배워야 하는지 알려주는 기준이 되고,  observation은 정책이 어떤 상태 정보를 입력으로 사용할지 결정한다.  그리고 마지막으로 Gymnasium 환경까지 갖추면, 지금 만든 RealFlight Link 인터페이스를 강화학습 코드와 자연스럽게 연결할 수 있게 된다.
+reward는 에이전트가 어떤 행동을 좋은 것으로 배워야 하는지 알려주는 기준이 되고,  observation은 정책이 어떤 상태 정보를 입력으로 사용할지 결정한다. 목표를 단일 스칼라 신호로 압축해 전달할 수 있다는 전제는 reward hypothesis([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)에 해당한다.  그리고 마지막으로 Gymnasium 환경까지 갖추면, 지금 만든 RealFlight Link 인터페이스를 강화학습 코드와 자연스럽게 연결할 수 있게 된다.
 
 ## 함께 보기
 
