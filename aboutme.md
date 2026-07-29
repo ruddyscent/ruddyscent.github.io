@@ -10,4 +10,4 @@ subtitle: 블로그를 준비하며
 
 운동하는 개발자입니다. 운동 기록은 유튜브의 [@오늘와드](https://www.youtube.com/@오늘와드) 채널에서 확인하실 수 있습니다.
 
-글이 도움이 되셨다면 [PayPal](https://paypal.me/kyungwonchun)로 커피 한 잔 값을 보내주셔도 좋습니다.
+글이 도움이 되셨다면 [PayPal](https://paypal.me/kyungwonchun)이나 [GitHub Sponsors](https://github.com/sponsors/ruddyscent)로 커피 한 잔 값을 보내주셔도 좋습니다.
