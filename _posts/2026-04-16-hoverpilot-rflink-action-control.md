@@ -1,6 +1,6 @@
 ---
 layout: post
-title: HoverPilot — RealFlight Link로 RC 조종 신호 보내기
+title: HoverPilot - RealFlight Link로 RC 조종 신호 보내기
 subtitle: 상태를 읽는 것을 넘어, 실제로 비행기를 움직여보자
 tags: [hoverpilot, realflight, realflight-link, flightaxis, python, sitl, rc-airplane, reinforcement-learning]
 cover-img: /assets/img/develop.jpeg

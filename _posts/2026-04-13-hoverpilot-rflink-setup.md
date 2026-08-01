@@ -1,6 +1,6 @@
 ---
 layout: post
-title: HoverPilot — RealFlight Link 네트워크 설정하기
+title: HoverPilot - RealFlight Link 네트워크 설정하기
 subtitle: RealFlight Link로 시뮬레이터와 통신하는 방법을 알아보자.
 tags: [
   hoverpilot,

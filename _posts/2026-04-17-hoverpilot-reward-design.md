@@ -1,6 +1,6 @@
 ---
 layout: post
-title: HoverPilot — 강화학습을 위한 Reward 설계
+title: HoverPilot - 강화학습을 위한 Reward 설계
 subtitle: RealFlight Link 상태 데이터를 기반으로 hover reward를 구성해보자
 tags: [hoverpilot, reinforcement-learning, reward, realflight, realflight-link]
 cover-img: /assets/img/develop.jpeg
