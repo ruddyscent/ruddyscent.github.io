@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">지구와 하부 전리층이 만드는 전 지구적 전자기 도파관</title>
+  <desc id="desc">손으로 그린 듯한 단면 그림. 손실이 있는 지구가 전도성 하부 전리층에 둘러싸여 있고, 국소 수직 전류원에서 나온 파동이 동쪽과 서쪽 양방향으로 수신기까지 전파된다. 오른쪽에는 닫힌 구면, 두 손실 경계, 방향에 따라 다른 경로라는 세 가지 메모가 있다.</desc>
+  <defs>
+    <filter id="handdrawn">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="7" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.9" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <style>
+      .ink { fill: none; stroke: #1f2937; stroke-width: 3.1; stroke-linecap: round; stroke-linejoin: round; filter: url(#handdrawn); }
+      .thin { stroke-width: 2.1; }
+      .dash { stroke-dasharray: 9 9; }
+      .muted { stroke: #6b7280; }
+      .blue { stroke: #2563eb; }
+      .purple { stroke: #7c3aed; }
+      .amber { stroke: #b45309; }
+      .green { stroke: #15803d; }
+      .note { fill: #1f2937; font-family: "Nanum Pen Script", "Comic Sans MS", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; font-size: 36px; }
+      .small { font-size: 31px; }
+      .tiny { font-size: 28px; fill: #4b5563; }
+      .label { font-size: 44px; font-weight: 700; }
+      .cblue { fill: #2563eb; }
+      .cpurple { fill: #7c3aed; }
+      .camber { fill: #b45309; }
+    </style>
+  </defs>
+
+  <g transform="translate(54 46)">
+    <text class="note label" x="0" y="0">지표면과 전리층이 도파관을 이룬다</text>
+    <text class="note small" x="0" y="36">ELF/VLF는 지구와 하부 전리층 사이의 구형 공동을 따라 전파된다.</text>
+  </g>
+
+  <!-- Globe -->
+  <g>
+    <circle class="ink amber dash" cx="360" cy="420" r="250" />
+    <circle class="ink" cx="360" cy="420" r="205" />
+    <!-- coastline squiggles -->
+    <path class="ink thin green" d="M200 350 C255 322, 300 360, 345 338 C392 315, 440 352, 500 336" />
+    <path class="ink thin green" d="M210 500 C270 476, 330 508, 388 486 C440 466, 486 500, 520 486" />
+    <text class="note tiny" x="360" y="420" text-anchor="middle">손실 있는 지구</text>
+    <text class="note tiny" x="360" y="454" text-anchor="middle">바다 · 지각 · 맨틀</text>
+    <!-- ionosphere label -->
+    <path class="ink thin muted" d="M300 158 C345 150, 385 150, 430 158" />
+    <text class="note small" x="365" y="145" text-anchor="middle">손실 있는 하부 전리층</text>
+    <text class="note tiny" x="365" y="182" text-anchor="middle">고도가 높아질수록 전도도 증가</text>
+  </g>
+
+  <!-- Source -->
+  <g transform="translate(214 214)">
+    <path class="ink amber" d="M6 -6 L-14 30 L4 26 L-10 62 L34 12 L12 18 L24 -6 Z" />
+  </g>
+  <text class="note camber" x="30" y="200">국소 수직 전류원</text>
+  <text class="note tiny" x="30" y="228">번개 같은 방출원</text>
+
+  <!-- Receiver -->
+  <g transform="translate(492 528)" class="ink">
+    <path d="M0 46 L0 0 M-16 14 L0 0 L16 14 M-22 46 L22 46" />
+  </g>
+  <text class="note" x="524" y="576">수신기</text>
+
+  <!-- Paths -->
+  <path class="ink blue" marker-end="url(#arrow-blue)" d="M236 256 C346 156, 540 220, 588 372 C614 452, 566 512, 512 540" />
+  <path class="ink purple dash" marker-end="url(#arrow-purple)" d="M214 266 C96 366, 128 552, 268 622 C366 672, 462 618, 494 560" />
+  <text class="note cblue small" x="560" y="250">동쪽 경로</text>
+  <text class="note cpurple small" x="36" y="600">서쪽 경로</text>
+
+  <!-- Notes column -->
+  <g transform="translate(700 116)">
+    <rect class="ink" x="0" y="0" width="460" height="150" rx="16" />
+    <text class="note" x="24" y="42">닫힌 구면</text>
+    <text class="note small" x="24" y="86">파동은 반대편에서 만나고,</text>
+    <text class="note small" x="24" y="114">숨길 바깥 경계가 없다.</text>
+  </g>
+  <g transform="translate(700 288)">
+    <rect class="ink" x="0" y="0" width="460" height="150" rx="16" />
+    <text class="note" x="24" y="42">두 개의 손실 경계</text>
+    <text class="note small" x="24" y="86">지면과 전리층이 감쇠와</text>
+    <text class="note small" x="24" y="114">위상·파형·공명을 좌우한다.</text>
+  </g>
+  <g transform="translate(700 460)">
+    <rect class="ink" x="0" y="0" width="460" height="180" rx="16" />
+    <text class="note" x="24" y="42">서로 다른 경로</text>
+    <text class="note small" x="24" y="86">같은 거리라도 채널은 다르다.</text>
+    <text class="note small" x="24" y="114">동·서 경로는 서로 다른 지각,</text>
+    <text class="note small" x="24" y="142">대기와 전리층을 지난다.</text>
+  </g>
+</svg>

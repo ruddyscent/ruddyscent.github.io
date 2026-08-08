@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">지구-전리층 도파관을 지나는 방사 방향 계산 영역</title>
+  <desc id="desc">손으로 그린 듯한 고도 단면. 손실 있는 암석권의 -100 km부터 전도성 하부 전리층의 +100 km까지 두께 200 km의 조각을 나타낸다. 해수면, 2.5 km 고도의 방출원, 위아래 PEC 종단이 표시되고, 오른쪽에는 고도에 따라 지수적으로 증가하는 전도도 프로파일을 스케치로 보여준다.</desc>
+  <defs>
+    <filter id="handdrawn">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="17" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.9" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#b45309" stroke-width="1.8" stroke-linejoin="round" />
+    </marker>
+    <style>
+      .ink { fill: none; stroke: #1f2937; stroke-width: 3.1; stroke-linecap: round; stroke-linejoin: round; filter: url(#handdrawn); }
+      .thin { stroke-width: 2.1; }
+      .thick { stroke-width: 6; }
+      .dash { stroke-dasharray: 9 9; }
+      .muted { stroke: #6b7280; }
+      .amber { stroke: #b45309; }
+      .purple { stroke: #7c3aed; }
+      .note { fill: #1f2937; font-family: "Nanum Pen Script", "Comic Sans MS", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; font-size: 36px; }
+      .small { font-size: 31px; }
+      .tiny { font-size: 32px; fill: #4b5563; }
+      .label { font-size: 44px; font-weight: 700; }
+      .camber { fill: #b45309; }
+      .cpurple { fill: #7c3aed; }
+      .mono { font-family: "Nanum Pen Script", "Courier New", monospace; }
+    </style>
+  </defs>
+
+  <g transform="translate(54 46)">
+    <text class="note label" x="0" y="0">전 지구 200 km 방사 영역</text>
+    <text class="note small" x="0" y="36">물리적 도파관은 영역 안에 있고, 수치적 끝단은 전도성이 강한 물질 속에 잠겨 있다.</text>
+  </g>
+
+  <!-- Altitude axis -->
+  <path class="ink thin" marker-end="url(#arrow)" d="M150 660 L150 150" />
+  <text class="note small" x="120" y="690">고도 h</text>
+  <g class="note tiny" text-anchor="end">
+    <text x="138" y="182">+100 km</text>
+    <text x="138" y="292">+50</text>
+    <text x="138" y="402">0</text>
+    <text x="138" y="512">−50</text>
+    <text x="138" y="622">−100 km</text>
+  </g>
+
+  <!-- Material stack -->
+  <rect class="ink" x="182" y="176" width="360" height="446" rx="10" />
+  <!-- sea level -->
+  <path class="ink thick" d="M182 402 C270 392, 452 392, 542 402" />
+  <text class="note small" x="200" y="392">해수면 · h = 0</text>
+  <!-- PEC caps -->
+  <path class="ink thick muted" d="M186 178 C280 170, 440 170, 538 178" />
+  <path class="ink thick muted" d="M186 620 C280 612, 440 612, 538 620" />
+  <text class="note tiny" x="530" y="204" text-anchor="end">PEC 종단 · +100 km</text>
+  <text class="note tiny" x="530" y="606" text-anchor="end">PEC 종단 · −100 km</text>
+  <!-- region labels -->
+  <text class="note" x="362" y="242" text-anchor="middle">전도성 하부 전리층</text>
+  <text class="note tiny" x="362" y="268" text-anchor="middle">σ(h)가 지수적으로 증가</text>
+  <text class="note" x="362" y="342" text-anchor="middle">대기 도파관</text>
+  <text class="note tiny" x="362" y="368" text-anchor="middle">기준 모델에서 ε<tspan baseline-shift="sub" font-size="75%">r</tspan> = 1</text>
+  <text class="note" x="362" y="500" text-anchor="middle">손실 있는 암석권</text>
+  <text class="note tiny mono" x="362" y="526" text-anchor="middle">σ = 10⁻³ S/m · ε<tspan baseline-shift="sub" font-size="75%">r</tspan> = 10</text>
+
+  <!-- Source -->
+  <circle class="ink amber" cx="440" cy="394" r="8" />
+  <path class="ink amber" marker-end="url(#arrow-amber)" d="M440 394 L440 352" />
+  <path class="ink thin muted" d="M448 392 L556 384" />
+  <text class="note camber small" x="562" y="390">방출원 · +2.5 km</text>
+
+  <!-- Conductivity profile -->
+  <g transform="translate(640 0)">
+    <text class="note label" x="60" y="150">기준 전도도 프로파일</text>
+    <text class="note tiny" x="60" y="180">정성적 로그 스케일</text>
+    <path class="ink thin" marker-end="url(#arrow)" d="M180 620 L180 210" />
+    <path class="ink thin" marker-end="url(#arrow)" d="M180 620 L500 620" />
+    <text class="note tiny" x="120" y="420" transform="rotate(-90 120 420)">고도 h</text>
+    <text class="note tiny" x="500" y="650" text-anchor="end">전도도 σ (로그)</text>
+    <!-- reference lines -->
+    <path class="ink thin muted dash" d="M180 452 L500 452" />
+    <text class="note tiny" x="172" y="456" text-anchor="end">0 km</text>
+    <path class="ink thin amber dash" d="M180 320 L500 320" />
+    <text class="note tiny" x="172" y="324" text-anchor="end">74 km</text>
+    <!-- curve -->
+    <path class="ink purple" d="M232 600 L232 452 C240 418, 254 386, 276 360 C312 316, 372 292, 470 276" />
+    <circle class="ink amber" cx="330" cy="336" r="7" />
+    <text class="note camber small" x="346" y="342">H′ = 74 km</text>
+    <text class="note tiny" x="242" y="584">암석권 기준값</text>
+    <text class="note cpurple tiny" x="352" y="404">지수적으로 증가하는 대기</text>
+    <text class="note tiny mono" x="330" y="686" text-anchor="middle">σ(h) ∝ exp((h − H′) / ζ)</text>
+  </g>
+
+  <path class="ink thin muted" d="M150 716 C420 700, 780 702, 1050 716" />
+  <text class="note small" x="80" y="742">±100 km 끝단은 수치 영역을 닫을 뿐, 실제 물리 경계면은 아니다.</text>
+</svg>
