@@ -9,7 +9,7 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-Jetson에서 Docker 기반 개발 환경을 잡으려고 하면 생각보다 초반에 많이 막힌다. 일반적인 Linux 서버처럼 바로 될 것 같지만, 실제로는 `docker` 권한 문제, `docker compose` 플러그인 부재, 그리고 NVIDIA runtime 설정이 한 번에 얽히는 경우가 많다.
+Jetson에서 Docker 기반 개발 환경을 잡으려고 하면 생각보다 초반에 많이 막힌다. 일반적인 Linux 서버처럼 바로 될 것 같지만 실제로는 `docker` 권한 문제, `docker compose` 플러그인 부재, 그리고 NVIDIA runtime 설정이 한 번에 얽히는 경우가 많다.
 
 특히 NGC 컨테이너를 올리려는 상황이라면 GPU를 정상적으로 붙여야 하므로, 단순히 Docker만 설치되어 있다고 끝나지 않는다. 이번 글에서는 **Jetson Xavier NX에서 Docker Compose로 NGC 컨테이너를 실행할 때 필요한 핵심 설정**을 처음부터 순서대로 정리한다.
 
@@ -25,7 +25,7 @@ Jetson에서 Docker 기반 개발 환경을 잡으려고 하면 생각보다 초
 
 ## 1. Docker 권한 문제 해결
 
-가장 먼저 확인할 것은 현재 계정이 Docker 데몬에 접근할 수 있는지다. 아래와 같은 에러가 나오면 권한 문제일 가능성이 높다.
+가장 먼저 확인할 것은 현재 계정이 Docker 데몬에 접근할 수 있는지다. 이런 에러가 나오면 권한 문제일 가능성이 높다.
 
 ```text
 permission denied while trying to connect to the Docker daemon socket
@@ -137,7 +137,7 @@ docker compose -f compose.jetson.yml exec hoverpilot bash
 
 ## 6. Jetson용 Compose 파일에서 자주 챙기는 포인트
 
-Jetson에서 GPU 관련 컨테이너를 안정적으로 올릴 때는 Compose 파일 안에서 몇 가지를 특히 자주 확인하게 된다.
+Jetson에서 GPU 관련 컨테이너를 안정적으로 올릴 때는 Compose 파일 안에서 몇 가지를 특히 자주 확인한다.
 
 - `host network` 사용 여부
 - NVIDIA runtime 관련 설정
@@ -155,7 +155,7 @@ services:
     tty: true
 ```
 
-프로젝트에 따라 볼륨 마운트, 환경 변수, 장치 매핑이 더 들어갈 수 있지만, Jetson에서 먼저 확인해야 하는 핵심은 대체로 위 세 가지다.
+프로젝트에 따라 볼륨 마운트, 환경 변수, 장치 매핑이 더 들어갈 수 있지만 Jetson에서 먼저 확인해야 하는 핵심은 대체로 위 세 가지다.
 
 ## 7. 가장 흔한 실패 패턴
 

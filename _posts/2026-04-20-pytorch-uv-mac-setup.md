@@ -9,11 +9,11 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-`pip`의 대안으로 자리 잡은 [`uv`](https://docs.astral.sh/uv/)를 사용하면 가상환경 생성, Python 버전 관리, 패키지 설치를 한 번에 처리할 수 있다. 이 글에서는 `uv`를 설치하고, Apple Silicon 맥에서 PyTorch를 올린 뒤, **[MPS(Metal Performance Shaders)](https://developer.apple.com/metal/pytorch/)**로 GPU를 활용하는 방법까지 차례대로 확인해본다.
+`pip`의 대안으로 자리 잡은 [`uv`](https://docs.astral.sh/uv/)를 사용하면 가상환경 생성, Python 버전 관리, 패키지 설치를 한 번에 처리할 수 있다. 이 글에서는 `uv`를 설치하고 Apple Silicon 맥에서 PyTorch를 올린 뒤, **[MPS(Metal Performance Shaders)](https://developer.apple.com/metal/pytorch/)**로 GPU를 활용하는 방법까지 차례대로 확인해본다.
 
 ## 1. uv 설치
 
-`uv`는 여러 가지 설치 방식을 지원하지만, macOS에서는 `Homebrew`로 설치하는 방식이 가장 간단하다.
+`uv`는 여러 가지 설치 방식을 지원하지만 macOS에서는 `Homebrew`로 설치하는 방식이 가장 간단하다.
 
 ```bash
 brew install uv
@@ -71,7 +71,7 @@ uv run python -c "import torch; print(torch.__version__)"
 
 ## 6. MPS 사용 가능 여부 확인
 
-Apple Silicon 맥에서는 CUDA 대신 `MPS`를 통해 GPU 가속을 사용할 수 있다. 아래와 같이 간단한 코드를 만들어 확인할 수 있다.
+Apple Silicon 맥에서는 CUDA 대신 `MPS`를 통해 GPU 가속을 사용할 수 있다. 간단한 코드를 만들어 확인해보자.
 
 ```python
 import torch
@@ -129,7 +129,7 @@ print(y.device)
 
 ## 9. 최종 디렉터리 구조
 
-여기까지 진행하면 아래와 같은 구조가 된다.
+여기까지 진행하면 이런 구조가 된다.
 
 ```text
 pytorch-m1-uv/

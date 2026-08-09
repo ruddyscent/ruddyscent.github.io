@@ -18,13 +18,13 @@ author: 전경원
 
 강화학습을 돌릴 때 가장 답답한 순간은 학습이 되고 있는지 아닌지를 확신할 수 없을 때다. 콘솔에 찍히는 평균 보상 숫자 몇 줄만으로는, 정책이 실제로 개선되고 있는지, 특정 액션으로 쏠리고 있는지, 손실값이 불안정한지, 혹은 환경 종료 이유가 무엇인지 파악하기 어렵다.
 
-이번 [`1e4c7d0`](https://github.com/ruddyscent/hover-pilot/commit/1e4c7d0) 커밋에서는 HoverPilot의 PPO 학습 루프에 [TensorBoard](https://www.tensorflow.org/tensorboard) 로깅을 추가해서 이 문제를 풀었다. 단순히 `episode_reward` 하나만 남기는 수준이 아니라, 보상 흐름, 액션 분포, PPO 업데이트 지표, 평가 결과, 종료 원인까지 한 번에 볼 수 있게 만들었다. 동시에 PPO 하이퍼파라미터도 CLI에서 직접 조정할 수 있도록 열어 두어서, "학습을 실행한다"에서 끝나는 것이 아니라 "학습을 관찰하고 튜닝한다"는 워크플로우로 발전시켰다.
+이번 [`1e4c7d0`](https://github.com/ruddyscent/hover-pilot/commit/1e4c7d0) 커밋에서는 HoverPilot의 PPO 학습 루프에 [TensorBoard](https://www.tensorflow.org/tensorboard) 로깅을 추가해서 이 문제를 풀었다. 단순히 `episode_reward` 하나만 남기는 수준이 아니라, 보상 흐름, 액션 분포, PPO 업데이트 지표, 평가 결과, 종료 원인까지 한 번에 볼 수 있게 만들었다. 동시에 PPO 하이퍼파라미터도 CLI에서 직접 조정할 수 있도록 열어 두어서 "학습을 실행한다"에서 끝나는 것이 아니라 "학습을 관찰하고 튜닝한다"는 워크플로우로 발전시켰다.
 
 ## 이번 커밋에서 바뀐 것
 
-핵심 변경점은 `src/hoverpilot/rl/ppo.py`에 `torch.utils.tensorboard.SummaryWriter`를 연결한 것이다. 학습이 시작되면 writer를 생성하고, 학습 중에는 주요 지표를 scalar로 기록하고, 종료 시에는 안전하게 `flush()`와 `close()`를 호출한다. 또한 실행 설정 자체도 `run/config` 텍스트로 남겨서, 나중에 어떤 설정으로 실험했는지 다시 확인할 수 있게 했다.
+핵심 변경점은 `src/hoverpilot/rl/ppo.py`에 `torch.utils.tensorboard.SummaryWriter`를 연결한 것이다. 학습이 시작되면 writer를 생성하고 학습 중에는 주요 지표를 scalar로 기록하며 종료 시에는 안전하게 `flush()`와 `close()`를 호출한다. 또한 실행 설정 자체도 `run/config` 텍스트로 남겨서 나중에 어떤 설정으로 실험했는지 다시 확인할 수 있게 했다.
 
-이번 커밋에서 TensorBoard에 기록되는 대표 지표는 다음과 같다.
+이번 커밋에서 TensorBoard에 기록되는 대표 지표는 이렇다.
 
 - 학습 에피소드 지표
   - `train/episode_reward`
@@ -74,9 +74,9 @@ TensorBoard의 가장 큰 장점은 학습 과정을 시계열로 구조화해�
 HoverPilot는 aileron, elevator, throttle, rudder 네 개 축을 제어한다. `train/action/*_mean`, `train/action/*_std`를 보면 throttle이 지나치게 높게 유지되는지, rudder가 거의 죽어 있는지, 특정 축의 분산이 비정상적으로 작은지 같은 문제를 바로 발견할 수 있다.
 
 넷째, 왜 에피소드가 끝나는가?  
-`train/termination/<reason>`과 `train/termination_rate/<reason>`는 특히 실전적인 지표다. 보상만 보면 "학습이 안 된다"로 보일 수 있지만, 실제로는 `parked_on_ground`나 boundary 계열 종료가 대부분일 수 있다. 이 경우 문제는 모델 구조가 아니라 환경 보상 설계, 시작 조건, termination threshold일 가능성이 크다.
+`train/termination/<reason>`과 `train/termination_rate/<reason>`는 특히 실전적인 지표다. 보상만 보면 "학습이 안 된다"로 보일 수 있지만 실제로는 `parked_on_ground`나 boundary 계열 종료가 대부분일 수 있다. 이 경우 문제는 모델 구조가 아니라 환경 보상 설계, 시작 조건, termination threshold일 가능성이 크다.
 
-즉 TensorBoard는 단순한 시각화 도구가 아니라, 강화학습 디버깅 도구다.
+TensorBoard는 단순한 시각화 도구가 아니라 강화학습 디버깅 도구다.
 
 ## HoverPilot에서 TensorBoard를 붙인 방식
 
@@ -97,7 +97,7 @@ HoverPilot는 aileron, elevator, throttle, rudder 네 개 축을 제어한다. `
 - `--entropy-coef`
 - `--max-grad-norm`
 
-이건 TensorBoard와 궁합이 좋다. 하이퍼파라미터를 바꿔 가며 실험하고, 결과를 TensorBoard에서 비교하면 어떤 설정이 실제로 더 안정적인지 빠르게 판단할 수 있기 때문이다.
+이건 TensorBoard와 궁합이 좋다. 하이퍼파라미터를 바꿔 가며 실험하고 결과를 TensorBoard에서 비교하면 어떤 설정이 실제로 더 안정적인지 빠르게 판단할 수 있기 때문이다.
 
 ## 실제로 어떻게 사용하는가
 
@@ -136,7 +136,7 @@ uv run tensorboard --logdir runs
 
 ![브라우저에서 연 TensorBoard 대시보드. eval/avg_reward, eval/avg_length와 train/action/aileron_mean 등 scalar 카드가 5,000 스텝 시점 기준으로 나열되어 있다.](/assets/img/hover-pilot/tensorboard-dashboard.png)
 
-_TIME SERIES 탭에서 eval과 train 지표가 카드 형태로 나열된다. 왼쪽에서 run을 선택하고, 위쪽 검색창으로 태그를 필터링해 원하는 지표만 골라볼 수 있다._
+_TIME SERIES 탭에서 eval과 train 지표가 카드 형태로 나열된다. 왼쪽에서 run을 선택하고 위쪽 검색창으로 태그를 필터링해 원하는 지표만 골라볼 수 있다._
 
 만약 로그를 남기지 않고 빠르게 학습만 돌리고 싶다면 아래처럼 실행할 수 있다.
 

@@ -19,13 +19,13 @@ VSCode의 Dev Container 안에서 Codex를 쓰기 시작했다. 그런데 컨테
 - 비밀번호 입력
 - OTP 입력
 
-여기까지는 잘 진행됐다. 마지막에 브라우저가 열리고 로그인 완료 화면이 나와야 했지만, 화면에는 에러가 떴다.
+여기까지는 잘 진행됐다. 마지막에 브라우저가 열리고 로그인 완료 화면이 나와야 했지만 화면에는 에러가 떴다.
 
 ```text
 ERR_CONNECTION_REFUSED
 ```
 
-주소는 다음과 같았다.
+주소는 이랬다.
 
 ```text
 http://localhost:1455/auth/callback?code=...
@@ -33,7 +33,7 @@ http://localhost:1455/auth/callback?code=...
 
 ![브라우저에서 Codex OAuth 콜백 주소인 localhost:1455에 접속하지 못해 ERR_CONNECTION_REFUSED가 표시된 화면](/assets/img/posts/2026-05-01-devcontainer-codex-login-troubleshooting/login-error-connection-refused.png)
 
-이 에러의 원인을 분석하면서, **브라우저가 돌아올 호스트 포트와 컨테이너 안의 콜백 포트가 어떻게 연결되느냐**가 문제라는 것을 알게 되었다.
+이 에러의 원인을 분석하면서 **브라우저가 돌아올 호스트 포트와 컨테이너 안의 콜백 포트가 어떻게 연결되느냐**가 문제라는 것을 알게 되었다.
 
 ## 여러 컨테이너에서 1455 포트가 충돌한다
 

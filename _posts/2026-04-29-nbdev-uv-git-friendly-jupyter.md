@@ -9,9 +9,9 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-Jupyter 노트북은 분석과 실험에는 더할 나위 없이 좋은 도구지만, **Git과는 궁합이 좋지 않다**. 셀 출력, 실행 카운트, 셀 ID, 커널 메타데이터처럼 코드와 무관한 정보가 매 실행마다 새로 끼어들어 diff를 지저분하게 만들고, 협업 시에는 머지 충돌을 손으로 풀기가 거의 불가능하다.
+Jupyter 노트북은 분석과 실험에는 더할 나위 없이 좋은 도구지만 **Git과는 궁합이 좋지 않다**. 셀 출력, 실행 카운트, 셀 ID, 커널 메타데이터처럼 코드와 무관한 정보가 매 실행마다 새로 끼어들어 diff를 지저분하게 만들고 협업 시에는 머지 충돌을 손으로 풀기가 거의 불가능하다.
 
-이런 문제를 깔끔하게 풀어 주는 도구가 [`nbdev`](https://nbdev.fast.ai/)다. nbdev는 노트북을 저장하거나 머지할 때 메타데이터·출력을 자동으로 정리해 주는 hook과 노트북 전용 머지 드라이버를 함께 제공한다. 공식 문서의 [Git-Friendly Jupyter](https://nbdev.fast.ai/tutorials/git_friendly_jupyter.html) 튜토리얼은 `pip install nbdev`로 시작하지만, macOS의 Homebrew Python처럼 외부에서 관리하는 환경에서는 다음과 같은 에러부터 만나게 된다.
+이런 문제를 깔끔하게 풀어 주는 도구가 [`nbdev`](https://nbdev.fast.ai/)다. nbdev는 노트북을 저장하거나 머지할 때 메타데이터·출력을 자동으로 정리해 주는 hook과 노트북 전용 머지 드라이버를 함께 제공한다. 공식 문서의 [Git-Friendly Jupyter](https://nbdev.fast.ai/tutorials/git_friendly_jupyter.html) 튜토리얼은 `pip install nbdev`로 시작하지만 macOS의 Homebrew Python처럼 외부에서 관리하는 환경에서는 이런 에러부터 만난다.
 
 ```text
 error: externally-managed-environment
@@ -25,7 +25,7 @@ error: externally-managed-environment
 
 ## 1. 왜 `pip install nbdev`가 막히는가
 
-macOS에서 `brew install python`으로 설치한 Python이나 일부 리눅스 배포판의 시스템 Python은 [PEP 668](https://peps.python.org/pep-0668/)에 따라 **시스템이 직접 관리하는 환경**에 해당한다. 시스템 패키지 매니저가 관리하는 Python에 사용자가 임의로 패키지를 끼워 넣으면 시스템이 망가질 수 있어서, `pip`가 이를 사전에 차단한다.
+macOS에서 `brew install python`으로 설치한 Python이나 일부 리눅스 배포판의 시스템 Python은 [PEP 668](https://peps.python.org/pep-0668/)에 따라 **시스템이 직접 관리하는 환경**에 해당한다. 시스템 패키지 매니저가 관리하는 Python에 사용자가 임의로 패키지를 끼워 넣으면 시스템이 망가질 수 있어서 `pip`가 이를 사전에 차단한다.
 
 해결 방법은 크게 세 가지다.
 
@@ -33,7 +33,7 @@ macOS에서 `brew install python`으로 설치한 Python이나 일부 리눅스 
 - `python -m venv`로 가상환경을 만들어 그 안에서 설치한다.
 - `pipx`나 `uv tool`로 **격리된 환경에 CLI 도구로 설치**한다.
 
-`nbdev`는 보통 `nbdev-install-hooks`, `nbdev-clean` 같은 커맨드라인 명령으로 다룬다. 라이브러리로 import해서 쓰는 경우보다 **CLI 도구**로 호출하는 경우가 훨씬 많아서, `uv tool`로 깔아 두는 방식이 가장 잘 맞는다.
+`nbdev`는 보통 `nbdev-install-hooks`, `nbdev-clean` 같은 커맨드라인 명령으로 다룬다. 라이브러리로 import해서 쓰는 경우보다 **CLI 도구**로 호출하는 경우가 훨씬 많아서 `uv tool`로 깔아 두는 방식이 가장 잘 맞는다.
 
 ## 2. uv 설치
 
@@ -140,7 +140,7 @@ uv tool install pre-commit
 
 ### 6.2. `.pre-commit-config.yaml` 작성
 
-저장소 루트에 다음과 같은 `.pre-commit-config.yaml` 파일을 만든다.
+저장소 루트에 `.pre-commit-config.yaml` 파일을 만든다.
 
 ```yaml
 repos:
@@ -154,7 +154,7 @@ repos:
 - **`nbdev-clean`** — 커밋 직전에 노트북에서 출력·실행 카운트·불필요한 메타데이터를 정리한다. 이 hook 하나만 있어도 git diff에 끼는 노이즈는 거의 사라진다.
 - **`nbdev-export`** — nbdev로 패키지를 빌드하는 프로젝트에서, 노트북에 정의한 `#| export` 셀을 Python 모듈로 다시 내보낸다. 노트북만 쓰는 분석 저장소라면 이 줄은 빼도 된다.
 
-> `rev`에는 실제로 사용하는 nbdev 버전을 적는다. 현재 설치된 버전은 `uv tool list`로, 최신 릴리스 태그는 [GitHub releases](https://github.com/AnswerDotAI/nbdev/releases)에서 확인하면 된다. nbdev 2.x 문서나 오래된 예제에서는 hook id가 `nbdev_clean`처럼 밑줄 형태로 나오기도 하지만, nbdev 3.x pre-commit hook id는 `nbdev-clean`처럼 하이픈 형태다.
+> `rev`에는 실제로 사용하는 nbdev 버전을 적는다. 현재 설치된 버전은 `uv tool list`로, 최신 릴리스 태그는 [GitHub releases](https://github.com/AnswerDotAI/nbdev/releases)에서 확인하면 된다. nbdev 2.x 문서나 오래된 예제에서는 hook id가 `nbdev_clean`처럼 밑줄 형태로 나오기도 하지만 nbdev 3.x pre-commit hook id는 `nbdev-clean`처럼 하이픈 형태다.
 
 ### 6.3. hook 활성화
 
@@ -166,7 +166,7 @@ pre-commit install
 
 (프로젝트 의존성으로 설치한 경우에는 `uv run pre-commit install`)
 
-이제 `git commit`을 실행하면 pre-commit이 스테이징된 파일에 hook을 차례로 돌린다. **hook이 파일을 수정하면 pre-commit이 커밋을 중단하고, 수정한 변경분을 unstaged 상태로 둔다.** 그러니 노트북에 출력이 남아 있었다면 첫 커밋은 일단 멈추고, `git add`로 다시 스테이징한 뒤 커밋하면 정리된 상태로 들어간다.
+이제 `git commit`을 실행하면 pre-commit이 스테이징된 파일에 hook을 차례로 돌린다. **hook이 파일을 수정하면 pre-commit이 커밋을 중단하고 수정한 변경분을 unstaged 상태로 둔다.** 그러니 노트북에 출력이 남아 있었다면 첫 커밋은 일단 멈추고 `git add`로 다시 스테이징한 뒤 커밋하면 정리된 상태로 들어간다.
 
 기존 노트북에 hook을 한 번 일괄 적용해 보고 싶다면 다음을 쓴다.
 
@@ -199,7 +199,7 @@ pre-commit run --all-files
 
 `nbdev-install-hooks`가 만들어 두는 merge driver 정의와 post-merge 훅, Jupyter pre-save 훅 설정은 모두 **각자의 로컬 환경에만 들어간다**. 다른 협업자가 저장소를 새로 클론하면 `.gitattributes`는 따라오지만 driver 정의와 훅 스크립트는 비어 있어, 자동 정리도 머지 충돌 해소도 동작하지 않는다.
 
-`pre-commit`도 같은 맥락이다. `.pre-commit-config.yaml`은 저장소를 따라오지만, hook 자체는 각자 한 번씩 `pre-commit install`을 돌려야 git에 자리 잡는다.
+`pre-commit`도 같은 맥락이다. `.pre-commit-config.yaml`은 저장소를 따라오지만 hook 자체는 각자 한 번씩 `pre-commit install`을 돌려야 git에 자리 잡는다.
 
 그래서 README에 다음 한 줄을 적어 두면 깔끔하다.
 
@@ -244,7 +244,7 @@ merge driver가 동작하려면 `.gitattributes`의 `*.ipynb merge=...` 규칙�
 
 ### 머지 후 Jupyter에서 "untrusted notebook" 경고가 뜬다
 
-보통 post-merge 훅이 제대로 자리잡지 않았거나 `nbdev-trust`가 PATH에 없는 상태다. `which nbdev-trust`로 명령이 잡히는지 확인하고, 필요하면 `uv tool update-shell`로 PATH를 갱신한 뒤 새 셸에서 다시 머지를 시도한다.
+보통 post-merge 훅이 제대로 자리잡지 않았거나 `nbdev-trust`가 PATH에 없는 상태다. `which nbdev-trust`로 명령이 잡히는지 확인하고 필요하면 `uv tool update-shell`로 PATH를 갱신한 뒤 새 셸에서 다시 머지를 시도한다.
 
 ## 10. 정리
 

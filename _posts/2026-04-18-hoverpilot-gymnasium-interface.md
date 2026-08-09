@@ -19,7 +19,7 @@ title: HoverPilot - Gymnasium 인터페이스로 환경을 재구성하다
 
 ## 왜 Gymnasium인가
 
-강화학습 프로젝트에서 알고리즘보다 먼저 정리해야 하는 것은 환경 인터페이스다. 아무리 state, action, reward를 잘 정의해도, 학습 코드가 기대하는 형태로 감싸지 못하면 재사용도 어렵고 실험도 번거로워진다.
+강화학습 프로젝트에서 알고리즘보다 먼저 정리해야 하는 것은 환경 인터페이스다. 아무리 state, action, reward를 잘 정의해도 학습 코드가 기대하는 형태로 감싸지 못하면 재사용도 어렵고 실험도 번거로워진다.
 
 Gymnasium은 그 문제를 아주 단순한 두 함수로 정리한다.
 
@@ -28,11 +28,11 @@ Gymnasium은 그 문제를 아주 단순한 두 함수로 정리한다.
 
 이 두 함수가 만드는 반복 구조는 에이전트와 환경이 상태·행동·보상을 주고받는 agent-environment interface([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)를 코드로 그대로 옮긴 것이다.
 
-겉보기에는 단순하지만, HoverPilot 입장에서는 이 인터페이스가 중요하다. RealFlight Link와 직접 대화하는 복잡성을 환경 안으로 밀어 넣고, 바깥에서는 **표준 RL 환경처럼 보이게 만드는 경계면**이 되기 때문이다.
+겉보기에는 단순하지만 HoverPilot 입장에서는 이 인터페이스가 중요하다. RealFlight Link와 직접 대화하는 복잡성을 환경 안으로 밀어 넣고 바깥에서는 **표준 RL 환경처럼 보이게 만드는 경계면**이 되기 때문이다.
 
 ## 환경의 역할
 
-HoverPilot 환경은 단순히 RealFlight 상태를 전달하는 래퍼가 아니다. 실제로는 아래의 역할을 한곳에 모은다.
+HoverPilot 환경은 단순히 RealFlight 상태를 전달하는 래퍼가 아니다. 실제로는 네 가지 역할을 한곳에 모은다.
 
 - Gymnasium action을 RealFlight control input으로 변환한다
 - RealFlight Link에서 최신 state를 읽어 observation으로 압축한다
@@ -43,11 +43,11 @@ HoverPilot 환경은 단순히 RealFlight 상태를 전달하는 래퍼가 아�
 
 ![HoverPilot RL environment 구조도](/assets/img/hover-pilot/rl-hoverpilot-diagram.png)
 
-정리하면 이 네 가지 역할이 합쳐져, 시뮬레이터와 학습 루프 사이의 **번역기이자 조정자** 역할을 한다.
+정리하면 이 네 가지 역할이 합쳐져 시뮬레이터와 학습 루프 사이의 **번역기이자 조정자** 역할을 한다.
 
 ## Action과 Observation
 
-환경 바깥에서 보이는 action은 길이 4의 벡터다. 순서는 다음과 같다.
+환경 바깥에서 보이는 action은 길이 4의 벡터다. 순서는 이렇다.
 
 - aileron
 - elevator
@@ -100,7 +100,7 @@ Gymnasium의 `reset()`은 이름만 보면 단순해 보인다. 하지만 RealFl
 
 처음에는 이 문제를 비교적 단순하게 처리할 수 있을 거라고 생각했다. 에피소드가 끝나면 실제로는 비행기가 파손되고, 엔진이 꺼지며, 잔해가 바닥에 떨어져 있기 때문이다. 그래서 `m_hasLostComponents`, `m_anEngineIsRunning`, `m_isTouchingGround` 같은 값을 보면 학습 종료 시점과 다음 에피소드 시작 시점을 구분할 수 있을 것이라고 예상했다.
 
-하지만 실제로는 그렇지 않았다. 이 값들은 Trainer 모드에서 기대한 의미로 갱신되지 않았고, 실험 중에는 거의 항상 `0`만 반환했다. 즉 "부품이 떨어졌는가", "엔진이 꺼졌는가", "지면에 닿았는가" 같은 신호를 그대로 믿고 에피소드 lifecycle(수명주기)을 판단할 수 없었다.
+하지만 실제로는 그렇지 않았다. 이 값들은 Trainer 모드에서 기대한 의미로 갱신되지 않았고 실험 중에는 거의 항상 `0`만 반환했다. 즉 "부품이 떨어졌는가", "엔진이 꺼졌는가", "지면에 닿았는가" 같은 신호를 그대로 믿고 에피소드 lifecycle(수명주기)을 판단할 수 없었다.
 
 결국 reset 로직은 명시적인 종료 플래그에 의존하는 대신, 여러 상태를 조합한 **휴리스틱**으로 구성할 수밖에 없었다. 예를 들어 위치가 갑자기 중심으로 재배치되었는지, 고도가 비정상적으로 낮은지, 속도와 body rate가 충분히 안정되었는지, physics time이 정상적으로 진행 중인지 같은 조건을 함께 살펴봐야 했다.
 
@@ -121,7 +121,7 @@ def reset(self, *, seed=None, options=None):
 
 ## step()에서 실제로 일어나는 일
 
-`step(action)`은 Gymnasium 바깥에서는 짧지만, 내부에서는 여러 단계가 순서대로 실행된다.
+`step(action)`은 Gymnasium 바깥에서는 짧지만 내부에서는 여러 단계가 순서대로 실행된다.
 
 1. Gymnasium action을 RealFlight action으로 변환한다.
 2. `client.step()`으로 입력을 보내고 최신 state를 받는다.
@@ -129,7 +129,7 @@ def reset(self, *, seed=None, options=None):
 4. trainer reset 여부와 에피소드 수명주기를 함께 정리한다.
 5. observation, reward, `terminated`, `truncated`, `info`를 반환한다.
 
-실제 구현의 핵심 부분은 아래와 같다.
+실제 구현의 핵심 부분만 보면 이렇다.
 
 ```python
 def step(self, action: np.ndarray):
@@ -153,13 +153,13 @@ def step(self, action: np.ndarray):
     return observation, float(reward_breakdown.reward), bool(termination.terminated), ..., info
 ```
 
-중요한 점은 reward와 termination이 여기서 독립적으로 다시 호출된다는 것이다. 이전 글에서 만든 hover 기준이 이제 Gymnasium의 `step()` 안으로 들어오면서, 비로소 학습 알고리즘이 바로 사용할 수 있는 인터페이스가 된다.
+중요한 점은 reward와 termination이 여기서 독립적으로 다시 호출된다는 것이다. 이전 글에서 만든 hover 기준이 이제 Gymnasium의 `step()` 안으로 들어오면서 비로소 학습 알고리즘이 바로 사용할 수 있는 인터페이스가 된다.
 
 ## info에 무엇을 담았나
 
 강화학습 환경을 처음 만들 때 `info`를 대충 비워 두는 경우가 많다. 하지만 HoverPilot에서는 `info`가 꽤 중요하다. reward 하나만 보면 학습이 왜 망가지는지 알기 어렵기 때문이다.
 
-그래서 step 결과의 `info`에는 다음과 같은 정보가 들어간다.
+그래서 step 결과의 `info`에는 이런 정보를 담았다.
 
 - reward breakdown
 - termination reason
@@ -167,11 +167,11 @@ def step(self, action: np.ndarray):
 - state summary
 - target hover 정보
 
-이 정보는 학습 알고리즘 자체가 직접 쓰지는 않더라도, 디버깅과 reward 튜닝에서 큰 역할을 한다. 특히 boundary penalty가 너무 약한지, reset 이후 에피소드가 너무 늦게 시작되는지 같은 문제를 볼 때 유용하다.
+이 정보는 학습 알고리즘 자체가 직접 쓰지는 않더라도 디버깅과 reward 튜닝에서 큰 역할을 한다. 특히 boundary penalty가 너무 약한지, reset 이후 에피소드가 너무 늦게 시작되는지 같은 문제를 볼 때 유용하다.
 
 ## Gymnasium 인터페이스가 주는 이점
 
-이 단계가 끝나면 HoverPilot은 더 이상 "RealFlight를 조작하는 코드"에 머물지 않는다. 이제는 다음과 같은 성질을 갖게 된다.
+이 단계가 끝나면 HoverPilot은 더 이상 "RealFlight를 조작하는 코드"에 머물지 않는다. 이제는 이런 성질을 갖는다.
 
 - RL 라이브러리가 기대하는 표준 인터페이스를 따른다
 - state, action, reward, termination이 한 객체 안에서 일관되게 묶인다
@@ -182,7 +182,7 @@ def step(self, action: np.ndarray):
 
 ## 이번 단계의 결과
 
-여기까지 오면 HoverPilot의 환경 계층은 최소한의 RL 인터페이스를 갖추게 된다.
+여기까지 오면 HoverPilot의 환경 계층은 최소한의 RL 인터페이스를 갖춘다.
 
 - `reset()`으로 에피소드 시작 상태를 얻을 수 있다
 - `step(action)`으로 action 적용 결과를 반복적으로 받을 수 있다
@@ -194,7 +194,7 @@ def step(self, action: np.ndarray):
 
 ## 다음 단계
 
-다음 글에서는 이 환경 위에 실제 학습 루프를 올린다. 그 순간부터 HoverPilot은 환경 정의를 끝낸 상태가 아니라, **정책을 학습시키고 성능을 비교할 수 있는 실험 단계**로 넘어가게 된다.
+다음 글에서는 이 환경 위에 실제 학습 루프를 올린다. 그 순간부터 HoverPilot은 환경 정의를 끝낸 상태가 아니라, **정책을 학습시키고 성능을 비교할 수 있는 실험 단계**로 넘어간다.
 
 ## 함께 보기
 
