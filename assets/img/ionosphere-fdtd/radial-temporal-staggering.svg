@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">방사 방향과 시간에서 엇갈리는 구면 FDTD 장</title>
+  <desc id="desc">왼쪽은 TM-r 평면과 TE-r 평면이 방사 방향으로 반 층씩 번갈아 놓이는 구조다. 오른쪽은 전기장과 자기장이 시간에서 반 스텝씩 번갈아 갱신되는 순서다.</desc>
+
+  <defs>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015 0.055" numOctaves="1" seed="17" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.15" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#302b27" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text {
+        font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", "Nanum Pen Script", sans-serif;
+        fill: #302b27;
+      }
+      .title { font-size: 38px; font-weight: 700; }
+      .subtitle { font-size: 27px; }
+      .section { font-size: 33px; font-weight: 700; }
+      .note { font-size: 25px; }
+      .plane { font-size: 26px; font-weight: 700; }
+      .field { font-size: 28px; font-weight: 700; }
+      .index { font-size: 26px; }
+      .formula { font-size: 31px; font-weight: 700; }
+      .subscript { font-size: 20px; font-weight: 700; }
+      .index-script { font-size: 19px; }
+      .superscript { font-size: 20px; font-weight: 700; }
+      .electric { fill: #3276b1; }
+      .magnetic { fill: #d2644a; }
+      .tm { fill: #4c8b73; }
+      .te { fill: #8066a3; }
+      .sketch {
+        filter: url(#wobble);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+
+  <text class="title" x="42" y="46">공간과 시간의 엇갈림</text>
+  <text class="subtitle" x="42" y="78">TM-r와 TE-r는 반 층씩, 전기장과 자기장은 반 스텝씩 어긋난다.</text>
+
+  <g class="sketch">
+    <path d="M612 116 C616 244 608 390 614 565" fill="none" stroke="#302b27" stroke-width="1.5" stroke-dasharray="4 10" opacity=".25"/>
+
+    <!-- Radial axis and five alternating constant-r planes. -->
+    <path d="M78 534 C76 416 80 286 78 164" fill="none" stroke="#302b27" stroke-width="2.2" marker-end="url(#arrow)"/>
+
+    <rect x="154" y="478" width="388" height="36" rx="18" fill="#4c8b73" fill-opacity=".11" stroke="#4c8b73" stroke-width="2.5"/>
+    <rect x="178" y="398" width="340" height="36" rx="18" fill="#8066a3" fill-opacity=".11" stroke="#8066a3" stroke-width="2.5" stroke-dasharray="8 5"/>
+    <rect x="154" y="318" width="388" height="36" rx="18" fill="#4c8b73" fill-opacity=".11" stroke="#4c8b73" stroke-width="2.5"/>
+    <rect x="178" y="238" width="340" height="36" rx="18" fill="#8066a3" fill-opacity=".11" stroke="#8066a3" stroke-width="2.5" stroke-dasharray="8 5"/>
+    <rect x="154" y="158" width="388" height="36" rx="18" fill="#4c8b73" fill-opacity=".11" stroke="#4c8b73" stroke-width="2.5"/>
+
+    <!-- A single time axis; adjacent nodes are one half-step apart. -->
+    <path d="M660 340 C798 337 1018 343 1170 340" fill="none" stroke="#302b27" stroke-width="2.3" marker-end="url(#arrow)"/>
+    <path d="M700 327 L700 353 M850 327 L850 353 M1000 327 L1000 353 M1150 327 L1150 353" fill="none" stroke="#302b27" stroke-width="1.8"/>
+    <circle cx="700" cy="340" r="13" fill="#3276b1"/>
+    <circle cx="850" cy="340" r="13" fill="#d2644a"/>
+    <circle cx="1000" cy="340" r="13" fill="#3276b1"/>
+    <circle cx="1150" cy="340" r="13" fill="#d2644a"/>
+
+    <path d="M706 454 L844 454" fill="none" stroke="#c8943e" stroke-width="2"/>
+    <path d="M706 446 L706 462 M844 446 L844 462" fill="none" stroke="#c8943e" stroke-width="2"/>
+  </g>
+
+  <text class="section" x="52" y="126">방사 방향</text>
+  <text class="note" x="52" y="151">서로 다른 두 평면이 번갈아 놓인다</text>
+  <text class="field" x="64" y="158">r</text>
+
+  <!-- The components within one plane share the same radial coordinate. -->
+  <text class="index" x="92" y="504">r</text>
+  <text class="index-script" x="108" y="511">i</text>
+  <text class="plane tm" x="190" y="504">TM-r</text>
+  <text class="field electric" x="328" y="504">E</text>
+  <text class="subscript electric" x="346" y="511">r</text>
+  <text class="field magnetic" x="424" y="504">H</text>
+  <text class="subscript magnetic" x="444" y="511">t</text>
+
+  <text class="index" x="92" y="424">r</text>
+  <text class="index-script" x="108" y="431">i+½</text>
+  <text class="plane te" x="202" y="424">TE-r</text>
+  <text class="field magnetic" x="328" y="424">H</text>
+  <text class="subscript magnetic" x="348" y="431">r</text>
+  <text class="field electric" x="424" y="424">E</text>
+  <text class="subscript electric" x="442" y="431">t</text>
+
+  <text class="index" x="92" y="344">r</text>
+  <text class="index-script" x="108" y="351">i+1</text>
+  <text class="plane tm" x="190" y="344">TM-r</text>
+  <text class="field electric" x="328" y="344">E</text>
+  <text class="subscript electric" x="346" y="351">r</text>
+  <text class="field magnetic" x="424" y="344">H</text>
+  <text class="subscript magnetic" x="444" y="351">t</text>
+
+  <text class="index" x="92" y="264">r</text>
+  <text class="index-script" x="108" y="271">i+3/2</text>
+  <text class="plane te" x="202" y="264">TE-r</text>
+  <text class="field magnetic" x="328" y="264">H</text>
+  <text class="subscript magnetic" x="348" y="271">r</text>
+  <text class="field electric" x="424" y="264">E</text>
+  <text class="subscript electric" x="442" y="271">t</text>
+
+  <text class="index" x="92" y="184">r</text>
+  <text class="index-script" x="108" y="191">i+2</text>
+  <text class="plane tm" x="190" y="184">TM-r</text>
+  <text class="field electric" x="328" y="184">E</text>
+  <text class="subscript electric" x="346" y="191">r</text>
+  <text class="field magnetic" x="424" y="184">H</text>
+  <text class="subscript magnetic" x="444" y="191">t</text>
+
+  <text class="section" x="650" y="126">시간 방향</text>
+  <text class="note" x="650" y="151">전기장과 자기장을 번갈아 갱신한다</text>
+
+  <text class="formula electric" x="684" y="292">E</text>
+  <text class="superscript electric" x="704" y="278">n</text>
+  <text class="formula magnetic" x="817" y="292">H</text>
+  <text class="superscript magnetic" x="839" y="278">n+½</text>
+  <text class="formula electric" x="974" y="292">E</text>
+  <text class="superscript electric" x="994" y="278">n+1</text>
+  <text class="formula magnetic" x="1116" y="292">H</text>
+  <text class="superscript magnetic" x="1138" y="278">n+3/2</text>
+
+  <text class="note electric" x="666" y="393">E</text>
+  <text class="subscript electric" x="683" y="400">r</text>
+  <text class="note electric" x="698" y="393">, E</text>
+  <text class="subscript electric" x="730" y="400">t</text>
+
+  <text class="note magnetic" x="814" y="393">H</text>
+  <text class="subscript magnetic" x="833" y="400">r</text>
+  <text class="note magnetic" x="848" y="393">, H</text>
+  <text class="subscript magnetic" x="883" y="400">t</text>
+
+  <text class="note electric" x="966" y="393">E</text>
+  <text class="subscript electric" x="983" y="400">r</text>
+  <text class="note electric" x="998" y="393">, E</text>
+  <text class="subscript electric" x="1030" y="400">t</text>
+
+  <text class="note magnetic" x="1114" y="393">H</text>
+  <text class="subscript magnetic" x="1133" y="400">r</text>
+  <text class="note magnetic" x="1148" y="393">, H</text>
+  <text class="subscript magnetic" x="1183" y="400">t</text>
+
+  <text class="note" x="775" y="443" text-anchor="middle">Δt/2</text>
+  <text class="note" x="1168" y="376" text-anchor="end">t</text>
+</svg>

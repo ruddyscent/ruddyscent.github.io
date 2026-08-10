@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2172" height="724" viewBox="0 0 2172 724" role="img" aria-labelledby="title desc">
+  <title id="title">측지 격자를 만드는 네 단계</title>
+  <desc id="desc">정이십면체에서 시작해 삼각형을 세분화하고 새 꼭짓점을 구면으로 투영한 다음 전체 구면 격자를 얻는 과정이다.</desc>
+  <defs>
+    <clipPath id="stage-1"><rect x="0" y="120" width="430" height="500"/></clipPath>
+    <clipPath id="stage-2"><rect x="560" y="120" width="380" height="500"/></clipPath>
+    <clipPath id="stage-3"><rect x="1070" y="120" width="390" height="500"/></clipPath>
+    <clipPath id="stage-4"><rect x="1630" y="120" width="500" height="500"/></clipPath>
+    <style>
+      .step { font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", sans-serif; font-size: 64px; font-weight: 700; fill: #111; text-anchor: middle; }
+      .arrow { fill: none; stroke: #111; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <image x="0" y="0" width="2172" height="724" xlink:href="geodesic-grid-construction.png" clip-path="url(#stage-1)"/>
+  <image x="0" y="0" width="2172" height="724" xlink:href="geodesic-grid-construction.png" clip-path="url(#stage-2)"/>
+  <image x="0" y="0" width="2172" height="724" xlink:href="geodesic-grid-construction.png" clip-path="url(#stage-3)"/>
+  <image x="0" y="0" width="2172" height="724" xlink:href="geodesic-grid-construction.png" clip-path="url(#stage-4)"/>
+  <g class="arrow">
+    <path d="M487 371 C515 369 542 373 570 371"/><path d="M554 360 L570 371 L554 382"/>
+    <path d="M983 356 C1015 354 1048 358 1082 356"/><path d="M1066 345 L1082 356 L1066 367"/>
+    <path d="M1558 356 C1576 354 1594 358 1612 356"/><path d="M1596 345 L1612 356 L1596 367"/>
+  </g>
+  <g fill="none" stroke="#111" stroke-width="4">
+    <circle cx="228" cy="74" r="40"/><circle cx="742" cy="74" r="40"/>
+    <circle cx="1271" cy="74" r="40"/><circle cx="1816" cy="74" r="40"/>
+  </g>
+  <text class="step" x="228" y="98">1</text>
+  <text class="step" x="742" y="98">2</text>
+  <text class="step" x="1271" y="98">3</text>
+  <text class="step" x="1816" y="98">4</text>
+</svg>

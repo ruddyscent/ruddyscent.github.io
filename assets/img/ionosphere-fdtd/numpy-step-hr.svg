@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">NumPy Hr update pipeline</title><desc id="desc">Et values form an oriented triangular circulation that updates Hr.</desc>
+  <defs><filter id="handdrawn" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.024" numOctaves="2" seed="23" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.45"/></filter><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#6b552d" stroke-width="1.8"/></marker><style>text{font-family:"Nanum Pen Script","Comic Sans MS","Apple SD Gothic Neo","Noto Sans KR",sans-serif;fill:#28394b}.title{font-size:46px;font-weight:700}.label{font-size:31px;font-weight:700}.body{font-size:26px}.shape{font-size:23px;fill:#596b7c}rect,path{stroke-linecap:round;stroke-linejoin:round;filter:url(#handdrawn)}</style></defs>
+  <text class="title" x="38" y="50">② 방사 자기장 H_r 갱신</text>
+  <rect x="35" y="82" width="1130" height="240" rx="24" fill="#fdf9f1" stroke="#c39a55" stroke-width="2"/>
+  <rect x="65" y="125" width="200" height="145" rx="18" fill="#eee7f7" stroke="#8e72b4" stroke-width="2"/><text class="label" x="165" y="175" text-anchor="middle">E_t</text><text class="shape" x="165" y="213" text-anchor="middle">모서리 × TE-r 층</text><text class="shape" x="165" y="245" text-anchor="middle">(N_e, N_r)</text>
+  <rect x="335" y="125" width="275" height="145" rx="18" fill="#fff" stroke="#c39a55" stroke-width="2"/><text class="body" x="473" y="168" text-anchor="middle">삼각형의 세 변을</text><text class="label" x="473" y="205" text-anchor="middle">방향에 맞춰 순환</text><text class="shape" x="473" y="242" text-anchor="middle">Σ sign · E_t · edge length</text>
+  <rect x="680" y="125" width="210" height="145" rx="18" fill="#fff" stroke="#c39a55" stroke-width="2"/><text class="body" x="785" y="174" text-anchor="middle">삼각형 면적으로 나눔</text><text class="label" x="785" y="218" text-anchor="middle">÷ face area</text>
+  <rect x="960" y="125" width="170" height="145" rx="18" fill="#f7ead5" stroke="#b9821f" stroke-width="2"/><text class="shape" x="1045" y="170" text-anchor="middle">× dt / μ₀</text><text class="label" x="1045" y="220" text-anchor="middle">H_r −= curl</text>
+  <path d="M265 198 L332 198" fill="none" stroke="#6b552d" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M610 198 L677 198" fill="none" stroke="#6b552d" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M890 198 L957 198" fill="none" stroke="#6b552d" stroke-width="3" marker-end="url(#arrow)"/>
+</svg>

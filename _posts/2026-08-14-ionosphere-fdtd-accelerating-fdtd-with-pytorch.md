@@ -4,7 +4,7 @@ title: IonosphereFDTD — PyTorch로 같은 풀이기를 GPU까지 가져가기
 subtitle: 빨라진 까닭은 GPU 자체보다 장과 계산이 장치 안에 머문 데 있다
 tags: [fdtd, simulation, ionosphere, pytorch, gpu, cuda, numerical-methods]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/python.webp
+thumbnail-img: /assets/img/ionosphere-fdtd/ionosphere-fdtd-globe-simple.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 mathjax: true
@@ -28,7 +28,7 @@ NumPy 벡터화는 원소별 파이썬 반복을 큰 배열 연산으로 바꾼�
 
 벡터화됐다고 저절로 GPU 코드가 되지는 않는다. 반대로 GPU를 골랐다고 잦은 데이터 이동이 사라지는 것도 아니다. IonosphereFDTD에서는 먼저 계산을 텐서 단위로 만들고 그 텐서와 반복 갱신을 선택한 장치에 계속 머물게 한다.
 
-## 장치는 시작할 때 한 번 정한다
+## 사용할 장치는 시작할 때 정한다
 
 PyTorch 의존성은 선택 사항이다.
 
@@ -51,7 +51,9 @@ simulation = GeodesicFDTD(
 
 초기화할 때 장과 기하, 물질 계수는 요청한 자료형과 장치의 텐서가 된다. 모서리·면 번호는 같은 장치의 `torch.long` 텐서로 옮긴다. 스텝을 밟는 동안 격자 정보가 CPU와 GPU 사이를 오갈 필요는 없다.
 
-![CPU 실행과 GPU 실행에서 장, 접속 표와 계산이 머무는 위치](/assets/img/posts/2026-08-14-accelerating-fdtd-with-pytorch/pytorch-cpu-gpu-memory-map.svg)
+![CPU 실행에서 장과 접속 표가 호스트 메모리에 머무는 구조](/assets/img/ionosphere-fdtd/pytorch-memory-cpu.svg)
+
+![GPU 실행에서 초기화와 관측만 장치 경계를 건너는 구조](/assets/img/ionosphere-fdtd/pytorch-memory-gpu.svg)
 
 Apple Silicon은 통합 메모리를 쓰지만 PyTorch에는 여전히 논리적인 MPS 장치 경계가 있다. 핵심은 "GPU 메모리가 무조건 빠르다"가 아니라, 정적인 접속 표와 계속 바뀌는 장을 계산 커널 곁에 두고 불필요한 동기화를 피하는 데 있다.
 
@@ -79,7 +81,9 @@ for slot in range(1, vertex_edges.shape[1]):
 
 반복 횟수는 격자 크기가 아니라 위상 구조가 정한다. 삼각형은 세 번, 쌍대 셀은 여섯 번이며 각 반복은 모든 셀과 방사층을 함께 처리한다. 원자적 scatter로 같은 위치에 경쟁적으로 더하지 않고 순서가 고정된 gather를 쓰므로 CUDA에서도 결과 순서를 재현하기 쉽고 `torch.compile`이 정적인 텐서 그래프로 잡기에도 알맞다.
 
-![장치에 올라간 접속 표로 삼각형과 오각형·육각형 순환을 계산하는 PyTorch 커널](/assets/img/posts/2026-08-14-accelerating-fdtd-with-pytorch/pytorch-topology-kernel.svg)
+![장치에 올라간 접속 표로 삼각형 순환을 계산하는 PyTorch 커널](/assets/img/ionosphere-fdtd/pytorch-topology-face.svg)
+
+![여섯 슬롯으로 오각형·육각형 순환을 계산하는 PyTorch 커널](/assets/img/ionosphere-fdtd/pytorch-topology-dual.svg)
 
 ## Eager로 시작하고 긴 계산만 컴파일한다
 
@@ -105,11 +109,17 @@ torch.compile(step, fullgraph=True, dynamic=False)
 
 `fullgraph=True`는 그래프 중단 없이 한 스텝 전체를 잡도록 요구하고 `dynamic=False`는 고정된 모양에 특화한다([PyTorch `torch.compile` 문서](https://docs.pytorch.org/docs/stable/generated/torch.compile.html)). 격자와 배열 모양이 한 번 정해진 뒤 같은 계산을 수천 번 반복하는 FDTD와 잘 맞는다.
 
-![연산마다 디스패치하는 eager 실행과 첫 호출에서 한 스텝을 컴파일한 뒤 반복 실행하는 흐름](/assets/img/posts/2026-08-14-accelerating-fdtd-with-pytorch/pytorch-eager-compiled-timeline.svg)
+![Eager 실행에서 연산마다 프레임워크와 장치 커널을 호출하는 전반부](/assets/img/ionosphere-fdtd/pytorch-eager-first.svg)
+
+![Eager 실행에서 개별 커널 호출이 이어지는 후반부](/assets/img/ionosphere-fdtd/pytorch-eager-second.svg)
+
+![Compiled 실행의 첫 호출에서 한 스텝을 수집하고 준비하는 과정](/assets/img/ionosphere-fdtd/pytorch-compiled-warmup.svg)
+
+![준비를 마친 compiled 장 갱신을 반복 실행하는 과정](/assets/img/ionosphere-fdtd/pytorch-compiled-steady.svg)
 
 컴파일은 공짜가 아니다. 첫 호출에 그래프 수집과 코드 생성 시간이 든다. 꼭짓점 42개나 162개짜리 개발 격자처럼 작은 문제에서는 이 준비 비용을 회수하지 못할 수 있다. 먼저 eager로 재고 충분히 긴 계산에서만 컴파일을 켜는 편이 낫다.
 
-## 한 장비에서 재 본 처리량
+## 한 장비에서 측정해 본 처리량
 
 같은 조건으로 실행한 로컬 벤치마크에서는 최적화 층이 하나씩 더해지는 모습이 드러난다. 세분화 4 격자(쌍대 셀 2,562개, 모서리 7,680개, 삼각형 5,120개), 방사 셀 24개와 `float64`를 사용했다. 20스텝을 미리 돌린 뒤 동기화된 200스텝 묶음을 다섯 번 측정한 중앙값이며 격자 생성과 텐서 초기화, 첫 컴파일 시간은 제외했다.
 
@@ -120,7 +130,7 @@ torch.compile(step, fullgraph=True, dynamic=False)
 | PyTorch | RTX 3060 CUDA, eager | 934.6 | 12.07× |
 | PyTorch | RTX 3060 CUDA, compiled | 4,059.6 | 52.43× |
 
-![NumPy CPU와 PyTorch CPU·CUDA eager·CUDA compiled의 스텝 처리량](/assets/img/posts/2026-08-14-accelerating-fdtd-with-pytorch/numpy-pytorch-throughput.svg)
+![NumPy CPU와 PyTorch CPU·CUDA eager·CUDA compiled의 스텝 처리량](/assets/img/ionosphere-fdtd/numpy-pytorch-throughput.svg)
 
 마지막 숫자를 "PyTorch는 언제나 52배 빠르다"로 읽으면 안 된다. NumPy에서 PyTorch CPU로 옮길 때 백엔드 커널과 CPU 스레드 수가 달라졌고, CUDA에서는 하드웨어와 장치 상주가 더해졌으며, 마지막으로 컴파일이 반복 그래프를 최적화했다. 짧은 계산에는 표에서 뺀 컴파일 준비 시간이 지배적일 수 있다. 실제 세분화 레벨, 방사층, 자료형, 스텝 수와 관측 주기로 직접 재야 한다.
 
@@ -139,7 +149,11 @@ uv run --extra pytorch ionosphere \
   --torch-compile --steps 35000
 ```
 
-![CPU, MPS, CUDA와 float32, float64 선택의 관계](/assets/img/posts/2026-08-14-accelerating-fdtd-with-pytorch/pytorch-device-dtype-map.svg)
+![PyTorch CPU에서 지원하는 자료형과 알맞은 작업](/assets/img/ionosphere-fdtd/pytorch-device-cpu.svg)
+
+![Apple MPS에서 지원하는 자료형과 알맞은 작업](/assets/img/ionosphere-fdtd/pytorch-device-mps.svg)
+
+![NVIDIA CUDA에서 지원하는 자료형과 알맞은 작업](/assets/img/ionosphere-fdtd/pytorch-device-cuda.svg)
 
 단정밀도는 장 저장 공간을 절반으로 줄이고 대개 가속기 처리량도 높인다. 그렇다고 언제나 충분한 것도 아니고 배정밀도가 물리 모델의 오차를 해결해 주는 것도 아니다. 전 지구 검증에서는 MPS `float32`를 CUDA `float64`로 바꿔도 초기 감쇠 오차가 거의 달라지지 않았고 전리층 프로파일과 스펙트럼 창을 바로잡은 효과가 훨씬 컸다. 최종 생산 검증은 남은 차이를 산술 정밀도 탓으로 돌릴 여지를 줄이기 위해 CUDA 배정밀도로 수행했다.
 
@@ -156,7 +170,13 @@ value = simulation.field_value("er", vertex, layer)
 
 IonosphereFDTD는 이 변환을 명시적으로 드러낸다. 그림은 프레임을 그릴 때만 CPU로 옮기고 수신기 파형은 장치 텐서에 모아 두었다가 주기적으로 가져올 수 있다. 진단값도 최댓값 같은 수치를 실제로 요청할 때만 동기화한다.
 
-![매 스텝 호스트가 값을 읽는 경우와 장치에 관측값을 모아 한꺼번에 가져오는 경우의 실행 흐름](/assets/img/posts/2026-08-14-accelerating-fdtd-with-pytorch/pytorch-observation-synchronization.svg)
+![매 스텝 호스트가 값을 읽어 GPU 실행을 기다리게 하는 흐름의 전반부](/assets/img/ionosphere-fdtd/pytorch-observe-bad-first.svg)
+
+![매 스텝 동기화가 반복되는 비효율적인 관측 흐름의 후반부](/assets/img/ionosphere-fdtd/pytorch-observe-bad-second.svg)
+
+![수신값을 장치에 계속 모으는 관측 흐름의 전반부](/assets/img/ionosphere-fdtd/pytorch-observe-good-first.svg)
+
+![필요한 시점에만 결과를 가져오는 관측 흐름의 후반부](/assets/img/ionosphere-fdtd/pytorch-observe-good-second.svg)
 
 GPU 최적화에서 관측 주기는 부차적인 설정이 아니다. 계산 주기와 관측 주기를 분리해야 장치가 기다리지 않고 계속 일할 수 있다.
 

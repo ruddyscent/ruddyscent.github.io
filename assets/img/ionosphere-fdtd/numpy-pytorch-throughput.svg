@@ -5,12 +5,12 @@
     <style>
       .title { font: 700 40.6px Inter, ui-sans-serif, system-ui, sans-serif; fill: #172333; }
       .subtitle { font: 400 21.8px Inter, ui-sans-serif, system-ui, sans-serif; fill: #536273; }
-      .row-main { font: 700 23.2px Inter, ui-sans-serif, system-ui, sans-serif; fill: #243548; }
-      .row-sub { font: 400 18.1px Inter, ui-sans-serif, system-ui, sans-serif; fill: #647487; }
-      .tick { font: 400 17.4px Inter, ui-sans-serif, system-ui, sans-serif; fill: #607183; }
-      .value { font: 700 20.3px Inter, ui-sans-serif, system-ui, sans-serif; }
-      .badge { font: 700 17.4px Inter, ui-sans-serif, system-ui, sans-serif; }
-      .note { font: 400 18.1px Inter, ui-sans-serif, system-ui, sans-serif; fill: #5c6d7f; }
+      .row-main { font: 700 31px Inter, ui-sans-serif, system-ui, sans-serif; fill: #243548; }
+      .row-sub { font: 400 24px Inter, ui-sans-serif, system-ui, sans-serif; fill: #647487; }
+      .tick { font: 400 24px Inter, ui-sans-serif, system-ui, sans-serif; fill: #607183; }
+      .value { font: 700 28px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .badge { font: 700 23px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .note { font: 400 22px Inter, ui-sans-serif, system-ui, sans-serif; fill: #5c6d7f; }
     </style>
     <filter id="handdrawn" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.012 0.024" numOctaves="2" seed="19" result="noise"/>

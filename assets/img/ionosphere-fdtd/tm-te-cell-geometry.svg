@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="svg-title svg-desc">
+  <title id="svg-title">TM-r 셀과 TE-r 셀에서 전기장과 자기장이 놓이는 위치</title>
+  <desc id="svg-desc">왼쪽의 육각형과 오각형 TM-r 셀은 둘레의 접선 자기장 순환으로 중심의 방사 전기장을 갱신한다. 오른쪽의 삼각형 TE-r 셀은 둘레의 접선 전기장 순환으로 중심의 방사 자기장을 갱신한다.</desc>
+
+  <defs>
+    <style>
+      text {
+        font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", "Nanum Pen Script", sans-serif;
+        fill: #302b27;
+      }
+      .title { font-size: 40px; font-weight: 700; }
+      .subtitle { font-size: 27px; font-weight: 500; }
+      .section { font-size: 44px; font-weight: 700; }
+      .law { font-size: 27px; font-weight: 600; }
+      .flow { font-size: 30px; font-weight: 700; }
+      .cell-label { font-size: 29px; font-weight: 600; }
+      .field { font-size: 35px; font-weight: 700; }
+      .edge-field { font-size: 29px; font-weight: 700; }
+      .note { font-size: 26px; font-weight: 500; }
+      .electric-text { fill: #3276b1; }
+      .magnetic-text { fill: #d2644a; }
+      .muted { fill: #625a53; }
+      .sketch {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        filter: url(#wobble);
+      }
+      .arrows {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+
+    <filter id="wobble" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.019" numOctaves="2" seed="17" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.7" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#302b27" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-electric" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#3276b1" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-magnetic" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#d2644a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Transparent canvas: intentionally no background rectangle. -->
+  <text class="title" x="58" y="52">둘레를 도는 장이, 셀 중심의 장을 바꾼다</text>
+  <text class="subtitle muted" x="60" y="83">화살표는 셀 경계를 따라 도는 접선 성분, 가운데 ⊙는 구면 바깥쪽을 향하는 방사 성분이다.</text>
+  <g class="sketch" fill="none">
+    <path d="M60 99 C230 94, 405 104, 574 98" stroke="#c8943e" stroke-width="3" stroke-opacity=".72"/>
+    <path d="M64 103 C225 100, 402 107, 562 102" stroke="#c8943e" stroke-width="1.4" stroke-opacity=".35"/>
+  </g>
+
+  <!-- Compact legend. -->
+  <g class="sketch" fill="none" stroke-width="3">
+    <path d="M906 49 C926 45, 945 52, 965 48" stroke="#3276b1" marker-end="url(#arrow-electric)"/>
+    <path d="M906 79 C926 75, 945 82, 965 78" stroke="#d2644a" marker-end="url(#arrow-magnetic)"/>
+  </g>
+  <text class="note electric-text" x="978" y="54">E · 전기장</text>
+  <text class="note magnetic-text" x="978" y="84">H · 자기장</text>
+
+  <!-- A loose, hand-drawn divider rather than a panel boundary. -->
+  <path class="sketch" d="M766 131 C758 218, 775 312, 763 401 C753 480, 772 548, 764 613" fill="none" stroke="#8066a3" stroke-width="2.2" stroke-dasharray="2 10" stroke-opacity=".48"/>
+
+  <!-- TM-r explanation. -->
+  <text class="section" x="63" y="157">TM-r</text>
+  <text class="law muted" x="180" y="153">앙페르 법칙</text>
+  <path class="sketch" d="M178 161 C225 165, 268 158, 315 162" fill="none" stroke="#c8943e" stroke-width="2" stroke-opacity=".65"/>
+
+  <text class="flow magnetic-text" x="67" y="207">둘레 <tspan font-style="italic">H</tspan><tspan baseline-shift="sub" font-size="24">t</tspan><tspan baseline-shift="baseline"> 순환</tspan></text>
+  <path class="sketch" d="M226 198 C263 187, 299 188, 332 198" fill="none" stroke="#302b27" stroke-width="2.4" marker-end="url(#arrow-neutral)"/>
+  <text class="flow electric-text" x="350" y="207">중심 <tspan font-style="italic">E</tspan><tspan baseline-shift="sub" font-size="24">r</tspan><tspan baseline-shift="baseline"> 갱신</tspan></text>
+  <text class="note muted" x="68" y="234">육각형도 오각형도 계산 원리는 같다.</text>
+
+  <!-- TM-r hexagonal cell. -->
+  <polygon points="248,276 361,341 361,471 248,536 135,471 135,341" fill="#4c8b73" opacity=".10"/>
+  <polygon class="sketch" points="248,276 361,341 361,471 248,536 135,471 135,341"
+           fill="none" stroke="#4c8b73" stroke-width="3.2"/>
+
+  <!-- Clockwise H_t arrows on the six sides. -->
+  <g class="arrows" fill="none" stroke="#d2644a" stroke-width="4" marker-end="url(#arrow-magnetic)">
+    <path d="M274 291 Q302 304 329 323"/>
+    <path d="M361 370 Q357 404 361 437"/>
+    <path d="M337 485 Q309 499 281 518"/>
+    <path d="M216 518 Q188 501 160 485"/>
+    <path d="M135 442 Q139 409 135 375"/>
+    <path d="M160 327 Q188 312 216 295"/>
+  </g>
+  <text class="edge-field magnetic-text" x="370" y="331"><tspan font-style="italic">H</tspan><tspan baseline-shift="sub" font-size="23">t</tspan></text>
+
+  <!-- Radial E at the hexagon center. -->
+  <circle cx="248" cy="406" r="31" fill="#3276b1" opacity=".10"/>
+  <g class="sketch">
+    <circle cx="248" cy="406" r="31" fill="none" stroke="#3276b1" stroke-width="3.2"/>
+    <circle cx="248" cy="406" r="6.5" fill="#3276b1" stroke="none"/>
+  </g>
+  <text class="field electric-text" x="248" y="458" text-anchor="middle"><tspan font-style="italic">E</tspan><tspan baseline-shift="sub" font-size="27">r</tspan></text>
+  <text class="cell-label" x="248" y="585" text-anchor="middle">육각형 · 대부분</text>
+
+  <!-- TM-r pentagonal cell. -->
+  <polygon points="578,294 686,373 645,501 511,501 470,373" fill="#4c8b73" opacity=".10"/>
+  <polygon class="sketch" points="578,294 686,373 645,501 511,501 470,373"
+           fill="none" stroke="#4c8b73" stroke-width="3.2"/>
+
+  <!-- Clockwise H_t arrows on the five sides. -->
+  <g class="arrows" fill="none" stroke="#d2644a" stroke-width="4" marker-end="url(#arrow-magnetic)">
+    <path d="M604 313 Q631 330 657 351"/>
+    <path d="M676 402 Q668 437 654 470"/>
+    <path d="M620 501 Q586 496 552 501"/>
+    <path d="M501 469 Q491 436 479 402"/>
+    <path d="M494 351 Q521 331 548 313"/>
+  </g>
+  <text class="edge-field magnetic-text" x="685" y="362"><tspan font-style="italic">H</tspan><tspan baseline-shift="sub" font-size="23">t</tspan></text>
+
+  <!-- Radial E at the pentagon center. -->
+  <circle cx="578" cy="413" r="31" fill="#3276b1" opacity=".10"/>
+  <g class="sketch">
+    <circle cx="578" cy="413" r="31" fill="none" stroke="#3276b1" stroke-width="3.2"/>
+    <circle cx="578" cy="413" r="6.5" fill="#3276b1" stroke="none"/>
+  </g>
+  <text class="field electric-text" x="578" y="465" text-anchor="middle"><tspan font-style="italic">E</tspan><tspan baseline-shift="sub" font-size="27">r</tspan></text>
+  <text class="cell-label" x="578" y="585" text-anchor="middle">오각형 · 12개</text>
+
+  <!-- TE-r explanation. -->
+  <text class="section" x="807" y="157">TE-r</text>
+  <text class="law muted" x="916" y="153">패러데이 법칙</text>
+  <path class="sketch" d="M914 161 C964 165, 1014 158, 1065 162" fill="none" stroke="#c8943e" stroke-width="2" stroke-opacity=".65"/>
+
+  <text class="flow electric-text" x="809" y="207">둘레 <tspan font-style="italic">E</tspan><tspan baseline-shift="sub" font-size="24">t</tspan><tspan baseline-shift="baseline"> 순환</tspan></text>
+  <path class="sketch" d="M961 198 C986 188, 1010 188, 1032 198" fill="none" stroke="#302b27" stroke-width="2.4" marker-end="url(#arrow-neutral)"/>
+  <text class="flow magnetic-text" x="1046" y="207">중심 <tspan font-style="italic">H</tspan><tspan baseline-shift="sub" font-size="24">r</tspan></text>
+  <text class="note muted" x="810" y="234">삼각형 경계의 전기장이 중심 자기장을 바꾼다.</text>
+
+  <!-- TE-r triangular cell. -->
+  <polygon points="983,277 1125,513 841,513" fill="#8066a3" opacity=".10"/>
+  <polygon class="sketch" points="983,277 1125,513 841,513"
+           fill="none" stroke="#8066a3" stroke-width="3.2"/>
+
+  <!-- Clockwise E_t arrows on the three sides. -->
+  <g class="arrows" fill="none" stroke="#3276b1" stroke-width="4" marker-end="url(#arrow-electric)">
+    <path d="M1015 330 Q1051 384 1084 445"/>
+    <path d="M1085 513 Q1003 507 921 513"/>
+    <path d="M872 462 Q912 398 950 333"/>
+  </g>
+  <text class="edge-field electric-text" x="1081" y="341"><tspan font-style="italic">E</tspan><tspan baseline-shift="sub" font-size="23">t</tspan></text>
+
+  <!-- Radial H at the triangle center. -->
+  <circle cx="983" cy="422" r="31" fill="#d2644a" opacity=".10"/>
+  <g class="sketch">
+    <circle cx="983" cy="422" r="31" fill="none" stroke="#d2644a" stroke-width="3.2"/>
+    <circle cx="983" cy="422" r="6.5" fill="#d2644a" stroke="none"/>
+  </g>
+  <text class="field magnetic-text" x="983" y="474" text-anchor="middle"><tspan font-style="italic">H</tspan><tspan baseline-shift="sub" font-size="27">r</tspan></text>
+  <text class="cell-label" x="983" y="585" text-anchor="middle">삼각형 셀</text>
+
+  <!-- One unobtrusive reading cue. -->
+  <path class="sketch" d="M175 614 C330 622, 510 617, 685 614" fill="none" stroke="#4c8b73" stroke-width="1.7" stroke-opacity=".35"/>
+  <text class="note muted" x="430" y="635" text-anchor="middle">같은 방향으로 둘레를 한 바퀴 돌며 더한다</text>
+</svg>

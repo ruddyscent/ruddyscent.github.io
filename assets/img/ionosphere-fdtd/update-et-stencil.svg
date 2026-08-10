@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="500" viewBox="0 0 1000 500" role="img" aria-labelledby="title desc">
+  <title id="title">접선 전기장 업데이트 스텐실</title>
+  <desc id="desc">왼쪽은 주 모서리 양쪽 삼각형 중심의 방사 자기장 차이, 오른쪽은 위아래 TM-r 평면의 접선 자기장 차이가 가운데 TE-r 평면의 접선 전기장을 갱신하는 모습을 보여준다.</desc>
+  <defs>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".018 .055" numOctaves="1" seed="13" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.2"/></filter>
+    <marker id="dark-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#302b27" stroke-width="1.7" stroke-linecap="round"/></marker>
+    <marker id="blue-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#3276b1" stroke-width="1.7" stroke-linecap="round"/></marker>
+    <marker id="coral-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#d2644a" stroke-width="1.7" stroke-linecap="round"/></marker>
+    <style>
+      text{font-family:"Segoe Print","Bradley Hand","Comic Sans MS","Nanum Pen Script",sans-serif;fill:#302b27}.title{font-size:36px;font-weight:700}.subtitle{font-size:26px}.section{font-size:29px;font-weight:700}.label{font-size:24px}.field{font-size:30px;font-weight:700}.sub{font-size:20px;font-weight:700}.electric{fill:#3276b1}.magnetic{fill:#d2644a}.tm{fill:#4c8b73}.te{fill:#8066a3}.sketch{filter:url(#wobble);stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <text class="title" x="36" y="43">④ 접선 전기장 업데이트</text>
+  <text class="subtitle" x="36" y="73">두 방향의 자기장 차이가 한 모서리의 전기장을 바꾼다.</text>
+
+  <g class="sketch">
+    <path d="M500 105 C504 205 496 330 502 446" fill="none" stroke="#302b27" stroke-width="1.5" stroke-dasharray="4 10" opacity=".24"/>
+
+    <!-- Surface difference across the primal edge. -->
+    <path d="M92 280 C186 276 335 284 440 280" fill="none" stroke="#302b27" stroke-width="3" marker-end="url(#dark-arrow)"/>
+    <path d="M265 154 C261 218 269 332 265 390" fill="none" stroke="#8066a3" stroke-width="2.2" stroke-dasharray="7 7" marker-end="url(#dark-arrow)"/>
+    <circle cx="265" cy="190" r="8" fill="#d2644a"/><circle cx="265" cy="370" r="8" fill="#d2644a"/>
+    <circle cx="265" cy="190" r="16" fill="none" stroke="#d2644a" stroke-width="2.5"/>
+    <circle cx="265" cy="370" r="16" fill="none" stroke="#d2644a" stroke-width="2.5"/>
+    <circle cx="265" cy="280" r="22" fill="#c8943e" fill-opacity=".14" stroke="#c8943e" stroke-width="3"/>
+    <path d="M195 280 L335 280" fill="none" stroke="#3276b1" stroke-width="5" marker-end="url(#blue-arrow)"/>
+    <path d="M225 348 L225 212" fill="none" stroke="#302b27" stroke-width="2" marker-end="url(#dark-arrow)"/>
+
+    <!-- Radial difference. -->
+    <path d="M555 185 C673 182 824 188 945 185" fill="none" stroke="#4c8b73" stroke-width="3"/>
+    <path d="M555 280 C674 277 823 284 945 280" fill="none" stroke="#8066a3" stroke-width="2.3" stroke-dasharray="8 6"/>
+    <path d="M555 375 C673 372 824 378 945 375" fill="none" stroke="#4c8b73" stroke-width="3"/>
+    <path d="M610 185 L720 185" fill="none" stroke="#d2644a" stroke-width="4" marker-end="url(#coral-arrow)"/>
+    <path d="M610 375 L720 375" fill="none" stroke="#d2644a" stroke-width="4" marker-end="url(#coral-arrow)"/>
+    <circle cx="665" cy="280" r="22" fill="#c8943e" fill-opacity=".14" stroke="#c8943e" stroke-width="3"/>
+    <path d="M610 280 L720 280" fill="none" stroke="#3276b1" stroke-width="5" marker-end="url(#blue-arrow)"/>
+    <path d="M580 198 L580 362" fill="none" stroke="#302b27" stroke-width="2" marker-start="url(#dark-arrow)" marker-end="url(#dark-arrow)"/>
+  </g>
+
+  <text class="section" x="55" y="125">구면 위 차이</text>
+  <text class="label" x="55" y="151">모서리 양쪽 면의 값</text>
+  <text class="field magnetic" x="290" y="188">H</text><text class="sub magnetic" x="310" y="195">r</text>
+  <text class="field magnetic" x="290" y="368">H</text><text class="sub magnetic" x="310" y="375">r</text>
+  <text class="field electric" x="340" y="275">E</text><text class="sub electric" x="358" y="282">t</text>
+  <text class="label" x="197" y="438">TE-r 평면</text>
+
+  <text class="section" x="540" y="125">방사 방향 차이</text>
+  <text class="label" x="540" y="151">위아래 TM-r 평면의 값</text>
+  <text class="label tm" x="785" y="178">TM-r 위</text>
+  <text class="label te" x="785" y="273">TE-r</text>
+  <text class="label tm" x="785" y="368">TM-r 아래</text>
+  <text class="field magnetic" x="730" y="192">H</text><text class="sub magnetic" x="750" y="199">t</text>
+  <text class="field electric" x="730" y="287">E</text><text class="sub electric" x="748" y="294">t</text>
+  <text class="field magnetic" x="730" y="382">H</text><text class="sub magnetic" x="750" y="389">t</text>
+  <text class="label" x="596" y="429">두 차이로 가운데 값을 갱신</text>
+</svg>

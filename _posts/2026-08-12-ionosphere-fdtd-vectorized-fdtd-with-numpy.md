@@ -4,7 +4,7 @@ title: IonosphereFDTD — 불규칙한 구면 격자를 NumPy 배열로 계산�
 subtitle: 오각형과 육각형도 접속 관계를 표로 만들면 한 번에 계산할 수 있다
 tags: [fdtd, simulation, ionosphere, numpy, python, numerical-methods]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/python.webp
+thumbnail-img: /assets/img/ionosphere-fdtd/ionosphere-fdtd-globe-simple.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 mathjax: true
@@ -27,7 +27,9 @@ Hr: (Nf, Nr)
 
 첫 축은 언제나 구면 위의 대상이다. $E_r$는 꼭짓점, $H_t$와 $E_t$는 모서리, $H_r$는 삼각형 면에 놓인다. 두 번째 축은 방사 방향 위치다. $E_r$와 $H_t$가 $N_r+1$개의 TM-r 평면을 차지하고, 그 사이 $N_r$개의 TE-r 층에 $E_t$와 $H_r$가 놓인다.
 
-![방사 방향으로 엇갈린 네 장의 위치와 각 NumPy 배열의 두 축](/assets/img/posts/2026-08-12-vectorized-fdtd-with-numpy/numpy-field-array-layout.svg)
+![방사 방향으로 엇갈린 TM-r 평면과 TE-r 층](/assets/img/ionosphere-fdtd/numpy-field-radial.svg)
+
+![네 장을 구면 대상과 방사 위치의 두 축으로 저장한 NumPy 배열](/assets/img/ionosphere-fdtd/numpy-field-storage.svg)
 
 이 축 순서 덕분에 한 번의 인덱싱으로 모든 방사층을 함께 처리한다. 예를 들어 방향이 정해진 모서리의 양 끝에서 $E_r$ 차이를 구하는 코드는 한 줄이다.
 
@@ -37,7 +39,9 @@ er_head_minus_tail = er[edges[:, 1]] - er[edges[:, 0]]
 
 `edges[:, 0]`은 꼬리 꼭짓점, `edges[:, 1]`은 머리 꼭짓점의 번호다. `er`가 `(Nv, Nr + 1)`이면 결과는 `(Ne, Nr + 1)`이 된다. 모서리마다, 방사층마다 돌던 두 겹 반복문이 NumPy의 고급 인덱싱과 뺄셈 하나로 바뀐다.
 
-![원소마다 도는 파이썬 반복문과 행 전체를 모아 빼는 NumPy 벡터화의 메모리 접근 비교](/assets/img/posts/2026-08-12-vectorized-fdtd-with-numpy/numpy-loop-vs-vectorization-memory-map.svg)
+![원소마다 머리와 꼬리 값을 읽는 파이썬 반복문](/assets/img/ionosphere-fdtd/numpy-loop-scalar.svg)
+
+![머리와 꼬리 행 전체를 모아 한 번에 빼는 NumPy 벡터화](/assets/img/ionosphere-fdtd/numpy-loop-vectorized.svg)
 
 여기서 벡터화가 복사를 없애거나 CPU 코어를 자동으로 모두 쓴다는 뜻은 아니다. 위 식은 머리와 꼬리 행을 모은 임시 배열을 만든다. 이득은 격자 크기만큼 반복되는 파이썬 호출을 없애고 실제 산술을 NumPy 내부의 컴파일된 루프로 넘긴 데서 온다.
 
@@ -82,7 +86,9 @@ for slot in range(1, 6):
 
 여기에도 반복문이 보이지만 격자나 방사층의 크기만큼 도는 반복문은 아니다. 딱 여섯 번만 돌며 매번 모든 꼭짓점과 모든 방사층을 한꺼번에 계산한다. 격자가 커져도 파이썬 반복 횟수는 그대로다.
 
-![삼각형의 세 모서리와 오각형·육각형의 여섯 슬롯을 같은 gather–sign–reduce 연산으로 바꾸는 과정](/assets/img/posts/2026-08-12-vectorized-fdtd-with-numpy/numpy-circulation-gather-reduce.svg)
+![삼각형의 세 모서리를 gather–sign–reduce 연산으로 바꾸는 과정](/assets/img/ionosphere-fdtd/numpy-circulation-face.svg)
+
+![오각형과 육각형을 여섯 개의 고정 슬롯으로 계산하는 과정](/assets/img/ionosphere-fdtd/numpy-circulation-dual.svg)
 
 `np.add.at`으로 각 모서리 값을 양 끝 셀에 흩뿌리는 방식도 옳다. 실제 격자 객체에는 이해하기 쉬운 기준 구현으로 남아 있다. 시간 루프 안에서는 충돌하는 위치에 반복적으로 누적하는 scatter보다, 순서가 고정된 여섯 번의 gather가 성능과 재현성 면에서 다루기 좋았다. 최적화된 연산은 스칼라와 여러 차원의 배열 모두에서 이 기준 구현과 같은 결과를 내는지 테스트한다.
 
@@ -102,7 +108,13 @@ FDTD는 같은 모양의 계산을 수만 번 되풀이한다. 그러니 스텝 
 
 한 스텝에서는 먼저 현재 전기장으로 $H_t$와 $H_r$를 갱신하고 새 자기장으로 $E_r$와 $E_t$를 갱신한다.
 
-![NumPy 배열의 모양을 따라 본 한 스텝의 네 장 갱신 흐름](/assets/img/posts/2026-08-12-vectorized-fdtd-with-numpy/numpy-one-step-dataflow.svg)
+![표면과 방사 방향의 전기장 차이로 접선 자기장 Ht를 갱신하는 흐름](/assets/img/ionosphere-fdtd/numpy-step-ht.svg)
+
+![삼각형 순환으로 방사 자기장 Hr을 갱신하는 흐름](/assets/img/ionosphere-fdtd/numpy-step-hr.svg)
+
+![쌍대 셀 순환과 파원 전류로 방사 전기장 Er을 갱신하는 흐름](/assets/img/ionosphere-fdtd/numpy-step-er.svg)
+
+![자기장의 표면·방사 방향 차이로 접선 전기장 Et를 갱신하는 흐름](/assets/img/ionosphere-fdtd/numpy-step-et.svg)
 
 $H_t$ 갱신은 앞서 본 $E_r$의 표면 방향 차이와 $E_t$의 방사 방향 차이를 합친다. $H_r$는 `Et * primal_lengths`를 삼각형 둘레로 더한 뒤 면적으로 나눈다. $E_r$는 `Ht * dual_lengths`를 오각형·육각형 둘레로 더하고 손실 계수와 파원 전류를 반영한다. 마지막 $E_t$는 모서리 좌우의 $H_r$ 차이와 위아래 $H_t$ 차이로 전진한다.
 
@@ -148,7 +160,7 @@ $$
 
 방사 셀 수에는 선형으로 비례하지만 구면 세분화 레벨 $L$에는 대략 $4^L$로 증가한다. 방사 셀 24개를 쓸 때 네 장의 `float64` 저장 공간은 세분화 4에서 약 4.30 MiB, 세분화 8에서 약 1,100 MiB가 된다. `float32`는 정확히 절반이지만 여기에 기하·물질·접속 배열과 임시 배열이 더 필요하다.
 
-![세분화 레벨에 따라 증가하는 float32와 float64 장 배열의 저장 공간](/assets/img/posts/2026-08-12-vectorized-fdtd-with-numpy/numpy-field-memory-scaling.svg)
+![세분화 레벨에 따라 증가하는 float32와 float64 장 배열의 저장 공간](/assets/img/ionosphere-fdtd/numpy-field-memory-scaling.svg)
 
 그래서 NumPy 구현의 역할은 분명하다. 격자를 개발하고 식을 검토하며 작은·중간 크기 실험과 후처리를 하기 좋다. 무엇보다 배정밀도 기준 답을 제공한다. 정지한 장은 그대로 정지하는지, 손실장에서 $C_a$만큼 감쇠하는지, 파원의 위치와 총전류가 보존되는지, 최적화한 순환이 단순한 scatter 정의와 일치하는지 모두 이 경로에서 확인한다.
 

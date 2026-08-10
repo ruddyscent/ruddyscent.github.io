@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">격자점에 스냅하지 않는 파원 분배</title>
+  <desc id="desc">왼쪽은 삼각형 안의 파원을 세 꼭짓점에 무게중심 가중치로 나누고, 오른쪽은 파원의 고도를 위아래 방사 전기장 평면에 선형 가중치로 나눈다. 두 가중치를 곱하면 합이 1인 최대 여섯 개의 방사 전기장 자유도가 생긴다.</desc>
+  <defs>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".014 .045" numOctaves="1" seed="31" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.25"/></filter>
+    <marker id="dark-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#302b27" stroke-width="1.7" stroke-linecap="round"/></marker>
+    <style>
+      text{font-family:"Segoe Print","Bradley Hand","Comic Sans MS","Nanum Pen Script",sans-serif;fill:#302b27}.title{font-size:38px;font-weight:700}.subtitle{font-size:27px}.section{font-size:31px;font-weight:700}.label{font-size:25px}.weight{font-size:24px;font-weight:700}.field{font-size:28px;font-weight:700}.sub{font-size:20px;font-weight:700}.electric{fill:#3276b1}.purple{fill:#8066a3}.source{fill:#c8943e}.green{fill:#4c8b73}.sketch{filter:url(#wobble);stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <text class="title" x="42" y="46">파원은 가까운 격자점 하나에 붙지 않는다</text>
+  <text class="subtitle" x="42" y="78">수평으로 세 곳, 방사 방향으로 두 층에 나눠 최대 여섯 자리에 담는다.</text>
+
+  <g class="sketch">
+    <path d="M600 111 C604 208 596 340 602 445" fill="none" stroke="#302b27" stroke-width="1.5" stroke-dasharray="4 10" opacity=".24"/>
+
+    <!-- Horizontal barycentric weights. -->
+    <path d="M300 145 L112 398 L500 398 Z" fill="#3276b1" fill-opacity=".07" stroke="#302b27" stroke-width="3"/>
+    <circle cx="300" cy="145" r="10" fill="none" stroke="#3276b1" stroke-width="3"/>
+    <circle cx="112" cy="398" r="10" fill="none" stroke="#3276b1" stroke-width="3"/>
+    <circle cx="500" cy="398" r="10" fill="none" stroke="#3276b1" stroke-width="3"/>
+    <circle cx="315" cy="306" r="15" fill="#c8943e" stroke="#302b27" stroke-width="2.3"/>
+    <path d="M315 306 L300 145 M315 306 L112 398 M315 306 L500 398" fill="none" stroke="#c8943e" stroke-width="2" stroke-dasharray="6 6"/>
+
+    <!-- Radial linear weights. -->
+    <path d="M670 402 C668 330 672 225 670 148" fill="none" stroke="#302b27" stroke-width="2.2" marker-end="url(#dark-arrow)"/>
+    <path d="M720 190 C835 187 1018 193 1130 190" fill="none" stroke="#3276b1" stroke-width="3"/>
+    <path d="M720 370 C835 367 1018 373 1130 370" fill="none" stroke="#3276b1" stroke-width="3"/>
+    <circle cx="900" cy="285" r="15" fill="#c8943e" stroke="#302b27" stroke-width="2.3"/>
+    <path d="M900 270 L900 198 M900 300 L900 362" fill="none" stroke="#c8943e" stroke-width="2.2" stroke-dasharray="6 6"/>
+    <path d="M932 202 L932 272" fill="none" stroke="#8066a3" stroke-width="2.3" marker-start="url(#dark-arrow)" marker-end="url(#dark-arrow)"/>
+    <path d="M932 298 L932 358" fill="none" stroke="#8066a3" stroke-width="2.3" marker-start="url(#dark-arrow)" marker-end="url(#dark-arrow)"/>
+
+    <!-- Product of the two weight sets. -->
+    <path d="M315 430 C360 470 445 470 485 493" fill="none" stroke="#302b27" stroke-width="2" marker-end="url(#dark-arrow)"/>
+    <path d="M900 430 C855 470 770 470 730 493" fill="none" stroke="#302b27" stroke-width="2" marker-end="url(#dark-arrow)"/>
+
+    <rect x="145" y="530" width="140" height="48" rx="15" fill="#3276b1" fill-opacity=".11" stroke="#3276b1" stroke-width="2"/>
+    <rect x="295" y="530" width="140" height="48" rx="15" fill="#3276b1" fill-opacity=".11" stroke="#3276b1" stroke-width="2"/>
+    <rect x="445" y="530" width="140" height="48" rx="15" fill="#3276b1" fill-opacity=".11" stroke="#3276b1" stroke-width="2"/>
+    <rect x="615" y="530" width="140" height="48" rx="15" fill="#8066a3" fill-opacity=".11" stroke="#8066a3" stroke-width="2"/>
+    <rect x="765" y="530" width="140" height="48" rx="15" fill="#8066a3" fill-opacity=".11" stroke="#8066a3" stroke-width="2"/>
+    <rect x="915" y="530" width="140" height="48" rx="15" fill="#8066a3" fill-opacity=".11" stroke="#8066a3" stroke-width="2"/>
+    <path d="M165 625 C420 631 790 620 1035 626" fill="none" stroke="#4c8b73" stroke-width="3" opacity=".7"/>
+  </g>
+
+  <text class="section" x="52" y="126">① 수평 위치</text>
+  <text class="label" x="52" y="156">삼각형의 세 꼭짓점으로 나눈다</text>
+  <text class="weight electric" x="290" y="132">λ</text><text class="sub electric" x="307" y="139">0</text>
+  <text class="weight electric" x="82" y="426">λ</text><text class="sub electric" x="99" y="433">1</text>
+  <text class="weight electric" x="506" y="426">λ</text><text class="sub electric" x="523" y="433">2</text>
+  <text class="label source" x="336" y="300">실제 파원</text>
+  <text class="weight" x="300" y="462" text-anchor="middle">세 수평 가중치의 합 = 1</text>
+
+  <text class="section" x="642" y="126">② 방사 위치</text>
+  <text class="label" x="642" y="156">위아래 두 평면으로 나눈다</text>
+  <text class="label" x="688" y="420">r</text>
+  <text class="field electric" x="748" y="182">E</text><text class="sub electric" x="766" y="189">r</text>
+  <text class="label electric" x="785" y="182">위 평면</text>
+  <text class="field electric" x="748" y="362">E</text><text class="sub electric" x="766" y="369">r</text>
+  <text class="label electric" x="785" y="362">아래 평면</text>
+  <text class="label purple" x="950" y="240">α</text>
+  <text class="label purple" x="950" y="335">1 − α</text>
+  <text class="label source" x="922" y="282">파원 고도</text>
+
+  <text class="section" x="600" y="505" text-anchor="middle">③ 두 가중치를 곱한다</text>
+  <text class="weight electric" x="174" y="562">λ</text><text class="sub electric" x="191" y="569">0</text><text class="weight electric" x="205" y="562">(1−α)</text>
+  <text class="weight electric" x="324" y="562">λ</text><text class="sub electric" x="341" y="569">1</text><text class="weight electric" x="355" y="562">(1−α)</text>
+  <text class="weight electric" x="474" y="562">λ</text><text class="sub electric" x="491" y="569">2</text><text class="weight electric" x="505" y="562">(1−α)</text>
+  <text class="weight purple" x="662" y="562">λ</text><text class="sub purple" x="679" y="569">0</text><text class="weight purple" x="693" y="562">α</text>
+  <text class="weight purple" x="812" y="562">λ</text><text class="sub purple" x="829" y="569">1</text><text class="weight purple" x="843" y="562">α</text>
+  <text class="weight purple" x="962" y="562">λ</text><text class="sub purple" x="979" y="569">2</text><text class="weight purple" x="993" y="562">α</text>
+  <text class="label green" x="600" y="621" text-anchor="middle">여섯 가중치의 합 = 1 · 전체 전류 모멘트 보존</text>
+</svg>

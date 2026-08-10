@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="500" viewBox="0 0 1000 500" role="img" aria-labelledby="title desc">
+  <title id="title">방사 자기장 업데이트 스텐실</title>
+  <desc id="desc">TE-r 평면의 삼각형 세 모서리를 따라 접선 전기장을 순환시켜 면 중심의 방사 자기장을 갱신한다.</desc>
+  <defs>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".017 .05" numOctaves="1" seed="19" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3"/></filter>
+    <marker id="blue-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#3276b1" stroke-width="1.8" stroke-linecap="round"/></marker>
+    <marker id="dark-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#302b27" stroke-width="1.8" stroke-linecap="round"/></marker>
+    <style>
+      text{font-family:"Segoe Print","Bradley Hand","Comic Sans MS","Nanum Pen Script",sans-serif;fill:#302b27}.title{font-size:36px;font-weight:700}.subtitle{font-size:26px}.label{font-size:25px}.field{font-size:31px;font-weight:700}.sub{font-size:21px;font-weight:700}.electric{fill:#3276b1}.magnetic{fill:#d2644a}.te{fill:#8066a3}.metric{fill:#c8943e}.sketch{filter:url(#wobble);stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <text class="title" x="36" y="43">② 방사 자기장 업데이트</text>
+  <text class="subtitle" x="36" y="73">삼각형 둘레의 전기장 순환을 면적으로 나눈다.</text>
+
+  <g class="sketch">
+    <path d="M500 128 L260 385 L740 385 Z" fill="#8066a3" fill-opacity=".08" stroke="#302b27" stroke-width="3.2"/>
+    <path d="M465 166 L303 339" fill="none" stroke="#3276b1" stroke-width="5" marker-end="url(#blue-arrow)"/>
+    <path d="M315 385 L665 385" fill="none" stroke="#3276b1" stroke-width="5" marker-end="url(#blue-arrow)"/>
+    <path d="M704 346 L538 168" fill="none" stroke="#3276b1" stroke-width="5" marker-end="url(#blue-arrow)"/>
+    <circle cx="500" cy="300" r="36" fill="#c8943e" fill-opacity=".14" stroke="#c8943e" stroke-width="3"/>
+    <circle cx="500" cy="300" r="7" fill="#d2644a"/><circle cx="500" cy="300" r="17" fill="none" stroke="#d2644a" stroke-width="2.6"/>
+    <path d="M795 170 C875 225 875 320 795 375" fill="none" stroke="#302b27" stroke-width="2.4" marker-end="url(#dark-arrow)"/>
+  </g>
+
+  <text class="label te" x="45" y="126">TE-r 평면</text>
+  <text class="label" x="45" y="157">세 모서리를 같은 방향으로 돈다</text>
+
+  <text class="field electric" x="342" y="235">E</text><text class="sub electric" x="360" y="242">t</text>
+  <text class="field electric" x="472" y="421">E</text><text class="sub electric" x="490" y="428">t</text>
+  <text class="field electric" x="642" y="235">E</text><text class="sub electric" x="660" y="242">t</text>
+
+  <text class="field magnetic" x="532" y="297">H</text><text class="sub magnetic" x="554" y="304">r</text>
+  <text class="label metric" x="455" y="349">삼각형 면적</text>
+
+  <text class="label" x="805" y="224">둘레의 합</text>
+  <text class="label" x="826" y="261">÷</text>
+  <text class="label" x="805" y="298">면적</text>
+  <text class="label" x="826" y="335">↓</text>
+  <text class="field magnetic" x="812" y="370">H</text><text class="sub magnetic" x="834" y="377">r</text>
+</svg>
