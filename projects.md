@@ -29,7 +29,7 @@ share-img: /assets/img/develop.jpeg
   <span>HoverPilot</span>
 </h2>
 
-강화학습을 이용해서 RC 비행기를 호버링하는 프로젝트입니다. [RealFlight 시뮬레이터](https://www.realflight.com/)를 이용한 [SITL 환경](https://ardupilot.org/dev/docs/sitl-with-realflight.html)에서 진행합니다.
+강화학습을 이용해서 RC 비행기를 호버링하는 프로젝트입니다. [RealFlight 시뮬레이터](https://www.realflight.com/)를 환경으로 이용하고 있습니다. [SITL 구성](https://ardupilot.org/dev/docs/sitl-with-realflight.html)으로 모든 요소를 소프트웨어로 진행합니다.
 
 {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
 <div class="post-list">

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: IonosphereFDTD — PyTorch로 같은 풀이기를 GPU까지 가져가기
+title: IonosphereFDTD - PyTorch로 같은 풀이기를 GPU까지 가져가기
 subtitle: 빨라진 까닭은 GPU 자체보다 장과 계산이 장치 안에 머문 데 있다
 tags: [fdtd, simulation, ionosphere, pytorch, gpu, cuda, numerical-methods]
 cover-img: /assets/img/develop.jpeg
@@ -12,7 +12,7 @@ mathjax: true
 
 3편의 NumPy 구현은 꼭짓점과 모서리를 하나씩 도는 반복문을 배열 연산으로 바꿨다. PyTorch 버전은 여기서 FDTD 알고리즘을 다시 만들지 않는다. 격자, 장의 배치, 물질 계수, 파원, 쿠랑 조건과 네 갱신식은 그대로 두고 작은 배열 연산 집합만 텐서 연산으로 교체한다.
 
-이 경계를 미리 나눠 둔 덕분에 NumPy는 읽기 쉬운 배정밀도 기준 구현으로 남고, PyTorch는 같은 시간 적분기를 멀티코어 CPU와 Apple MPS, NVIDIA CUDA에서 실행할 수 있다. 고정된 모양의 한 스텝 전체는 `torch.compile`로 묶을 수도 있다.
+이 경계를 미리 나눠 둔 덕분에 NumPy는 읽기 쉬운 배정밀도 기준 구현으로 남고 PyTorch는 같은 시간 적분기를 멀티코어 CPU와 Apple MPS, NVIDIA CUDA에서 실행할 수 있다. 고정된 모양의 한 스텝 전체는 `torch.compile`로 묶을 수도 있다.
 
 ## 벡터화와 GPU 가속은 다른 층의 일이다
 
@@ -161,7 +161,7 @@ uv run --extra pytorch ionosphere \
 
 ## 관측도 계산의 일부다
 
-CUDA와 MPS의 장을 매 스텝 NumPy로 복사하면 호스트가 결과를 기다리면서 동기화한다. 빠른 커널을 만들어 놓고 관측 코드로 매번 브레이크를 거는 셈이다. CUDA 연산은 기본적으로 비동기이므로, 호스트에서 값을 읽는 시점이 곧 기다림의 경계가 된다([CUDA semantics](https://docs.pytorch.org/docs/stable/notes/cuda.html)).
+CUDA와 MPS의 장을 매 스텝 NumPy로 복사하면 호스트가 결과를 기다리면서 동기화한다. 빠른 커널을 만들어 놓고 관측 코드로 매번 브레이크를 거는 셈이다. CUDA 연산은 기본적으로 비동기이므로 호스트에서 값을 읽는 시점이 곧 기다림의 경계가 된다([CUDA semantics](https://docs.pytorch.org/docs/stable/notes/cuda.html)).
 
 ```python
 er_on_host = simulation.to_numpy(simulation.er)
