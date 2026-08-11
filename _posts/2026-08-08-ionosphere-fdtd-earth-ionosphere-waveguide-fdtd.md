@@ -1,7 +1,7 @@
 ---
 layout: post
 title: IonosphereFDTD - 지표와 전리층이 구성하는 도파관의 시뮬레이션
-subtitle: 지표와 하부 전리층 사이에서 ELF가 행성을 감아 도는 이유
+subtitle: 지표와 하부 전리층 사이에서 ELF 전파가 전파되어 간다
 tags: [fdtd, simulation, ionosphere, electromagnetics, geophysics]
 cover-img: /assets/img/develop.jpeg
 thumbnail-img: /assets/img/ionosphere-fdtd/ionosphere-fdtd-globe-simple.webp
@@ -102,4 +102,4 @@ VLF는 지구-전리층 도파관에서 감쇠가 작아 장거리 통신과 항
 
 정리하면 지금의 프로젝트는 가정을 분명히 밝힌 **수치 실험실**로 읽는 게 맞다. 기하는 전 지구적으로 구면이고 닫혀 있다. 물질 손실은 전도도와 유전율로 표현한다. 기준 전리층은 등방성 스칼라 모델이라, 자기화된 플라스마의 분산은 아직 이 풀이기에 들어가 있지 않다. 파원은 위치와 시간 파형을 통제할 수 있는 방사 방향 전류로 모델링한다.
 
-이 "계약"이 시리즈의 나머지에 구체적인 목표를 준다. 다음 **2편**에서는 행성을 계산 가능한 격자로 바꾸고 실제 측지 FDTD 업데이트를 유도한다. 이어지는 **3편과 4편**에서는 같은 알고리즘을 NumPy와 PyTorch로 어떻게 효율적으로 표현하는지 다룬다.
+이 "계약"이 시리즈의 나머지에 구체적인 목표를 준다. 다음 **2편**에서는 행성을 계산 가능한 격자로 바꾸고 **3편**에서는 그 위에서 측지 FDTD의 시간 갱신을 완성한다. 이어지는 **4편과 5편**에서는 같은 알고리즘을 NumPy와 PyTorch로 어떻게 효율적으로 표현하는지 다룬다.

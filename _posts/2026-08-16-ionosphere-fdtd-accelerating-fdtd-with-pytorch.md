@@ -1,7 +1,7 @@
 ---
 layout: post
-title: IonosphereFDTD - PyTorch로 같은 풀이기를 GPU까지 가져가기
-subtitle: 빨라진 까닭은 GPU 자체보다 장과 계산이 장치 안에 머문 데 있다
+title: IonosphereFDTD - PyTorch로 FDTD 계산을 가속하기
+subtitle: 전자기장 값과 계산 루틴을 같은 장치에 배치해야 GPU 활용도가 높아진다
 tags: [fdtd, simulation, ionosphere, pytorch, gpu, cuda, numerical-methods]
 cover-img: /assets/img/develop.jpeg
 thumbnail-img: /assets/img/ionosphere-fdtd/ionosphere-fdtd-globe-simple.webp
@@ -10,7 +10,7 @@ author: 전경원
 mathjax: true
 ---
 
-3편의 NumPy 구현은 꼭짓점과 모서리를 하나씩 도는 반복문을 배열 연산으로 바꿨다. PyTorch 버전은 여기서 FDTD 알고리즘을 다시 만들지 않는다. 격자, 장의 배치, 물질 계수, 파원, 쿠랑 조건과 네 갱신식은 그대로 두고 작은 배열 연산 집합만 텐서 연산으로 교체한다.
+4편의 NumPy 구현은 꼭짓점과 모서리를 하나씩 도는 반복문을 배열 연산으로 바꿨다. PyTorch 버전은 여기서 FDTD 알고리즘을 다시 만들지 않는다. 격자, 장의 배치, 물질 계수, 파원, 쿠랑 조건과 네 갱신식은 그대로 두고 작은 배열 연산 집합만 텐서 연산으로 교체한다.
 
 이 경계를 미리 나눠 둔 덕분에 NumPy는 읽기 쉬운 배정밀도 기준 구현으로 남고 PyTorch는 같은 시간 적분기를 멀티코어 CPU와 Apple MPS, NVIDIA CUDA에서 실행할 수 있다. 고정된 모양의 한 스텝 전체는 `torch.compile`로 묶을 수도 있다.
 
@@ -66,7 +66,7 @@ vertex_values[edges[:, 1]] - vertex_values[edges[:, 0]]
 face_values[left_faces] - face_values[right_faces]
 ```
 
-삼각형 순환은 세 모서리를 차례로 모아 부호를 곱하고 `add_`로 누적한다. 오각형·육각형 순환도 3편의 `(Nv, 6)` 패딩 접속 표를 그대로 쓴다.
+삼각형 순환은 세 모서리를 차례로 모아 부호를 곱하고 `add_`로 누적한다. 오각형·육각형 순환도 4편의 `(Nv, 6)` 패딩 접속 표를 그대로 쓴다.
 
 ```python
 sign_shape = (n_vertices,) + (1,) * (edge_values.ndim - 1)
@@ -198,10 +198,10 @@ for field in ("er", "et", "hr", "ht"):
 
 실제 생산 규모의 한 사례는 세분화 8, 표면 셀 655,362개, 방사 셀 40개, 35,000스텝이다. RTX 3060에서 컴파일된 PyTorch와 `float64`로 2,677.5초가 걸렸다. 특정 GPU와 PyTorch 버전에서 얻은 기록이지 보편적인 성능 약속은 아니다. 다만 작은 NumPy 테스트에서 검증한 똑같은 풀이기를 코드 분기 없이 생산 규모 CUDA 계산까지 가져갔다는 점은 남는다.
 
-## 네 편을 지나며
+## 다섯 편을 지나며
 
 GPU 가속을 위해 맥스웰 방정식을 두 벌로 유지할 필요는 없었다. 필요한 것은 격자의 위상을 몇 개의 배열 연산으로 좁히고, 장과 접속 표를 백엔드가 소유하게 하며, 장치 이동과 동기화 시점을 드러내는 일이었다.
 
-이로써 첫 네 편의 흐름이 닫힌다. 1편은 지구–전리층 도파관이라는 문제를 정했고 2편은 구를 방향 있는 주·쌍대 격자와 적분 연산으로 바꿨다. 3편은 그 연산을 NumPy의 읽을 수 있는 기준 구현으로 만들었고 이번 편은 같은 계산을 CPU·MPS·CUDA의 실행 경로로 옮겼다.
+이로써 첫 다섯 편의 흐름이 닫힌다. 1편은 지구–전리층 도파관이라는 문제를 정했고 2편은 구를 방향 있는 주·쌍대 격자와 적분 연산으로 바꿨다. 3편은 그 공간 연산자 위에 네 장을 배치하고 시간 갱신을 완성했다. 4편은 갱신식을 NumPy의 읽을 수 있는 기준 구현으로 만들었고 이번 편은 같은 계산을 CPU·MPS·CUDA의 실행 경로로 옮겼다.
 
 이제 더 중요한 일은 백엔드를 하나 더 붙이는 것이 아니다. 격자 수렴성을 더 촘촘히 확인하고, 전리층과 지각 모델을 개선하며, 수치 오차와 물리 입력의 불확실성을 계속 분리해 내는 일이다.
