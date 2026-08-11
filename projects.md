@@ -29,7 +29,7 @@ share-img: /assets/img/develop.jpeg
   <span>HoverPilot</span>
 </h2>
 
-강화학습을 이용해서 RC 비행기를 호버링하는 프로젝트입니다. [RealFlight 시뮬레이터](https://www.realflight.com/)를 환경으로 이용하고 있습니다. [SITL 구성](https://ardupilot.org/dev/docs/sitl-with-realflight.html)으로 모든 요소를 소프트웨어로 진행합니다.
+강화학습을 이용해서 RC 비행기를 호버링하는 프로젝트입니다. 환경으로는 [RealFlight 시뮬레이터](https://www.realflight.com/)를 씁니다. [SITL 구성](https://ardupilot.org/dev/docs/sitl-with-realflight.html)으로 모든 요소를 소프트웨어로 진행합니다.
 
 {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
 <div class="post-list">
@@ -48,7 +48,7 @@ share-img: /assets/img/develop.jpeg
   <span>IonosphereFDTD</span>
 </h2>
 
-지구 표면과 하부 전리층 사이에서 ELF 전자기파가 전파되는 과정을 계산하는 프로젝트입니다. 정이십면체에서 만든 측지 주·쌍대 격자 위에 FDTD를 구현하고, NumPy와 PyTorch를 이용한 최적화까지 적용합니다. 코드와 검증 자료는 [IonosphereFDTD 저장소](https://github.com/ruddyscent/ionosphere-fdtd)에 공개하고 있습니다.
+지구 표면과 하부 전리층 사이에서 ELF 전자기파가 전파되는 과정을 계산하는 프로젝트입니다. 정이십면체에서 만든 측지 주·쌍대 격자 위에 FDTD를 구현하고 NumPy와 PyTorch로 최적화까지 적용합니다. 코드와 검증 자료는 [IonosphereFDTD 저장소](https://github.com/ruddyscent/ionosphere-fdtd)에 공개해 두었습니다.
 
 {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
 <div class="post-list">
