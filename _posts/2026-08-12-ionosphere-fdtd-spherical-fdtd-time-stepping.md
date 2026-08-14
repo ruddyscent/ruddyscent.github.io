@@ -4,7 +4,7 @@ title: IonosphereFDTD - 구면 격자에서 전자기장 갱신하기
 subtitle: 네 개의 장을 공간과 시간에 엇갈려 놓고 파동을 한 스텝씩 전진시킨다
 tags: [fdtd, simulation, ionosphere, electromagnetics, geophysics, numerical-methods]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/ionosphere-fdtd/ionosphere-fdtd-globe-simple.webp
+thumbnail-img: /assets/img/ionosphere-fdtd-globe-simple.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 mathjax: true

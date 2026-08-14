@@ -44,7 +44,7 @@ share-img: /assets/img/develop.jpeg
 </div>
 
 <h2 class="project-heading">
-  <img src="/assets/img/ionosphere-fdtd/ionosphere-fdtd-globe-simple.webp" alt="" aria-hidden="true">
+  <img src="/assets/img/ionosphere-fdtd-globe-simple.webp" alt="" aria-hidden="true">
   <span>IonosphereFDTD</span>
 </h2>
 
