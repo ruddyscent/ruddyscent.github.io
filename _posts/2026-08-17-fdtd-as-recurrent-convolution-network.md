@@ -84,13 +84,19 @@ FDTD를 신경망으로 표현해도 계산 결과는 달라지지 않는다. �
 
 파동 매질 자체를 RNN으로 사용한 연구도 있다. 2019년 휴스 연구진은 FDTD로 이산화한 파동 방정식을 RNN의 상태 갱신식으로 해석했다([Hughes et al., 2019](https://doi.org/10.1126/sciadv.aay6946)). FDTD를 신경망 하드웨어에서 실행한 것이 아니라, 파동이 전파되는 매질에 RNN의 연산을 맡겼다. 수치 시뮬레이션에서는 역설계한 불균일 매질에 음성 파형을 입력해 영어 모음 세 가지를 분류했다.
 
-![훈련된 불균일 매질에 파형을 통과시켜 출력 탐침으로 분류하는 아날로그 파동 RNN 개념도 (Hughes 외, 2019 재작성)](/assets/img/fdtd-rnn/fdtd-rnn-hughes-analog.svg)
+![영어 모음 ae, ei, iy의 파형을 불균일 파동 매질에 넣고 세 출력 탐침으로 분류하며 매질 분포를 경사 기반으로 최적화하는 논문 도식](/assets/img/fdtd-rnn/hughes-2019-fig2.webp)
 
-FDTD에 자동 미분을 적용한 연구도 이어졌다. 각 스텝을 계산 그래프에 기록하면 전체 시간 전개를 역전파해 물질 분포나 파원에 대한 기울기를 구할 수 있다. 휴스턴 연구진은 시간 영역 전자기 해석을 미분 가능 프로그래밍 플랫폼으로 구현해 같은 코드로 순전파 시뮬레이션과 역산을 수행했다([Hu et al., 2022](https://ieeexplore.ieee.org/document/9496209/)). 광자 소자 설계에서도 미분 가능 FDTD와 FDFD(Finite-Difference Frequency-Domain, 유한 차분 주파수 영역법)를 사용한다. 자동 미분과 기존 수반법(adjoint)을 결합해 나노구조를 경사 기반으로 설계하는 오픈소스 도구도 나왔다([미분 가능 광자 설계, 2024](https://doi.org/10.1088/2632-2153/ad5411)).
+*Hughes et al., ["Wave physics as an analog recurrent neural network"](https://doi.org/10.1126/sciadv.aay6946), Fig. 2에서 잘라 사용. [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).*
 
-![물질 모형에서 FDTD로 순전파하고 손실을 자동 미분으로 되돌려 물질 모형을 갱신하는 미분 가능 역산 루프 개념도 (Hu 외, 2022 재작성)](/assets/img/fdtd-rnn/fdtd-rnn-hu-inversion.svg)
+FDTD에 자동 미분을 적용한 연구도 이어졌다. 각 스텝을 계산 그래프에 기록하면 전체 시간 전개를 역전파해 물질 분포나 파원에 대한 기울기를 구할 수 있다. 휴스턴 연구진은 시간 영역 전자기 해석을 미분 가능 프로그래밍 플랫폼으로 구현해 같은 코드로 순전파 시뮬레이션과 역산을 수행했다([Hu et al., 2022](https://ieeexplore.ieee.org/document/9496209/)). 광자 소자 설계에서도 미분 가능 FDTD와 FDFD(Finite-Difference Frequency-Domain, 유한 차분 주파수 영역법)를 사용한다. 자동 미분과 기존 수반법(adjoint)을 결합해 상용 FDTD 솔버를 계산 그래프에 넣는 방법도 제안됐다([Luce et al., 2024](https://doi.org/10.1088/2632-2153/ad5411)).
 
-![입력 모드가 설계 영역을 지나 목표 출력으로 나가도록 수반법·자동 미분 경사가 굴절률 분포를 다듬는 광자 역설계 개념도 (미분 가능 광자 설계, 2024 재작성)](/assets/img/fdtd-rnn/fdtd-rnn-photonic-design.svg)
+![미분 가능한 기하와 후처리 사이에 블랙박스 PDE 솔버를 넣고 순전파와 역전파를 연결한 논문 도식](/assets/img/fdtd-rnn/luce-2024-fig1.webp)
+
+*Luce et al., ["Merging automatic differentiation and the adjoint method for photonic inverse design"](https://doi.org/10.1088/2632-2153/ad5411), Fig. 1에서 잘라 사용. [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*
+
+![경사 기반 최적화 전과 후의 마이크로 LED 단면. 출광 구조의 윗면 형상이 달라졌다](/assets/img/fdtd-rnn/luce-2024-fig4a.webp)
+
+*Luce et al. (2024), Fig. 4(a)의 최적화 전·후 구조만 잘라 사용. [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*
 
 자동 미분에는 메모리 비용이 따른다. RNN의 BPTT(Backpropagation Through Time, 시간 역전파)는 각 시점의 은닉 상태를 저장해야 한다. FDTD 역산도 수천 스텝의 장을 보관해야 하므로 같은 문제가 생긴다. 이때는 RNN 학습에 쓰는 기울기 체크포인팅을 적용해 일부 상태만 저장하고, 필요한 값은 역전파 중에 다시 계산할 수 있다.
 
