@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" role="img" aria-labelledby="title desc">
+  <title id="title">시간 전진은 순환 신경망이다</title>
+  <desc id="desc">FDTD의 한 시간 스텝은 순환 신경망의 셀 하나에 대응한다. 격자 전체의 전자기장이 은닉 상태가 되어 다음 스텝으로 전달되고, 파원이 입력, 관측점의 장이 출력이 된다.</desc>
+  <defs>
+    <filter id="wobble2" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".014 .04" numOctaves="1" seed="13" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3"/></filter>
+    <marker id="u-dark-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#302b27" stroke-width="1.8" stroke-linecap="round"/></marker>
+    <marker id="u-blue-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#3276b1" stroke-width="1.8" stroke-linecap="round"/></marker>
+    <marker id="u-red-arrow" viewBox="0 0 10 10" markerWidth="6.5" markerHeight="6.5" refX="8.5" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#d2644a" stroke-width="1.8" stroke-linecap="round"/></marker>
+    <style>
+      text{font-family:"Nanum Pen Script","Segoe Print","Comic Sans MS","Apple SD Gothic Neo",sans-serif;fill:#302b27}
+      .title{font-size:38px;font-weight:700}.subtitle{font-size:26px}.label{font-size:24px}
+      .cell{font-size:26px;font-weight:700}.state{font-size:23px;font-weight:700}
+      .electric{fill:#3276b1}.magnetic{fill:#d2644a}.te{fill:#8066a3}.metric{fill:#c8943e}
+      .sketch{filter:url(#wobble2);stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <text class="title" x="36" y="46">② 시간 전진은 순환 신경망이다</text>
+  <text class="subtitle" x="36" y="80">한 시간 스텝 = 셀 하나. 장 전체가 은닉 상태로 다음 스텝에 전달된다.</text>
+
+  <g class="sketch">
+    <!-- three cells -->
+    <rect x="150" y="250" width="180" height="120" rx="18" fill="#8066a3" fill-opacity=".10" stroke="#302b27" stroke-width="3.2"/>
+    <rect x="410" y="250" width="180" height="120" rx="18" fill="#8066a3" fill-opacity=".10" stroke="#302b27" stroke-width="3.2"/>
+    <rect x="670" y="250" width="180" height="120" rx="18" fill="#8066a3" fill-opacity=".10" stroke="#302b27" stroke-width="3.2"/>
+
+    <!-- hidden-state arrows -->
+    <path d="M100 310 L146 310" fill="none" stroke="#302b27" stroke-width="3" marker-end="url(#u-dark-arrow)"/>
+    <path d="M332 310 L406 310" fill="none" stroke="#302b27" stroke-width="3" marker-end="url(#u-dark-arrow)"/>
+    <path d="M592 310 L666 310" fill="none" stroke="#302b27" stroke-width="3" marker-end="url(#u-dark-arrow)"/>
+    <path d="M852 310 L900 310" fill="none" stroke="#302b27" stroke-width="3" marker-end="url(#u-dark-arrow)"/>
+
+    <!-- source inputs (top) -->
+    <path d="M240 150 L240 246" fill="none" stroke="#3276b1" stroke-width="3" marker-end="url(#u-blue-arrow)"/>
+    <path d="M500 150 L500 246" fill="none" stroke="#3276b1" stroke-width="3" marker-end="url(#u-blue-arrow)"/>
+    <path d="M760 150 L760 246" fill="none" stroke="#3276b1" stroke-width="3" marker-end="url(#u-blue-arrow)"/>
+
+    <!-- receiver outputs (bottom) -->
+    <path d="M240 374 L240 456" fill="none" stroke="#d2644a" stroke-width="3" marker-end="url(#u-red-arrow)"/>
+    <path d="M500 374 L500 456" fill="none" stroke="#d2644a" stroke-width="3" marker-end="url(#u-red-arrow)"/>
+    <path d="M760 374 L760 456" fill="none" stroke="#d2644a" stroke-width="3" marker-end="url(#u-red-arrow)"/>
+  </g>
+
+  <!-- cell labels -->
+  <text class="cell te" x="176" y="305" text-anchor="middle" transform="translate(64,0)">FDTD 셀</text>
+  <text class="label" x="240" y="336" text-anchor="middle">스텝 n−1</text>
+  <text class="cell te" x="500" y="305" text-anchor="middle">FDTD 셀</text>
+  <text class="label" x="500" y="336" text-anchor="middle">스텝 n</text>
+  <text class="cell te" x="760" y="305" text-anchor="middle">FDTD 셀</text>
+  <text class="label" x="760" y="336" text-anchor="middle">스텝 n+1</text>
+
+  <!-- hidden-state labels -->
+  <text class="state" x="369" y="298" text-anchor="middle">장 (E, H)</text>
+  <text class="state" x="629" y="298" text-anchor="middle">장 (E, H)</text>
+
+  <!-- source labels -->
+  <text class="label electric" x="252" y="142">파원 sₙ₋₁</text>
+  <text class="label electric" x="512" y="142">파원 sₙ</text>
+  <text class="label electric" x="772" y="142">파원 sₙ₊₁</text>
+
+  <!-- receiver labels -->
+  <text class="label magnetic" x="240" y="484" text-anchor="middle">관측 yₙ₋₁</text>
+  <text class="label magnetic" x="500" y="484" text-anchor="middle">관측 yₙ</text>
+  <text class="label magnetic" x="760" y="484" text-anchor="middle">관측 yₙ₊₁</text>
+
+  <!-- note -->
+  <text class="label metric" x="880" y="356">가중치 = 물리</text>
+  <text class="label metric" x="880" y="386">활성화 = 항등</text>
+</svg>
