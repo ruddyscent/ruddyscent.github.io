@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">지구와 하부 전리층이 만드는 전 지구적 전자기 도파관</title>
-  <desc id="desc">손으로 그린 듯한 단면 그림. 손실이 있는 지구가 전도성 하부 전리층에 둘러싸여 있고, 국소 수직 전류원에서 나온 파동이 동쪽과 서쪽 양방향으로 수신기까지 전파된다. 오른쪽에는 닫힌 구면, 두 손실 경계, 방향에 따라 다른 경로라는 세 가지 메모가 있다.</desc>
+  <desc id="desc">손으로 그린 듯한 단면 그림. 전도성 지구가 전도성 하부 전리층에 둘러싸여 있고, 국소 수직 전류원에서 나온 파동이 동쪽과 서쪽 양방향으로 수신기까지 전파된다. 오른쪽에는 닫힌 구면, 두 손실 경계, 방향에 따라 다른 경로라는 세 가지 메모가 있다.</desc>
   <defs>
     <filter id="handdrawn">
       <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="7" result="noise" />
@@ -46,11 +46,11 @@
     <!-- coastline squiggles -->
     <path class="ink thin green" d="M200 350 C255 322, 300 360, 345 338 C392 315, 440 352, 500 336" />
     <path class="ink thin green" d="M210 500 C270 476, 330 508, 388 486 C440 466, 486 500, 520 486" />
-    <text class="note tiny" x="360" y="420" text-anchor="middle">손실 있는 지구</text>
+    <text class="note tiny" x="360" y="420" text-anchor="middle">전도성 지구</text>
     <text class="note tiny" x="360" y="454" text-anchor="middle">바다 · 지각 · 맨틀</text>
     <!-- ionosphere label -->
     <path class="ink thin muted" d="M300 158 C345 150, 385 150, 430 158" />
-    <text class="note small" x="365" y="145" text-anchor="middle">손실 있는 하부 전리층</text>
+    <text class="note small" x="365" y="145" text-anchor="middle">전도성 하부 전리층</text>
     <text class="note tiny" x="365" y="182" text-anchor="middle">고도가 높아질수록 전도도 증가</text>
   </g>
 
@@ -77,8 +77,8 @@
   <g transform="translate(700 116)">
     <rect class="ink" x="0" y="0" width="460" height="150" rx="16" />
     <text class="note" x="24" y="42">닫힌 구면</text>
-    <text class="note small" x="24" y="86">파동은 반대편에서 만나고,</text>
-    <text class="note small" x="24" y="114">숨길 바깥 경계가 없다.</text>
+    <text class="note small" x="24" y="86">파동은 지구를 돌아 다시 오고,</text>
+    <text class="note small" x="24" y="114">오차를 내보낼 흡수 경계가 없다.</text>
   </g>
   <g transform="translate(700 288)">
     <rect class="ink" x="0" y="0" width="460" height="150" rx="16" />
