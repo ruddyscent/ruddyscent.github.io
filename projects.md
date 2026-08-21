@@ -44,6 +44,25 @@ share-img: /assets/img/develop.jpeg
 </div>
 
 <h2 class="project-heading">
+  <img src="/assets/img/fdtd-sinc-field.webp" alt="" aria-hidden="true">
+  <span>GMES</span>
+</h2>
+
+맥스웰 방정식을 유한차분 시간영역법(FDTD)으로 푸는 전자기 시뮬레이터입니다. 최신 FDTD 알고리즘을 적용하고 다양한 하드웨어와 AI를 활용해 재미있는 실험을 시도하고 있습니다. 코드는 [GMES 저장소](https://github.com/ruddyscent/gmes)에 공개되어 있습니다.
+
+{% assign date_format = site.date_format | default: "%B %-d, %Y" %}
+<div class="post-list">
+{% for post in site.tags['gmes'] %}
+    <div class="tag-entry">
+        <a href="{{ post.url | relative_url }}">{{- post.title | strip_html -}}</a>
+        <div class="entry-date">
+            <time datetime="{{- post.date | date_to_xmlschema -}}">{{- post.date | date: date_format -}}</time>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<h2 class="project-heading">
   <img src="/assets/img/ionosphere-fdtd-globe-simple.webp" alt="" aria-hidden="true">
   <span>IonosphereFDTD</span>
 </h2>
