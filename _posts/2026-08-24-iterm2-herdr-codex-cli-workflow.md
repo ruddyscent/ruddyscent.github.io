@@ -10,19 +10,25 @@ author: 전경원
 description: iTerm2, Herdr, Codex CLI의 역할을 나누고 macOS·Ubuntu·Jetson에서 프로젝트별 AI 개발 세션을 유지하는 작업 환경 구성.
 ---
 
-MacBook에서 개발하면서 Ubuntu 서버와 Jetson을 오가다 보면 터미널 창부터 늘어난다. 로컬 프로젝트용 탭, 서버에 접속한 SSH 탭, 빌드 로그를 보는 창, 그 안에서 실행한 Codex CLI 세션까지 생긴다. 잠깐 자리를 비우려고 창을 닫으면 어디까지 작업했는지 다시 찾아야 한다.
+MacBook에서 개발하면서 Ubuntu 서버와 Jetson을 오가다 보면 터미널 창부터 늘어난다. 로컬 프로젝트용 탭, 서버에 접속한 SSH 탭, 빌드 로그를 보는 창, 그 안에서 실행한 Codex CLI 세션까지 생긴다. 잠깐 자리를 비우려고 창을 닫으면 어느 세션에서 무엇을 하던 중이었는지 다시 찾아야 한다.
 
-처음에는 tmux를 더 적극적으로 쓰면 해결될 문제라고 생각했다. 하지만 로컬과 원격에서 multiplexer를 겹쳐 쓰자 어느 계층의 세션을 보고 있는지부터 헷갈렸다. 지금은 **iTerm2는 터미널 UI, Herdr는 지속되는 작업 공간, Codex CLI는 실제 개발 작업**을 맡도록 역할을 나눴다.
+이 글에서 `xavier`는 Ubuntu 개발 서버, `orin`은 Jetson 개발 장치다. 두 장치 모두 Codex가 코드를 수정하고 빌드와 테스트를 실행하는 실제 작업 머신이다.
+
+이 환경에서는 **iTerm2**가 터미널 UI를 맡고 **Herdr**가 각 머신의 작업 세션을 유지한다. **Codex CLI**는 코드와 빌드 환경이 있는 머신에서 실제 개발 작업을 수행한다.
 
 ```text
 MacBook
 └── iTerm2
-    ├── Local  ── Herdr ── Codex CLI
-    ├── Ubuntu ── remote Herdr ── Codex CLI
-    └── Jetson ── remote Herdr ── Codex CLI
+    ├── Local           ── Herdr ── Codex CLI
+    ├── Ubuntu (xavier) ── remote Herdr ── Codex CLI
+    └── Jetson (orin)   ── remote Herdr ── Codex CLI
 ```
 
-겉으로는 도구 하나를 더 넣은 구성이지만 핵심은 계층을 늘리는 데 있지 않다. 코드와 빌드 환경이 있는 머신마다 Herdr가 세션을 붙들고 있고 iTerm2는 그 세션으로 들어가는 입구만 제공한다.
+## 시작하기 전에
+
+이 글은 MacBook에 iTerm2와 Homebrew가 설치되어 있고 Mac에서 두 원격 머신에 SSH로 접속할 수 있다고 가정한다. `xavier`와 `orin`은 뒤에서 설정할 SSH 별칭이다.
+
+작업할 Git 저장소도 Mac과 원격 머신에 각각 복제되어 있어야 한다. 예제에서는 원격 저장소 이름을 `origin`, 기본 분기를 `master`로 사용한다. 기본 분기가 `main`인 저장소라면 뒤에 나오는 `master`와 `origin/master`를 각각 `main`과 `origin/main`으로 바꾼다. GitHub 이슈를 읽고 PR을 만들려면 GitHub 계정과 해당 저장소에 접근할 권한도 필요하다.
 
 ## 도구별 역할
 
@@ -34,13 +40,13 @@ MacBook
 | <i class="fas fa-key fa-fw" aria-hidden="true"></i>&nbsp; SSH | 원격 머신까지 연결 |
 | <i class="fas fa-layer-group fa-fw" aria-hidden="true"></i>&nbsp; Herdr | 프로젝트 작업 공간과 터미널·에이전트 세션 유지 |
 | <i class="fas fa-robot fa-fw" aria-hidden="true"></i>&nbsp; Codex CLI | 코드 분석, 수정, 명령 실행과 테스트 |
-| <i class="fab fa-git-alt fa-fw" aria-hidden="true"></i>&nbsp; Git | 사람이 검토할 수 있는 변경 이력 관리 |
+| <i class="fab fa-git-alt fa-fw" aria-hidden="true"></i>&nbsp; Git | 코드 변경 이력과 분기(branch) 관리 |
 
 iTerm2에는 이미 탭과 split, profile이 있다. 따라서 macOS 전체의 창 배치까지 Herdr로 다시 감쌀 필요는 없다. Herdr는 각 머신에서 오래 살아 있어야 하는 개발 프로세스와 AI 에이전트 세션에 집중한다.
 
 [Herdr](https://herdr.dev/docs/quick-start/)는 프로젝트별 workspace 안에 pane과 agent를 두고 백그라운드 서버가 pane을 계속 실행하는 터미널 기반 세션 관리자다. 클라이언트에서 빠져나가도 작업은 멈추지 않으며 나중에 다시 붙을 수 있다. Codex integration을 설치하면 Herdr가 Codex의 세션 식별자를 기록해 서버 재시작 뒤에도 네이티브 세션 복원을 시도한다.
 
-## 로컬 환경부터 시작한다
+## 로컬 환경의 구축부터 시작한다
 
 이 글의 macOS 명령은 모두 iTerm2에서 실행한다. 먼저 Homebrew로 Herdr를 설치한다.
 
@@ -56,9 +62,10 @@ brew install --cask codex
 codex --version
 ```
 
-Codex를 한 번 실행해 설정 디렉터리가 만들어진 뒤 Herdr integration을 설치한다.
+Codex를 한 번 실행해 로그인과 초기 설정을 마친다. Codex 화면에서 [`/exit`](https://learn.chatgpt.com/docs/developer-commands?surface=cli)를 입력해 iTerm2 셸로 돌아온 뒤 Herdr integration을 설치한다.
 
 ```bash
+codex
 herdr integration install codex
 herdr integration status
 ```
@@ -72,23 +79,9 @@ cd ~/Workspace/my-project
 herdr
 ```
 
-내가 기본으로 쓰는 구성은 pane 두 개뿐이다.
+workspace가 열리면 그 안에서 `codex`를 실행한다.
 
-```text
-┌──────────────────────────┬──────────────────────┐
-│                          │                      │
-│          Codex           │        shell         │
-│                          │                      │
-│                          │ $ git status         │
-│                          │ $ git diff           │
-│                          │ $ pytest             │
-│                          │                      │
-└──────────────────────────┴──────────────────────┘
-```
-
-한쪽에서는 Codex와 대화하고 다른 쪽에서는 `git diff`와 테스트 결과를 직접 확인한다. pane을 많이 만들어 모든 일을 동시에 벌이기보다, 에이전트의 작업과 사람의 검증을 분리하는 정도가 시작점으로 적당했다.
-
-## 원격 머신에도 같은 구조를 둔다
+## 원격 머신에도 환경을 구축한다
 
 Ubuntu와 Jetson에서도 코드가 있는 머신에 Herdr와 Codex CLI를 설치한다. Herdr는 Linux와 macOS에서 공식 설치 스크립트를 제공한다.
 
@@ -97,6 +90,8 @@ curl -fsSL https://herdr.dev/install.sh | sh
 herdr --version
 ```
 
+설치 직후 `herdr`를 찾지 못하면 설치 프로그램이 출력한 PATH 안내를 확인하고 SSH 셸을 다시 연다.
+
 이어서 OpenAI가 macOS와 Linux에 제공하는 standalone installer로 Codex CLI를 설치한다. Ubuntu 서버와 Jetson의 SSH 셸에서 같은 명령을 쓰면 된다.
 
 ```bash
@@ -104,7 +99,9 @@ curl -fsSL https://chatgpt.com/codex/install.sh | sh
 codex --version
 ```
 
-프로젝트 디렉터리에서 `codex`를 처음 실행하면 로그인 방식을 선택할 수 있다.
+여기서도 `codex`를 찾지 못하면 SSH 셸을 다시 연 뒤 버전을 확인한다.
+
+프로젝트 디렉터리에서 `codex`를 처음 실행하면 로그인 방식을 선택할 수 있다. 인증은 머신마다 따로 진행하며 로그인을 마쳤으면 `/exit`로 셸에 돌아온다.
 
 ```bash
 cd ~/Workspace/my-project
@@ -121,10 +118,11 @@ herdr integration install codex
 
 ```bash
 ssh xavier
+cd ~/Workspace/my-project
 herdr
 ```
 
-이 경로에서는 셸과 Herdr 클라이언트, 서버가 모두 원격 머신에서 실행된다. 평소 SSH 셸 안에서 작업하거나 휴대전화의 SSH 클라이언트로 접속할 때 이해하기 쉽다.
+처음 한 번은 코드가 있는 디렉터리에서 Herdr를 실행해 프로젝트 workspace를 만들고 그 안에서 `codex`를 실행한다. Orin에서도 같은 초기 설정을 해둔다. 이 경로에서는 셸과 Herdr 클라이언트, 서버가 모두 원격 머신에서 실행된다. 평소 SSH 셸 안에서 작업하거나 휴대전화의 SSH 클라이언트로 접속할 때 이해하기 쉽다.
 
 iTerm2에서 원격 세션을 로컬처럼 열고 싶다면 [Herdr의 remote attach](https://herdr.dev/docs/persistence-remote/)를 쓸 수 있다.
 
@@ -134,7 +132,7 @@ herdr --remote xavier
 
 이때 로컬 Herdr는 얇은 클라이언트가 된다. SSH를 통해 원격 Herdr 서버를 시작하거나 기존 서버에 붙고 화면만 현재 터미널로 가져온다. 이미지 클립보드처럼 로컬 데스크톱에 의존하는 기능도 원격 세션으로 이어줄 수 있다는 점이 일반 SSH 접속과 다르다.
 
-반복해서 접속할 머신은 `~/.ssh/config`에 별칭을 둔다.
+반복해서 접속할 머신은 Mac의 `~/.ssh/config`에 별칭을 둔다. 아래의 `HostName`과 `User`는 실제 주소와 계정명으로 바꾼다.
 
 ```sshconfig
 Host xavier
@@ -157,6 +155,25 @@ herdr --remote xavier
 
 # Jetson의 프로젝트
 herdr --remote orin
+```
+
+## iTerm2 프로필로 머신을 고른다
+
+매번 명령을 입력하는 대신 iTerm2에 `Xavier`와 `Orin` 프로필을 만든다. iTerm2의 `Settings > Profiles`에서 기본 프로필을 복제하고 `General` 탭을 다음처럼 설정한다.
+
+| 프로필 | Send Text at Start | Badge |
+| --- | --- | --- |
+| Xavier | `herdr --remote xavier` | `XAVIER` |
+| Orin | `herdr --remote orin` | `ORIN` |
+
+`Command`는 `Login Shell`로 둔다. 프로필이 열리면 로그인 셸이 먼저 시작되고 `Send Text at Start`의 명령이 실행된다. Herdr에서 빠져나온 뒤에도 탭에 로컬 셸이 남는다.
+
+두 프로필은 `Colors`에서 탭 색을 다르게 지정하면 현재 접속한 머신을 빠르게 구분할 수 있다. 자주 쓴다면 `Shortcut key`도 지정한다. iTerm2 프로필에서는 접속할 머신을 고르고 프로젝트와 이슈별 작업 공간은 접속한 Herdr에서 전환한다.
+
+```text
+iTerm2 profile  ── 머신 선택
+Herdr workspace ── 프로젝트 · 이슈별 작업 공간 선택
+Codex agent      ── GitHub 이슈 · 작업 선택
 ```
 
 `herdr --remote`에서 인증 문제가 나면 Herdr부터 의심하기보다 `ssh xavier`가 정상적으로 연결되는지 먼저 확인한다. 암호가 걸린 키를 비대화형 환경에서 사용할 때는 `ssh-agent`에 키가 올라가 있어야 한다.
@@ -185,78 +202,135 @@ source · CUDA · Podman · test
 
 이렇게 경계를 잡으면 Codex에 별도의 원격 조작 규칙을 가르칠 필요가 줄어든다. 에이전트가 보는 파일 시스템과 사람이 기대하는 실행 환경이 처음부터 같다.
 
-## Herdr를 두 번 겹치지 않는다
+## Herdr는 한 번만 실행한다
 
-로컬 Herdr 안의 pane에서 SSH를 실행하고 다시 원격 Herdr를 여는 구조도 가능은 하다.
-
-```text
-iTerm2 → Mac Herdr → SSH → Ubuntu Herdr → Codex
-```
-
-하지만 이 구성에서는 detach와 키 바인딩, workspace의 의미가 두 단계로 겹친다. Herdr도 기본 설정에서는 중첩 실행을 허용하지 않는다. 나는 iTerm2 탭을 최상위 경계로 두고 각 탭에서 필요한 Herdr에 바로 붙는다.
+로컬 Herdr 안에서 SSH로 접속한 뒤 원격 Herdr를 다시 실행하면 세션 경계와 키 바인딩이 겹친다. iTerm2 탭에서 필요한 Herdr에 바로 붙는 편이 단순하다.
 
 ```text
+비권장: iTerm2 → Mac Herdr → SSH → Ubuntu Herdr → Codex
+
+권장:
 iTerm2
 ├── Local 탭  ── herdr
 ├── Ubuntu 탭 ── herdr --remote xavier
 └── Jetson 탭 ── herdr --remote orin
 ```
 
-tmux도 없애지 않았다. Herdr가 설치되지 않은 서버나 범용 시스템 관리에는 여전히 tmux가 편하다. 다만 평상시 AI 개발 경로에서 iTerm2, Herdr, tmux를 모두 중첩하지 않는다. 같은 역할을 맡은 도구가 한 경로에 둘 이상 나타나면 어느 세션을 유지해야 하는지 다시 살펴본다.
+## Codex가 이슈별 worktree를 만든다
 
-## 작업마다 Git worktree를 만든다
+`herdr --remote orin`으로 접속했다면 이미 Jetson의 Herdr 안에 있다. `master` workspace에서 실행 중인 Codex에게 GitHub 이슈 번호를 주고 최신 `origin/master`를 기준으로 새 worktree와 Herdr workspace, Codex 세션까지 준비하도록 맡긴다.
 
-여러 작업을 동시에 진행할 때는 같은 디렉터리에서 브랜치를 계속 바꾸지 않는다. Git worktree로 작업 디렉터리를 따로 만들고, 그 안에서 Herdr와 Codex를 실행한다. 브랜치와 파일, 에이전트 세션의 경계가 같은 단위로 맞춰진다.
+여기서 Git worktree는 같은 저장소의 다른 분기를 별도 디렉터리에 꺼내 놓은 코드 작업 공간이다. Herdr workspace는 그 디렉터리에서 실행되는 터미널 묶음이고 pane은 그 안의 개별 터미널이다. agent는 pane에서 실행 중인 Codex처럼 Herdr가 상태를 추적하는 프로그램을 뜻한다.
 
-먼저 기본 저장소에서 새 브랜치와 worktree를 함께 만든다.
+작업을 시작하기 전에 Orin의 프로젝트 디렉터리에서 원격 저장소 이름과 현재 분기를 확인한다.
 
 ```bash
 cd ~/Workspace/my-project
-
-BASE_BRANCH=main # 저장소에 따라 master 등으로 변경
-TASK_BRANCH=feat/login
-WORKTREE_DIR=../my-project-login
-
-git fetch origin
-git worktree add -b "$TASK_BRANCH" "$WORKTREE_DIR" "$BASE_BRANCH"
+git remote -v
+git branch --show-current
 ```
 
-이제 iTerm2에서 worktree 디렉터리로 이동해 Herdr를 연다. Codex도 이 디렉터리를 기준으로 코드를 읽고 명령을 실행한다.
+이 자동화에는 GitHub CLI인 `gh`와 JSON 결과에서 pane ID를 꺼내는 `jq`가 필요하다. Orin의 Ubuntu 셸에서 설치하고 GitHub 인증까지 확인한다. `gh auth setup-git`은 이후 `git push`에서도 GitHub CLI의 인증 정보를 사용하도록 Git을 설정한다.
 
 ```bash
-cd ~/Workspace/my-project-login
-herdr
+sudo apt update
+sudo apt install gh jq
+gh auth login
+gh auth setup-git
+gh auth status
+jq --version
 ```
 
-작업 흐름은 단순하다.
+Herdr pane 안에서 Codex가 workspace와 agent를 제어하려면 먼저 `herdr --skill`의 지침을 읽게 한다. 같은 이슈의 worktree나 agent가 이미 있으면 새로 만들지 않고 기존 작업으로 이동하도록 요청한다.
+
+예를 들어 기존 Codex에는 이렇게 요청한다.
+
+> 먼저 `herdr --skill`을 실행하고 그 지침을 따라줘. GitHub issue #123을 읽고 기존 `issue/123` worktree나 `issue_123` agent가 있는지 확인해. 있으면 그 agent로 이동하고 없으면 현재 `master` workspace가 깨끗한지 확인해. 커밋하지 않은 변경이 있으면 중단해서 알려주고 깨끗하면 최신 `origin/master` 기준으로 worktree를 새 Herdr workspace에 만들어. 첫 pane에서 `issue_123`이라는 새 Codex를 시작하고 이슈 구현과 테스트를 맡긴 뒤 새 agent로 포커스를 옮겨줘. 현재 `master` workspace의 파일은 수정하지 마.
+
+[Herdr의 worktree 명령](https://herdr.dev/docs/cli-reference/#worktrees)은 checkout을 만들면서 별도의 workspace와 첫 pane도 함께 생성한다. 이어서 `agent start`로 그 pane에서 새 Codex를 실행할 수 있다.
 
 ```text
-Git branch: feat/login
-└── worktree: ../my-project-login
-    └── Herdr workspace
-        ├── Codex
-        └── shell · test · git diff
+iTerm2
+└── herdr --remote orin
+    └── Jetson의 Herdr
+        ├── master workspace
+        │   └── Codex ── GitHub issue #123 확인
+        └── issue/123 worktree workspace
+            └── 새 Codex ── 구현 · 테스트
 ```
 
-Codex가 작업을 마치면 옆 pane에서 변경 내용과 테스트 결과를 직접 확인한 뒤 커밋한다.
+기존 Codex가 새 이슈를 처음 처리할 때 실행할 명령의 흐름은 다음과 같다. `gh`로 이슈를 확인하고 Herdr가 돌려준 pane ID를 이용해 새 Codex를 시작한다. 다음 명령은 Orin의 `master` workspace에서 실행한다.
+
+```bash
+ISSUE=123
+AGENT_NAME="issue_$ISSUE"
+
+herdr --skill
+cd "$(git rev-parse --show-toplevel)"
+gh issue view "$ISSUE"
+git fetch origin
+test "$(git branch --show-current)" = master || {
+  echo "master 분기에서 실행해야 합니다."
+  exit 1
+}
+test -z "$(git status --porcelain)" || {
+  echo "master workspace에 커밋하지 않은 변경이 있습니다."
+  exit 1
+}
+
+created=$(herdr worktree create \
+  --cwd "$PWD" \
+  --branch "issue/$ISSUE" \
+  --base origin/master \
+  --label "issue-$ISSUE" \
+  --no-focus)
+
+pane_id=$(printf '%s\n' "$created" |
+  jq -r '.result.root_pane.pane_id')
+
+herdr agent start "$AGENT_NAME" \
+  --kind codex \
+  --pane "$pane_id"
+
+herdr agent prompt "$AGENT_NAME" \
+  "GitHub issue #$ISSUE를 구현하고 관련 테스트를 실행해. 변경 내용과 테스트 결과를 보고해."
+
+herdr agent focus "$AGENT_NAME"
+```
+
+같은 이슈를 다시 시작할 때는 먼저 `herdr worktree list --cwd "$PWD"`와 `herdr agent list`를 확인한다. 이미 실행 중인 agent가 있으면 `herdr agent focus issue_123`으로 돌아간다.
+
+기존 Codex는 `master` workspace에 남고 실제 수정은 새 Codex가 worktree에서 진행한다. 작업 상태와 결과도 Herdr sidebar에서 이슈별 agent로 구분해 볼 수 있다.
+
+작업이 끝나면 새 workspace에서 변경 내용과 테스트 결과를 확인하고 커밋한다. 아래 명령은 `issue/123` worktree 안에서 실행한다.
 
 ```bash
 git status
 git diff
 git add -p
-git commit
+git commit -m "fix: resolve issue #123"
+git push -u origin issue/123
+gh pr create \
+  --fill \
+  --base master \
+  --head issue/123 \
+  --body "Closes #123"
 ```
 
-브랜치를 병합한 뒤에는 기본 저장소로 돌아가 worktree를 정리한다. `git status`에 남은 변경이 없는지 먼저 확인하고, 아직 병합하지 않은 브랜치는 삭제하지 않는다.
+PR을 검토하고 병합(merge)한 뒤에는 Herdr sidebar에서 묶인 `issue/123` 하위 workspace를 선택하고 `Delete worktree checkout...`을 실행한다. CLI에서는 `herdr worktree list`로 workspace ID를 확인한 뒤 다음처럼 삭제할 수도 있다.
 
 ```bash
-cd ~/Workspace/my-project
-git worktree remove ../my-project-login
-git branch -d feat/login
-git worktree prune
+herdr worktree list
+# WORKSPACE_ID를 위 명령에서 확인한 실제 값으로 바꾼다.
+herdr worktree remove --workspace WORKSPACE_ID
 ```
 
-이 절차를 따르면 작업마다 별도의 저장소를 복제할 필요가 없다. Git 객체는 공유하면서 작업 디렉터리와 브랜치, Herdr 세션은 서로 섞이지 않는다.
+Git이 수정되거나 추적되지 않은 파일을 발견하면 안전한 제거를 거부하므로 강제 삭제 전에 남은 변경을 먼저 확인한다. Herdr는 checkout만 제거하며 분기는 자동으로 삭제하지 않는다. `master` workspace로 돌아가 병합된 로컬 분기를 지우고 GitHub에서 원격 분기가 남아 있다면 함께 정리한다.
+
+```bash
+git branch -d issue/123
+git push origin --delete issue/123
+```
 
 ## 창을 닫아도 작업은 남는다
 
@@ -267,24 +341,18 @@ Herdr 클라이언트는 `Ctrl-b q`로 detach할 수 있다. pane과 그 안의 
 herdr --remote xavier
 ```
 
-detach는 세션을 끝내는 명령이 아니다. pane까지 종료하려면 `herdr server stop`을 사용해야 한다. 이 차이를 알고 있으면 터미널 창의 수명과 작업의 수명을 분리할 수 있다.
+detach는 세션을 끝내는 명령이 아니다. pane 하나를 종료하려면 UI에서 닫거나 `herdr pane close <pane_id>`를 사용한다. `herdr server stop`은 모든 workspace의 작업을 끝낼 때만 사용한다. 이 차이를 알고 있으면 터미널 창의 수명과 작업의 수명을 분리할 수 있다.
 
 대규모 코드 분석이나 리팩터링처럼 시간이 오래 걸리는 작업에서 특히 유용하다. MacBook의 덮개를 닫거나 네트워크가 끊기더라도 원격 머신의 Herdr 서버와 pane은 그곳에 남는다. 다시 연결했을 때 새 Codex 대화를 열고 맥락부터 복원하는 대신 기존 세션을 이어간다.
 
-## 머신이 늘어나도 입구만 하나 추가한다
+## 새 머신은 SSH 별칭과 iTerm2 프로필로 추가한다
 
-최종 구조에서 기억할 것은 세 문장이다.
-
-- iTerm2는 로컬의 창과 탭을 관리한다.
-- Herdr는 각 머신에서 프로젝트와 에이전트 세션을 유지한다.
-- Codex는 코드와 빌드 환경이 있는 머신에서 실행한다.
-
-새 Linux 머신을 추가할 때도 SSH와 Herdr, Codex를 준비하고 SSH 별칭 하나를 더하면 된다.
+새 Linux 머신을 추가할 때는 그 머신에 Herdr와 Codex를 설치하고 Mac의 SSH 설정에 별칭을 추가한다. 이어서 같은 이름으로 iTerm2 프로필을 만들면 기존 방식 그대로 접속할 수 있다.
 
 ```bash
 herdr --remote new-server
 ```
 
-그 뒤의 사용법은 Ubuntu나 Jetson과 다르지 않다. 개발 머신은 늘어나지만 사람이 기억해야 할 작업 흐름은 늘어나지 않는다.
+접속한 뒤에는 Ubuntu나 Jetson에서처럼 Herdr workspace를 고르고 Codex를 실행한다. 머신이 달라져도 작업 순서는 같다.
 
 AI 코딩 에이전트를 오래 사용할수록 터미널 창을 몇 개 열었는지보다 **어느 프로젝트의 에이전트가 어떤 머신에서 작업 중인지**가 중요해진다. iTerm2와 Herdr, Codex CLI를 함께 쓰는 이유도 여기에 있다. 도구를 더 많이 쌓기 위해서가 아니라, 화면과 세션과 실행 환경의 경계를 분명하게 나누기 위해서다.
