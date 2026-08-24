@@ -100,6 +100,13 @@ aboutme.md      # 소개 페이지
 _config.yml     # 사이트 설정
 ```
 
+## .gitignore 관리
+
+- `.gitignore`는 [Toptal gitignore generator](https://www.toptal.com/developers/gitignore)의 생성 형식으로 관리한다.
+- 템플릿을 추가하거나 변경할 때는 파일을 임의로 재구성하지 말고, 첫 줄의 API 템플릿 목록을 갱신해 Toptal에서 전체 파일을 다시 생성한다.
+- 생성된 `# Created by`, `### Template ###`, `# End of` 표식과 템플릿 순서·주석을 유지한다.
+- 저장소 전용 예외가 필요하면 생성 영역과 구분되는 별도 섹션에 최소한으로 추가한다.
+
 ## 포스트 날짜
 
 일부 포스트는 미래 날짜(2027-)로 예약되어 있다. GitHub Pages는 미래 날짜 포스트를 빌드 시점 기준으로 공개하므로, 날짜가 미래여도 포스트 파일이 `_posts/`에 있으면 빌드에 포함된다.
