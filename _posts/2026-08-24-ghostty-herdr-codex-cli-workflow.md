@@ -360,3 +360,19 @@ detach는 세션을 종료하지 않는다. pane 하나를 종료하려면 UI에
 대규모 코드 분석이나 리팩터링처럼 시간이 오래 걸리는 작업에서 특히 유용하다. MacBook의 덮개를 닫거나 네트워크가 끊기더라도 원격 머신의 Herdr 서버와 pane은 그곳에 남는다. 다시 연결했을 때 새 Codex 대화를 열고 맥락부터 복원하는 대신 기존 세션을 이어간다.
 
 AI 코딩 에이전트를 오래 사용할수록 터미널 창을 몇 개 열었는지보다 **어느 프로젝트의 에이전트가 어떤 머신에서 작업 중인지**가 중요해진다. Ghostty는 Herdr 클라이언트가 출력한 터미널 화면을 빠르고 네이티브하게 렌더링한다. Herdr는 클라이언트 연결이 끊긴 뒤에도 세션을 유지하고 Codex CLI는 코드가 있는 머신에서 실제 변경과 검증을 수행한다. 이 조합의 장점은 도구를 더 많이 쌓는 데 있지 않다. 화면과 세션, 실행 환경의 경계를 분명하게 나누는 데 있다.
+
+## Herdr와 Codex CLI 치트시트
+
+막상 작업을 시작하면 자주 쓰는 키와 명령도 바로 떠오르지 않을 때가 있다. 공식 문서와 각 CLI의 `--help`를 기준으로 Herdr와 Codex CLI 치트시트를 만들었다. 두 자료 모두 영문 2페이지이며 내용은 같고 판형만 다르다. 세로형은 A4로 인쇄해 곁에 두기 좋고 가로형은 모니터 한쪽에 띄워 놓고 보기 좋다.
+
+Herdr 치트시트에는 기본 prefix인 `Ctrl-b`를 시작으로 pane 분할과 이동, workspace 탐색, copy mode, remote attach, agent와 pane을 제어하는 CLI 명령을 모았다.
+
+- [Herdr 치트시트 - 세로형 PDF](https://www.dropbox.com/scl/fi/6va446jnv5gf5jk6nqqub/herdr-cheatsheet-en.pdf?rlkey=2z5aftfvsp8hluay42qh39xa1&st=zj8rvgut&dl=0)
+- [Herdr 치트시트 - 가로형 PDF](https://www.dropbox.com/scl/fi/nwwhu05ea4rt7pr3a9nmy/herdr-cheatsheet-landscape-en.pdf?rlkey=e8xtrc3amjnjlwm398t7b4gpb&st=41o81r4a&dl=0)
+
+Codex CLI 치트시트에는 대화형 단축키와 slash command, 세션 복원, 코드 리뷰, `codex exec` 자동화, sandbox와 승인 정책, 설정과 플러그인 관련 명령을 정리했다.
+
+- [Codex CLI 치트시트 - 세로형 PDF](https://www.dropbox.com/scl/fi/cj5fvo992vj7v7q6tkkzu/codex-cli-cheatsheet-en.pdf?rlkey=zrdw9cgvfbphx9ie7mvnoooxq&st=xso8ebe3&dl=0)
+- [Codex CLI 치트시트 - 가로형 PDF](https://www.dropbox.com/scl/fi/pf63kpfo3ugucxsbv0s0e/codex-cli-cheatsheet-landscape-en.pdf?rlkey=cta9nagob08kl9xkj2hlgix42&st=lwa4ane2&dl=0)
+
+키 바인딩과 명령은 도구가 업데이트되면서 달라질 수 있다. 현재 설치된 버전과 다르게 동작한다면 Herdr에서는 `Ctrl-b ?`와 `herdr --help`, Codex CLI에서는 `?`, `/` 메뉴와 `codex --help`를 확인한다.
