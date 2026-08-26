@@ -131,7 +131,7 @@ Backspace가 정상으로 돌아왔다. zsh 설정과 키 바인딩은 그대로
 원인을 확인한 뒤에는 Mac의 Ghostty terminfo를 원격 Ubuntu로 직접 보냈다.
 
 ```bash
-infocmp -x xterm-ghostty | ssh evga -- tic -x -
+infocmp -x xterm-ghostty | ssh xavier -- tic -x -
 ```
 
 명령의 앞부분은 Mac에 설치된 `xterm-ghostty` terminfo를 소스 형식으로 출력한다. SSH로 전달받은 Ubuntu의 `tic`는 이를 컴파일해 terminfo 데이터베이스에 설치한다. 시스템 경로에 쓸 권한이 없으면 보통 사용자별 `~/.terminfo`가 사용되므로 관리자 권한 없이 설치할 수 있다.
@@ -177,13 +177,13 @@ shell-integration-features = ssh-env,ssh-terminfo
 Backspace 문제를 직접 해결하는 것은 `ssh-terminfo`다. Ghostty가 지원하는 대화형 셸에서 `ssh`를 shell function으로 감싸고 처음 연결할 때 원격의 `tic`로 terminfo를 설치한다. 이후에는 평소처럼 접속하면 된다.
 
 ```bash
-ssh evga
+ssh xavier
 ```
 
 설치된 Ghostty가 `+ssh` action을 지원한다면 wrapper를 직접 호출할 수도 있다.
 
 ```bash
-ghostty +ssh -- evga
+ghostty +ssh -- xavier
 ```
 
 지원 여부와 옵션은 `ghostty +ssh --help`로 확인한다. `+ssh` action이 없는 버전에서도 `ssh-env`, `ssh-terminfo` shell integration은 사용할 수 있다.
