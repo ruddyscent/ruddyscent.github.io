@@ -1,22 +1,22 @@
 ---
 layout: post
-title: Ghostty와 Herdr의 한글 입력, 원격 zsh Backspace 문제 해결
-subtitle: 증상은 모두 터미널에 있었지만 원인은 서로 다른 층에 있었다
+title: Ghostty 한글 입력, Herdr prefix, 원격 zsh 문제 해결
+subtitle: 한글 입력부터 원격 zsh까지, Ghostty로 옮긴 뒤 막힌 것들
 tags: [ghostty, herdr, macos, ime, ssh, zsh, ubuntu, troubleshooting]
 cover-img: /assets/img/develop.jpeg
 thumbnail-img: /assets/img/chatgpt.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
-description: macOS의 Ghostty와 Herdr에서 한글 글꼴과 prefix 입력을 설정하고, Ubuntu 원격 zsh의 Backspace 문제를 terminfo로 해결한 과정.
+description: macOS의 Ghostty에서 한글 글꼴과 Ctrl 제어문자를 설정하고, Herdr prefix와 Ubuntu 원격 zsh Backspace 문제를 해결한 과정.
 ---
 
-iTerm2 대신 Ghostty를 쓰기 시작하면서 설정은 가능한 한 적게 가져가기로 했다. 기본값만으로도 충분히 쓸 만했지만 한글을 입력하고 Ubuntu의 Herdr에 원격으로 붙자 서로 다른 문제가 차례로 드러났다.
+iTerm2 대신 Ghostty를 쓰기 시작하면서 설정은 가능한 한 적게 가져가기로 했다. 기본값만으로도 충분히 쓸 만했지만 한글 입력 상태에서 셸과 Herdr를 쓰고 Ubuntu에 원격으로 붙자 서로 다른 문제가 차례로 드러났다.
 
-한글 모양은 글꼴 fallback의 문제였다. 한글 입력 상태에서 Herdr의 `Ctrl-b` prefix가 먹지 않는 문제는 macOS IME와 키 전달 방식에 걸려 있었다. SSH로 접속한 Ubuntu에서 zsh의 Backspace 화면이 깨진 원인은 원격에 없는 `xterm-ghostty` terminfo였다. 증상은 모두 터미널에서 나타났지만 손봐야 할 위치는 달랐다.
+한글 모양은 Ghostty의 글꼴 설정으로 고치고 한글 입력 중 셸의 제어문자는 물리 키 바인딩으로 보낸다. Herdr에서는 한글 입력 중 prefix 모드에 들어갈 때 입력 소스를 잠시 바꾸고 원격 zsh의 Backspace 문제는 SSH integration으로 `xterm-ghostty` terminfo를 설치해 해결한다.
 
 ## Ghostty 설정은 최소한으로
 
-Ghostty 프로젝트는 macOS용 `.dmg`에 서명·공증해 공식 배포한다. Homebrew에는 커뮤니티가 관리하는 cask도 있다. Homebrew를 쓴다면 다음 명령으로 설치할 수 있다.
+Ghostty는 Homebrew로 설치한다.
 
 ```bash
 brew install --cask ghostty
@@ -29,11 +29,11 @@ brew install --cask ghostty
 ~/Library/Application Support/com.mitchellh.ghostty/config.ghostty
 ```
 
-새 설정 파일에는 현재 문서에서 사용하는 `config.ghostty`라는 이름을 썼다. macOS에서 `Cmd-Shift-,`를 누르면 설정을 다시 읽는다. 일부 옵션은 새 터미널에만 적용되거나 앱을 다시 시작해야 반영될 수 있다.
+새 설정 파일은 `config.ghostty`라는 이름으로 만든다. macOS에서 `Cmd-Shift-,`를 누르면 설정을 다시 읽는다. 일부 옵션은 새 터미널에만 적용되거나 앱을 다시 시작해야 반영될 수 있다.
 
 ## 한글 글꼴부터 예쁘게
 
-Ghostty를 실행한 뒤 가장 먼저 눈에 들어온 것은 한글이었다. 영문은 또렷했지만 한글의 획과 자간은 기대와 달랐다. 기본 영문 글꼴은 유지하고 한글 코드 포인트만 D2Coding에 연결했다.
+Ghostty를 실행한 뒤 가장 먼저 눈에 들어온 것은 한글이었다. 영문은 또렷했지만 한글의 획과 자간은 기대와 달랐다. 기본 영문 글꼴은 유지하고 한글 코드 포인트만 D2Coding에 연결한다.
 
 ```ini
 font-family = "Hack Nerd Font Mono"
@@ -63,6 +63,51 @@ Ghostty에서 한글 글꼴 테스트 123 ABC
 
 한글을 별도 글꼴로 강제하지 않고 macOS의 fallback에 맡기려면 `font-codepoint-map`을 빼고 결과를 비교해도 된다. 이 설정은 Ghostty가 글리프를 그리는 방법만 바꾼다. 키 입력이나 원격 터미널의 동작과는 관계가 없다.
 
+## 한글 입력 중에도 Ctrl 제어문자를 보낸다
+
+macOS에서 한글 입력기가 활성화된 동안에는 `Ctrl-a`, `Ctrl-c` 같은 조합이 셸에서 기대하는 ASCII 제어문자로 전달되지 않을 수 있다. Ghostty에서 물리 키 기준 바인딩을 명시해 두면 입력 소스가 한글이어도 같은 제어문자를 보낼 수 있다.
+
+Ghostty의 `key_*` 표기는 입력 소스가 만든 글자가 아니라 물리 키를 기준으로 매칭한다. `text:\xNN`은 해당 ASCII 제어 바이트를 터미널에 직접 보낸다.
+
+```ini
+# Control-key passthrough for the macOS Korean IME.
+keybind = ctrl+key_a=text:\x01
+keybind = ctrl+key_b=text:\x02
+keybind = ctrl+key_c=text:\x03
+keybind = ctrl+key_d=text:\x04
+keybind = ctrl+key_e=text:\x05
+keybind = ctrl+key_f=text:\x06
+keybind = ctrl+key_k=text:\x0b
+keybind = ctrl+key_l=text:\x0c
+keybind = ctrl+key_n=text:\x0e
+keybind = ctrl+key_p=text:\x10
+keybind = ctrl+key_r=text:\x12
+keybind = ctrl+key_u=text:\x15
+keybind = ctrl+key_w=text:\x17
+keybind = ctrl+key_z=text:\x1a
+```
+
+대표적인 zsh 기본 Emacs 키맵 동작은 다음과 같다.
+
+| 키 | 제어 바이트 | 일반적인 동작 |
+| --- | --- | --- |
+| `Ctrl-a` | `0x01` | 줄의 처음으로 이동 |
+| `Ctrl-b` | `0x02` | 커서를 한 글자 뒤로 이동 |
+| `Ctrl-c` | `0x03` | 실행 중인 프로세스 중단 |
+| `Ctrl-d` | `0x04` | 다음 문자 삭제 또는 EOF |
+| `Ctrl-e` | `0x05` | 줄의 끝으로 이동 |
+| `Ctrl-f` | `0x06` | 커서를 한 글자 앞으로 이동 |
+| `Ctrl-k` | `0x0b` | 커서부터 줄 끝까지 삭제 |
+| `Ctrl-l` | `0x0c` | 화면 지우기 |
+| `Ctrl-n` | `0x0e` | 다음 히스토리 |
+| `Ctrl-p` | `0x10` | 이전 히스토리 |
+| `Ctrl-r` | `0x12` | 히스토리 역방향 검색 |
+| `Ctrl-u` | `0x15` | 커서부터 줄 처음까지 삭제 |
+| `Ctrl-w` | `0x17` | 앞 단어 삭제 |
+| `Ctrl-z` | `0x1a` | 프로세스 일시 중단 |
+
+각 프로그램은 같은 제어문자를 다른 명령에 연결할 수 있다. 이 표는 zsh의 일반적인 기본 동작이며 모든 TUI 프로그램에서 똑같이 동작한다는 뜻은 아니다. 설정을 다시 읽은 뒤 새 터미널에서도 확인한다.
+
 ## 한글 입력 상태에서는 Herdr prefix가 이어지지 않았다
 
 Herdr의 기본 prefix는 tmux와 같은 `Ctrl-b`다. 영문 입력 상태에서는 `Ctrl-b`를 누르고 손을 뗀 뒤 `q`를 누르면 바로 detach된다. macOS 입력 소스를 한글 두벌식으로 바꾸면 이 두 단계가 매끄럽게 이어지지 않았다.
@@ -72,22 +117,11 @@ Herdr의 기본 prefix는 tmux와 같은 `Ctrl-b`다. 영문 입력 상태에서
 - `prefix+ㅂ`을 별도 바인딩으로 만들면 IME 조합을 확정하려고 Enter를 한 번 더 눌러야 했다.
 - 로컬 Herdr에서 고친 뒤에도 `herdr --remote xavier`에서는 같은 증상이 남았다.
 
-문제는 두 단계에 걸쳐 있었다. 먼저 Ghostty가 한글 입력 상태의 물리적인 `Ctrl-b`를 Herdr가 읽을 수 있는 키 시퀀스로 보내야 한다. Herdr가 prefix 모드에 들어간 다음에는 명령 키를 받는 동안 macOS 입력 소스를 잠시 ASCII로 바꿔야 한다.
-
-## Ghostty에서 물리적인 Ctrl-b를 CSI-u로 보낸다
-
-`~/.config/ghostty/config.ghostty`에 다음 키 바인딩을 추가했다.
-
-```ini
-# Keep Herdr's physical Ctrl-b prefix available while the Korean IME is active.
-keybind = ctrl+key_b=csi:98;5u
-```
-
-Ghostty는 한글 입력 상태에서도 물리적인 `Ctrl-b`를 Kitty keyboard protocol의 CSI-u 시퀀스로 보낸다. Herdr는 이를 `ctrl+b` prefix로 인식한다. Ghostty 설정을 다시 읽은 뒤 한글 입력 상태에서 prefix 모드로 들어가는지 먼저 확인한다. `csi:` action의 형식은 [Ghostty keybind 설정 문서](https://ghostty.org/docs/config/reference#keybind)에서 확인할 수 있다.
+문제는 두 단계다. 먼저 앞에서 추가한 `ctrl+key_b=text:\x02` 바인딩으로 한글 입력 상태의 물리적인 `Ctrl-b`를 Herdr에 보낸다. Herdr가 prefix 모드에 들어간 다음에는 명령 키를 받는 동안 macOS 입력 소스를 잠시 ASCII로 바꿔야 한다.
 
 ## Herdr가 명령을 받는 동안 입력 소스를 바꾼다
 
-prefix만 인식해서는 충분하지 않았다. 다음에 누르는 `q`, `h`, `j`, `k`, `l`도 IME가 한글로 조합하기 때문이다. 로컬 Mac의 `~/.config/herdr/config.toml`에 입력 소스 전환 옵션을 켰다.
+prefix만 인식해서는 충분하지 않다. 다음에 누르는 `q`, `h`, `j`, `k`, `l`도 IME가 한글로 조합하기 때문이다. 로컬 Mac의 `~/.config/herdr/config.toml`에 입력 소스 전환 옵션을 켠다.
 
 ```toml
 onboarding = false
@@ -109,11 +143,11 @@ switch_ascii_input_source_in_prefix = true
 herdr server reload-config
 ```
 
-## 원격 Herdr에는 같은 옵션이 한 번 더 필요했다
+## 원격 Herdr에는 같은 옵션이 한 번 더 필요하다
 
-로컬 세션은 여기까지로 해결됐지만 Herdr 0.8.2에서 `herdr --remote xavier`로 접속하면 `q`가 다시 `ㅂ`으로 조합됐다. remote attach는 기본적으로 로컬 키 바인딩을 사용하지만 `switch_ascii_input_source_in_prefix` 값까지 원격 서버에 전달하지는 않았다.
+로컬 세션은 여기까지로 해결되지만 Herdr 0.8.2에서 `herdr --remote xavier`로 접속하면 `q`가 다시 `ㅂ`으로 조합된다. remote attach는 기본적으로 로컬 키 바인딩을 사용하지만 `switch_ascii_input_source_in_prefix` 값까지 원격 서버에 전달하지는 않는다.
 
-원격 Ubuntu의 `~/.config/herdr/config.toml`에도 같은 옵션을 추가했다.
+원격 Ubuntu의 `~/.config/herdr/config.toml`에도 같은 옵션을 추가한다.
 
 ```toml
 [experimental]
@@ -126,7 +160,7 @@ switch_ascii_input_source_in_prefix = true
 herdr server reload-config
 ```
 
-서버나 pane을 종료할 필요는 없었다. Ubuntu의 Herdr 서버가 prefix 모드 진입을 감지하면 foreground 클라이언트에 입력 소스 전환을 요청하고, 실제 전환은 Mac에서 실행 중인 Herdr 클라이언트가 맡는다. 바로 반영되지 않으면 원격 클라이언트만 다시 연결한다.
+서버나 pane을 종료할 필요는 없다. Ubuntu의 Herdr 서버가 prefix 모드 진입을 감지하면 foreground 클라이언트에 입력 소스 전환을 요청하고 실제 전환은 Mac에서 실행 중인 Herdr 클라이언트가 맡는다. 바로 반영되지 않으면 원격 클라이언트만 다시 연결한다.
 
 이 동작은 연결할 서버마다 같은 옵션을 적어야 한다는 아쉬움이 있다. 로컬 클라이언트의 선호를 원격 서버에 전달하지 않는 문제는 [herdrdev/herdr#3271](https://github.com/herdrdev/herdr/issues/3271)에 정리했다. 입력 소스 전환을 foreground 클라이언트에서 처리하도록 바꾼 [herdrdev/herdr#1016](https://github.com/herdrdev/herdr/pull/1016)과 이어지는 문제다.
 
@@ -142,7 +176,7 @@ herdr --remote xavier
 
 원격 세션에서도 `ㅂ`이나 조합 중인 글자가 나타나지 않아야 한다. 명령을 실행하려고 Enter를 추가로 눌러야 한다면 IME가 여전히 `q`를 조합하고 있는 것이다.
 
-`detach = ["prefix+q", "prefix+ㅂ"]`처럼 한글 글자를 별도 키 바인딩으로 추가하는 방법은 쓰지 않았다. `ㅂ`은 터미널에 곧바로 들어오는 물리 키가 아니라 IME가 조합 중인 문자열이라 자연스러운 prefix 동작을 만들 수 없다. Herdr를 쓰기 전에 매번 입력 소스를 영문으로 바꾸는 방법도 가능하지만 한글과 영문을 오갈 때마다 손이 멈춘다.
+`detach = ["prefix+q", "prefix+ㅂ"]`처럼 한글 글자를 별도 키 바인딩으로 추가하는 방법은 쓰지 않는다. `ㅂ`은 터미널에 곧바로 들어오는 물리 키가 아니라 IME가 조합 중인 문자열이라 자연스러운 prefix 동작을 만들 수 없다.
 
 ## SSH에서는 zsh Backspace가 깨졌다
 
@@ -209,7 +243,7 @@ Backspace가 정상으로 돌아왔다. zsh 설정과 키 바인딩은 그대로
 
 ## SSH integration으로 terminfo 설치를 자동화한다
 
-원인을 확인한 뒤에는 [Ghostty의 SSH integration](https://ghostty.org/docs/features/ssh/)으로 원격에 terminfo를 준비했다. `config.ghostty`에 다음 한 줄을 추가한다.
+원인을 확인한 뒤에는 [Ghostty의 SSH integration](https://ghostty.org/docs/features/ssh/)으로 원격에 terminfo를 준비한다. `config.ghostty`에 다음 한 줄을 추가한다.
 
 ```ini
 shell-integration-features = ssh-terminfo
@@ -239,5 +273,3 @@ zsh -f
 - Herdr 0.8.2 stable, protocol 20
 - macOS 기본 한글 두벌식 입력 소스
 - 원격 호스트: Ubuntu (`xavier`)
-
-한글 모양은 Ghostty의 글꼴 매핑에서 고쳤다. 한글 입력 중 Herdr의 prefix가 끊기는 문제는 Ghostty의 키 전달과 Herdr의 입력 소스 전환 설정으로 풀었다. 원격 zsh의 Backspace 문제는 Ubuntu에 Ghostty terminfo를 준비해 해결했다. 모두 Ghostty 화면 안에서 드러난 문제였지만 로컬 렌더링, macOS IME, 원격 터미널 정보라는 서로 다른 층에 원인이 있었다. 어느 층에서 문제가 생겼는지 나누고 나니 불필요하게 zsh 설정이나 키 바인딩을 건드릴 필요가 없었다.
