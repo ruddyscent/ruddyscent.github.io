@@ -201,6 +201,43 @@ _config.yml     # 사이트 설정
 
 일부 포스트는 미래 날짜(2027-)로 예약되어 있다. GitHub Pages는 미래 날짜 포스트를 빌드 시점 기준으로 공개하므로, 날짜가 미래여도 포스트 파일이 `_posts/`에 있으면 빌드에 포함된다.
 
+## GitHub 작업 흐름
+
+`master`는 GitHub의 `Protect master` 룰셋으로 보호한다. `master`에 직접 push하지 않고 PR로만 병합하며, squash 병합과 검증된 서명을 사용한다. GitHub Issues는 현재 비활성화되어 있으므로 이슈 생성을 작업 시작 조건으로 두지 않는다.
+
+### 작업 브랜치와 worktree
+
+- 새 작업은 최신 `origin/master`에서 전용 브랜치와 worktree를 함께 만든다. 기본 작업 디렉터리의 `master`에는 직접 작업하지 않는다.
+- worktree를 만들기 전에 `git worktree list`로 같은 브랜치나 경로가 이미 있는지 확인한다.
+- 새 브랜치와 worktree는 다음처럼 만든다. `<type>`에는 `docs`, `fix`, `feat`처럼 작업 성격을, `<short-name>`에는 짧은 작업 이름을 쓴다.
+
+  ```bash
+  git fetch origin
+  git worktree add -b <type>/<short-name> ../ruddyscent.github.io-<short-name> origin/master
+  ```
+
+- 이미 만든 브랜치를 다른 worktree에서 열 때는 새 브랜치를 만들지 않는다.
+
+  ```bash
+  git worktree add ../ruddyscent.github.io-<short-name> <type>/<short-name>
+  ```
+
+### PR, 병합, 정리
+
+- PR을 열기 전에 작업 브랜치를 `origin/master` 위로 rebase하고, 충돌과 검증 실패를 해결한다. rebase 뒤에 강제 push가 필요하면 본인 작업 브랜치에만 `--force-with-lease`를 사용하며, `master`에는 절대 사용하지 않는다.
+- `master`에 들어가는 커밋은 모두 검증 가능한 서명이 있어야 한다. PR은 GitHub에서 squash 방식으로만 병합하고, 대화와 필수 검사를 모두 해결한 뒤 병합한다.
+- 병합이 완료되었는지 `gh pr view <number> --json state,mergedAt`으로 확인한다. `state`가 `MERGED`가 아니거나 병합 과정에 문제가 있으면 worktree와 브랜치를 삭제하지 않는다.
+- 병합을 확인했고 worktree에 미커밋 변경이 없으면 worktree, 로컬 브랜치, 남아 있는 원격 브랜치를 차례로 정리한다.
+
+  ```bash
+  git worktree remove ../ruddyscent.github.io-<short-name>
+  git branch -D <type>/<short-name>
+  git push origin --delete <type>/<short-name>
+  git worktree prune
+  ```
+
+- squash 병합은 로컬 작업 브랜치의 커밋을 그대로 포함하지 않으므로 `git branch -d`가 실패할 수 있다. PR의 병합 상태와 추가 커밋이 없음을 확인한 경우에만 `git branch -D <type>/<short-name>`으로 로컬 브랜치를 정리한다. 원격 브랜치가 GitHub에서 이미 삭제됐다면 삭제 명령을 반복하지 않는다.
+
 ## 커밋 메시지 형식
 
 - 형식: `type(scope): 요약` — `docs(blog)`, `docs`, `feat(blog)`, `fix`, `chore(devcontainer)` 등 Conventional Commits 접두사를 쓴다.
