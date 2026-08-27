@@ -9,7 +9,7 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-`pip`의 대안으로 자리 잡은 [`uv`](https://docs.astral.sh/uv/)를 사용하면 가상환경 생성, Python 버전 관리, 패키지 설치를 한 번에 처리할 수 있다. 이 글에서는 `uv`를 설치하고 Apple Silicon 맥에서 PyTorch를 올린 뒤, **[MPS(Metal Performance Shaders)](https://developer.apple.com/metal/pytorch/)**로 GPU를 활용하는 방법까지 차례대로 확인해본다.
+`pip`의 대안으로 자리 잡은 [`uv`](https://docs.astral.sh/uv/)를 사용하면 가상환경 생성, Python 버전 관리, 패키지 설치를 한 번에 처리할 수 있습니다. 이 글에서는 `uv`를 설치하고 Apple Silicon 맥에서 PyTorch를 올린 뒤, **[MPS(Metal Performance Shaders)](https://developer.apple.com/metal/pytorch/)**로 GPU를 활용하는 과정까지 확인합니다.
 
 ## 1. uv 설치
 
@@ -19,17 +19,17 @@ author: 전경원
 brew install uv
 ```
 
-설치가 성공적으로 끝났으면 버전을 확인한다.
+설치가 성공적으로 끝났으면 버전을 확인합니다.
 
 ```bash
 uv --version
 ```
 
-버전이 정상적으로 출력된다면 설치가 잘 끝난 것이다. 다음 단계로 넘어가자.
+버전이 정상적으로 출력된다면 설치가 잘 끝난 것입니다. 다음 단계로 넘어가자.
 
 ## 2. 프로젝트 생성
 
-먼저 작업할 디렉터리를 만들고 `uv` 프로젝트를 초기화한다.
+먼저 작업할 디렉터리를 만들고 `uv` 프로젝트를 초기화합니다.
 
 ```bash
 mkdir pytorch-m1-uv
@@ -37,27 +37,27 @@ cd pytorch-m1-uv
 uv init
 ```
 
-이렇게 하면 `pyproject.toml`을 비롯한 기본 Python 프로젝트 구조가 만들어진다.
+이렇게 하면 `pyproject.toml`을 비롯한 기본 Python 프로젝트 구조가 만들어집니다.
 
 ## 3. Python 준비
 
-PyTorch를 설치하기 전에 사용할 Python 버전을 준비한다. 여기서는 `3.12`를 기준으로 진행한다.
+PyTorch를 설치하기 전에 사용할 Python 버전을 준비합니다. 여기서는 `3.12`를 기준으로 진행합니다.
 
 ```bash
 uv python install 3.12
 ```
 
-이후 `uv run`이 이 버전을 사용하도록 프로젝트 단위로 지정해두면 편하다. 새 프로젝트를 시작할 때 이 단계를 먼저 처리해두는 편이 깔끔하다.
+이후 `uv run`이 이 버전을 사용하도록 프로젝트 단위로 지정해두면 편합니다. 새 프로젝트를 시작할 때 이 단계를 먼저 처리해두는 편이 깔끔합니다.
 
 ## 4. PyTorch 설치
 
-이제 PyTorch 관련 패키지를 설치한다.
+이제 PyTorch 관련 패키지를 설치합니다.
 
 ```bash
 uv add torch torchvision torchaudio
 ```
 
-설치가 끝나면 `pyproject.toml`과 `uv.lock`에 의존성이 기록된다. 이 덕분에 `pip install`만 쓰는 방식보다 환경 재현성이 좋다.
+설치가 끝나면 `pyproject.toml`과 `uv.lock`에 의존성이 기록됩니다. 이 덕분에 `pip install`만 쓰는 방식보다 환경 재현성이 좋습니다.
 
 ## 5. 설치 확인
 
@@ -67,11 +67,11 @@ PyTorch가 정상적으로 설치됐는지 먼저 버전부터 확인해 보자.
 uv run python -c "import torch; print(torch.__version__)"
 ```
 
-버전 문자열이 출력되면 기본 설치는 끝난 것이다.
+버전 문자열이 출력되면 기본 설치는 끝난 것입니다.
 
 ## 6. MPS 사용 가능 여부 확인
 
-Apple Silicon 맥에서는 CUDA 대신 `MPS`를 통해 GPU 가속을 사용할 수 있다. 간단한 코드를 만들어 확인해보자.
+Apple Silicon 맥에서는 CUDA 대신 `MPS`를 통해 GPU 가속을 사용할 수 있습니다. 간단한 코드를 만들어 확인해보자.
 
 ```python
 import torch
@@ -80,13 +80,13 @@ print("MPS built:", torch.backends.mps.is_built())
 print("MPS available:", torch.backends.mps.is_available())
 ```
 
-예를 들어 `main.py`에 저장한 뒤 실행하면 된다.
+예를 들어 `main.py`에 저장한 뒤 실행하면 됩니다.
 
 ```bash
 uv run python main.py
 ```
 
-두 값이 모두 `True`라면 현재 환경에서 MPS를 사용할 수 있다는 의미다.
+두 값이 모두 `True`라면 현재 환경에서 MPS를 사용할 수 있다는 의미입니다.
 
 ## 7. MPS로 텐서 실행
 
@@ -105,7 +105,7 @@ print(y)
 print(x.device)
 ```
 
-출력된 디바이스가 `mps:0`으로 표시된다면 연산이 GPU에서 실행되고 있다는 뜻이다.
+출력된 디바이스가 `mps:0`으로 표시된다면 연산이 GPU에서 실행되고 있다는 뜻입니다.
 
 ## 8. 간단한 모델 실행
 
@@ -125,11 +125,11 @@ print(y)
 print(y.device)
 ```
 
-이 정도만 확인해도 PyTorch 설치 여부를 넘어, 실제 모델 연산이 Apple GPU에서 문제없이 동작하는지까지 빠르게 점검할 수 있다.
+이 정도만 확인해도 PyTorch 설치 여부를 넘어, 실제 모델 연산이 Apple GPU에서 문제없이 동작하는지까지 빠르게 점검할 수 있습니다.
 
 ## 9. 최종 디렉터리 구조
 
-여기까지 진행하면 이런 구조가 된다.
+여기까지 진행하면 이런 구조가 됩니다.
 
 ```text
 pytorch-m1-uv/
@@ -138,14 +138,14 @@ pytorch-m1-uv/
 └─ main.py
 ```
 
-실제 프로젝트를 시작하면 여기에 학습 코드, 데이터 처리 코드, 노트북 파일 등을 추가하면 된다.
+실제 프로젝트를 시작하면 여기에 학습 코드, 데이터 처리 코드, 노트북 파일 등을 추가하면 됩니다.
 
 ## 10. 정리
 
 Apple Silicon 맥에서 PyTorch를 쓰기 위한 과정은 예전보다 훨씬 단순해졌다.
 
-- `uv`는 빠른 패키지 설치와 프로젝트 환경 관리를 함께 처리해 준다.
-- Apple Silicon 맥에서는 `MPS`를 통해 GPU 가속을 사용할 수 있다.
-- `brew install uv`부터 시작하면 macOS에서 가장 간단하게 환경을 잡을 수 있다.
+- `uv`는 빠른 패키지 설치와 프로젝트 환경 관리를 함께 처리해 줍니다.
+- Apple Silicon 맥에서는 `MPS`를 통해 GPU 가속을 사용할 수 있습니다.
+- `brew install uv`부터 시작하면 macOS에서 가장 간단하게 환경을 잡을 수 있습니다.
 
-새 Python 프로젝트를 만들 때 `pip`와 `venv`를 따로 조합하기보다 `uv`로 시작하는 편이 훨씬 깔끔하다. 다만 `uv`는 패키지 관리와 환경 관리를 동시에 다루는 도구인 만큼, 초반에는 개념을 익히는 데 시간이 조금 걸릴 수 있다.
+새 Python 프로젝트를 만들 때 `pip`와 `venv`를 따로 조합하기보다 `uv`로 시작하는 편이 훨씬 깔끔합니다. 다만 `uv`는 패키지 관리와 환경 관리를 동시에 다루는 도구인 만큼, 초반에는 개념을 익히는 데 시간이 조금 걸릴 수 있습니다.

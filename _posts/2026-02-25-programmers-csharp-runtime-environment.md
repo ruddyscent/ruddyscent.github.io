@@ -9,15 +9,15 @@ tags: [csharp, pccp]
 author: 전경원
 ---
 
-[프로그래머스의 코딩테스트](https://school.programmers.co.kr/learn/challenges) 문제를 풀다보면 최신 버전의 C# 기능을 쓸 수 없다는 것을 알게 된다.
+[프로그래머스의 코딩테스트](https://school.programmers.co.kr/learn/challenges) 문제를 풀다 보면 최신 버전의 C# 기능을 쓸 수 없다는 점을 알게 됩니다.
 
-예를 들어서, 대표적으로 [`PriorityQueue`](https://learn.microsoft.com/ko-kr/dotnet/api/system.collections.generic.priorityqueue-2)를 쓸 수 없다.
+예를 들어 대표적으로 [`PriorityQueue`](https://learn.microsoft.com/ko-kr/dotnet/api/system.collections.generic.priorityqueue-2)를 쓸 수 없습니다.
 
-안 그래도 시험 시간이 빠듯한데, 지원하지 않는 문법 때문에 구현을 바꾸는 수고를 하지 않으려면, 지원되는 기능과 지원하지 않는 기능을 미리 파악해 놓을 필요가 있다.
+시험 시간이 빠듯한 만큼, 지원하지 않는 문법 때문에 구현을 바꾸지 않으려면 지원 범위를 미리 파악할 필요가 있습니다.
 
 > **지원되는 기능과 지원되지 않는 기능을 미리 파악해 두는 것**
 
-문제는, 프로그래머스의 코딩테스트 환경에서는 터미널 접근이 불가능하다는 점이다.  `dotnet --version` 같은 명령으로 확인할 수 없다.  그렇다면 직접 코드로 확인하는 수밖에 없다.
+문제는 프로그래머스의 코딩테스트 환경에서 터미널에 접근할 수 없다는 점입니다. `dotnet --version` 같은 명령으로 확인할 수 없습니다. 직접 코드로 확인해야 합니다.
 
 ## 들어가기 전에
 사실은 프로그래머스는 C# 컴파일러 버전을 공개하고 있습니다. 코딩테스트 연습 인터페이스의 오른쪽 위에 있는 **컴파일 옵션**을 클릭하면, 지원하는 언어의 컴파일러 버전과 컴파일 커맨드를 확인할 수 있습니다. C#의 컴파일러와 컴파일 커맨드는 아래와 같습니다.
@@ -26,7 +26,7 @@ author: 전경원
 
 ## 런타임 버전 확인하기
 
-먼저 간단한 코드를 실행해서 런타임 버전을 확인해보자.
+간단한 코드를 실행해 런타임 버전을 확인해 보겠습니다.
 ```csharp
 using System;
 
@@ -43,7 +43,7 @@ public class Solution {
 ...
 출력 〉	4.0.30319.42000
 ```
-런타임 버전 번호로 추정해 볼 수 있는 .NET 프레임워크의 버전은 4.6에서 4.8 정도이다. 이 버전의 .NET 프레임워크에는 일반적으로 C# 6에서 7.3을 지원하는 컴파일러가 설치된다.
+런타임 버전 번호로 추정할 수 있는 .NET Framework 버전은 4.6~4.8 정도입니다. 이 버전에는 일반적으로 C# 6~7.3을 지원하는 컴파일러가 설치됩니다.
 
 운좋게도 C# 7.1에서 지원하는 [default literal](https://learn.microsoft.com/ko-kr/dotnet/csharp/language-reference/operators/default#default-literal)을 시험해보다가 컴파일러가 지원하는 C# 버전을 확인할 수 있었다.
 
@@ -66,9 +66,9 @@ public class Solution {
 
 ## Tuple + Pattern Matching 문제
 
-지원하는 C# 버전은 확인했지만, 프로그래머스 같은 온라인 저지는 종종 컴파일러, 런타임, 참조 어셈블리 등의 구성요소가 섞여 있어서, 일부 기능만 깨지는 경우가 있다. 따라서, 주요 문법 및 지원 라이브러리를 확인할 필요가 있다. 
+지원 C# 버전은 확인했지만, 프로그래머스 같은 온라인 저지는 컴파일러·런타임·참조 어셈블리의 구성에 따라 일부 기능만 깨질 수 있습니다. 따라서 주요 문법과 지원 라이브러리도 확인할 필요가 있습니다.
 
-예를 들어, C# 7.0에서 “처음” 들어온 기능 중, 온라인 코딩테스트에서 실전으로 유용한 기능을 확인하던 중에 튜플과 패턴 매칭을 동시에 사용하면 문제가 발생하는 것을 확인할 수 있다.
+예를 들어 C# 7.0에서 처음 들어온 기능 가운데, 온라인 코딩테스트에서 유용한 튜플과 패턴 매칭을 함께 쓰면 문제가 발생할 수 있습니다.
 
 ```csharp
 using System;
@@ -91,7 +91,7 @@ public class Solution {
 /Solution0.cs(8,32): error CS0841: A local variable `n' cannot be used before it is declared
 ```
 
-`t.x`는 이미 `int`로 확정된 값이다. 이 경우 `is int n`은 항상 참이 되며, 특정 컴파일러 경로에서 내부 오류가 발생하기 때문에 문제가 된 것이다. 회피 방법으로는 패턴 매칭을 포기하거나, [박싱](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/types/boxing-and-unboxing)을 이용할 수 있다.
+`t.x`는 이미 `int`로 확정된 값입니다. 이 경우 `is int n`은 항상 참이며, 특정 컴파일러 경로에서 내부 오류가 발생합니다. 패턴 매칭을 빼거나 [박싱](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/types/boxing-and-unboxing)을 이용하면 피할 수 있습니다.
 
 ### 방법 1 --- 패턴 매칭 제거
 
@@ -110,7 +110,7 @@ if (o is int n) {
 
 ## 프로그래머스 C# 환경 정리
 
-프로그래머스 C# 환경을 정리해보자.
+프로그래머스 C# 환경을 정리해 보겠습니다.
 
 ### ✔ 지원
 
@@ -136,7 +136,7 @@ if (o is int n) {
 
 > **C# 7.0 + .NET Framework 4.6 - 4.8 기반 환경**
 
-핵심은 다음 두 가지다.
+핵심은 두 가지입니다.
 
-1.  C# 7.1 이상 기능은 쓰지 않는다.
-2.  PriorityQueue는 직접 구현하거나 대체한다.
+1.  C# 7.1 이상 기능은 쓰지 않습니다.
+2.  PriorityQueue는 직접 구현하거나 대체합니다.
