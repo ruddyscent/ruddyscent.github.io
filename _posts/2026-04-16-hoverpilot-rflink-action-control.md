@@ -9,22 +9,22 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-[이전 글](/2026-04-15-hoverpilot-rflink-read-state/)에서는 RealFlight Link를 통해 상태를 읽어올 수 있었다.  이제 한 단계 더 나아가서 실제로 **조종 신호(action)를 보내는 단계**로 넘어간다. 이 단계를 통해 시스템은 단방향이 아니라, **state와 action이 오가는 루프**를 이룬다. 에이전트와 환경이 상태·행동을 주고받는 이 구조는 강화학습의 기본 골격인 agent-environment interface([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)와 같다.
+[이전 글](/2026-04-15-hoverpilot-rflink-read-state/)에서는 RealFlight Link로 상태를 읽어올 수 있었습니다. 이제 실제로 **조종 신호(action)를 보내는 단계**로 넘어갑니다. 이때 시스템은 단방향이 아니라 **state와 action이 오가는 루프**를 이룹니다. 에이전트와 환경이 상태·행동을 주고받는 구조는 강화학습의 기본 골격인 agent-environment interface([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)와 같습니다.
 
 ## RealFlight Link는 양방향 인터페이스다
 
-RealFlight Link의 핵심은 `ExchangeData` 요청이다.  이 요청은 단순히 상태를 받아오는 API가 아니다.  조금 더 정확히 말하면 **조종 입력을 보내고 그 결과 상태를 받는 구조**이다.  즉 하나의 `ExchangeData` 호출은
+RealFlight Link의 핵심은 `ExchangeData` 요청입니다.  이 요청은 단순히 상태를 받아오는 API가 아니다.  조금 더 정확히 말하면 **조종 입력을 보내고 그 결과 상태를 받는 구조**입니다.  즉 하나의 `ExchangeData` 호출은
 
 - 입력 (control signal) → 요청에 실어 보낸다
 - 출력 (state) → 응답으로 돌려받는다
 
-두 방향을 모두 포함한다.
+두 방향을 모두 포함합니다.
 
 ## InterLink 에뮬레이션 접근 방식
 
-RealFlight는 [InterLink DX](https://www.realflight.com/product/interlink-dx-simulator-controller-with-usb-plug/SPMRFTX1.html) 같은 전용 조종기를 기준으로 동작한다.  HoverPilot은 물리적 실체가 없는 소프트웨어이기에 애석하게도 이 조종기를 조작할 방법이 없다.  다행히도 InterLink DX 대신에 소프트웨어 조종기로 조종 신호를 보내는 방법이 존재한다. 
+RealFlight는 [InterLink DX](https://www.realflight.com/product/interlink-dx-simulator-controller-with-usb-plug/SPMRFTX1.html) 같은 전용 조종기를 기준으로 동작합니다. HoverPilot은 물리적 실체가 없는 소프트웨어라 이 조종기를 직접 조작할 수 없습니다. 다행히 InterLink DX 대신 소프트웨어 조종기로 조종 신호를 보내는 방법이 있습니다.
 
-조금 더 간단하게 조종기 전체를 에뮬레이션하는 대신 **InterLink가 보내는 채널 값을 소프트웨어로 직접 만들어 보내는 방식**을 이용한다.  즉, 하드웨어를 흉내 내는 것이 아니라 **채널 레벨의 동작을 코드로 에뮬레이션**했다.  이 방식은 세 가지가 좋다.
+조금 더 간단하게 조종기 전체를 에뮬레이션하는 대신 **InterLink가 보내는 채널 값을 소프트웨어로 직접 만들어 보내는 방식**을 이용합니다.  즉, 하드웨어를 흉내 내는 것이 아니라 **채널 레벨의 동작을 코드로 에뮬레이션**했습니다.  이 방식은 세 가지가 좋습니다.
 
 - 강화학습 action을 바로 연결할 수 있다
 - 외부 입력 장치 없이 제어가 가능하다
@@ -32,18 +32,18 @@ RealFlight는 [InterLink DX](https://www.realflight.com/product/interlink-dx-sim
 
 ## 채널 매핑 (Channel Mapping)
 
-RealFlight는 12개의 채널을 사용한다.  하지만 우리가 실제로 다루는 건, 세 개의 조종면과 1개의 추력 제어에 필요한 4개 채널뿐이다.  각 조종면이 담당하는 기동은 이렇다.
+RealFlight는 12개의 채널을 사용합니다.  하지만 우리가 실제로 다루는 건, 세 개의 조종면과 1개의 추력 제어에 필요한 4개 채널뿐입니다.  각 조종면이 담당하는 기동은 이렇습니다.
 
 - aileron (롤)
 - elevator (피치)
 - throttle (추력)
 - rudder (요)
 
-롤, 피치, 요가 의미하는 기동은 다음 그림을 통해 쉽게 파악할 수 있다.
+롤, 피치, 요가 의미하는 기동은 다음 그림을 통해 쉽게 파악할 수 있습니다.
 
 ![롤, 피치, 추력, 요](/assets/img/hover-pilot/roll-pitch-yaw-throttle.png)
 
-코드에서는 이렇게 매핑했다. 시뮬레이터에서 각 채널별로 설정된 값에 따라 조종면을 매핑한다.
+코드에서는 이렇게 매핑했습니다. 시뮬레이터에서 각 채널별로 설정된 값에 따라 조종면을 매핑합니다.
 
 ![RealFlight의 InterLink DX 컨트롤러 채널 매핑 설정 화면](/assets/img/hover-pilot/realflight-interlinkdx-controller-channel-mapping.png)
 
@@ -56,18 +56,18 @@ DEFAULT_CHANNEL_MAP = {
 }
 ```
 
-이렇게 해두면 기체나 설정이 바뀌는 경우에도 쉽게 수정할 수 있다.
+이렇게 해두면 기체나 설정이 바뀌는 경우에도 쉽게 수정할 수 있습니다.
 
 ## action을 코드로 표현하기
 
-RC 비행기를 조종하려면 실제로는 여러 개의 채널 값이 필요하다. 예를 들어 throttle, aileron 같은 값들이 각각 숫자로 전달된다. 그런데 이걸 바로 숫자로 다루면 코드의 의미 파악이 힘들다.
+RC 비행기를 조종하려면 실제로는 여러 개의 채널 값이 필요합니다. 예를 들어 throttle, aileron 같은 값들이 각각 숫자로 전달됩니다. 그런데 이걸 바로 숫자로 다루면 코드의 의미 파악이 힘듭니다.
 
 ``` python
 # 이런 식이면 의미 파악이 어렵다
 [0.55, 0.0, 0.0, 0.0]
 ```
 
-그래서 `RFControlAction`이라는 객체로 한 번 감싸서 조종 입력을 논리적으로 표현한다. 이제 의미가 잘 드러난다.
+그래서 `RFControlAction`이라는 객체로 한 번 감싸서 조종 입력을 논리적으로 표현합니다. 이제 의미가 잘 드러난다.
 
 ``` python
 action = RFControlAction(
@@ -78,7 +78,7 @@ action = RFControlAction(
 )
 ```
 
-그럼 실제로는 어떻게 전달될까?  시뮬레이터는 여전히 숫자 배열을 원한다.  그래서 마지막에 변환 과정을 한 번 거친다.
+그럼 실제로는 어떻게 전달될까?  시뮬레이터는 여전히 숫자 배열을 원합니다.  그래서 마지막에 변환 과정을 한 번 거친다.
 
 ``` python
 channels = action.to_channel_values()
@@ -92,14 +92,14 @@ channels = action.to_channel_values()
 
 ## 값 범위 처리
 
-강화학습에서 사용하는 행동(action)의 값 범위와, RealFlight Link가 기대하는 입력 범위는 서로 다르다.  강화학습에서는 조종 입력을 **대칭적인 범위**로 다루는 것이 일반적이다.
+강화학습에서 사용하는 행동(action)의 값 범위와, RealFlight Link가 기대하는 입력 범위는 서로 다르다.  강화학습에서는 조종 입력을 **대칭적인 범위**로 다루는 것이 일반적입니다.
 
 - aileron / elevator / rudder → -1.0 ~ 1.0  
 - throttle → 0.0 ~ 1.0  
 
 특히 조종면은 “왼쪽 ↔ 오른쪽”, “위 ↔ 아래”처럼 중심(0)을 기준으로 양방향으로 움직이기 때문에 `[-1, 1]` 범위가 정책 학습에 더 자연스럽다.
 
-하지만 RealFlight Link의 `ExchangeData`는 채널 값을 0.0에서 1.0까지만 허용한다.  그래서 내부적으로 변환을 한 번 거친다.
+하지만 RealFlight Link의 `ExchangeData`는 채널 값을 0.0에서 1.0까지만 허용합니다.  그래서 내부적으로 변환을 한 번 거친다.
 
 ```
 [-1, 1] → [0, 1]
@@ -109,7 +109,7 @@ channels = action.to_channel_values()
 
 ## 실제 시그널 전송 구조
 
-조종 신호는 `ExchangeData` 요청의 `pControlInputs` 안에 담겨 RealFlight Link로 전달한다.  즉, 우리가 만든 action 객체는 마지막 단계에서 채널 값 배열로 변환되고 그 값이 XML에 실려 시뮬레이터로 전송된다.  예를 들어 "조종면은 중립으로 두고, 스로틀만 약간 올린 상태"는 아래처럼 표현할 수 있다.
+조종 신호는 `ExchangeData` 요청의 `pControlInputs` 안에 담겨 RealFlight Link로 전달합니다.  즉, 우리가 만든 action 객체는 마지막 단계에서 채널 값 배열로 변환되고 그 값이 XML에 실려 시뮬레이터로 전송됩니다.  예를 들어 "조종면은 중립으로 두고, 스로틀만 약간 올린 상태"는 아래처럼 표현할 수 있습니다.
 
 ```xml
 <ExchangeData>
@@ -126,7 +126,7 @@ channels = action.to_channel_values()
 </ExchangeData>
 ```
 
-이 구조에서 반드시 지켜야 할 몇 가지 규칙이 있다.
+이 구조에서 반드시 지켜야 할 몇 가지 규칙이 있습니다.
 
 - 채널 개수는 항상 12개여야 한다
 - 모든 값은 0.0 ~ 1.0 범위여야 한다
@@ -140,7 +140,7 @@ channels = action.to_channel_values()
 state = client.step(action)
 ```
 
-이 구조는 강화학습 환경에서 흔히 쓰는 인터페이스 형태를 유지한 것이다. 예를 들어 이런 형태다.
+이 구조는 강화학습 환경에서 흔히 쓰는 인터페이스 형태를 유지한 것입니다. 예를 들어 이런 형태다.
 
 ```python
 obs, reward, done, info = env.step(action)
@@ -150,7 +150,7 @@ obs, reward, done, info = env.step(action)
 
 ## 실행 루프
 
-이제 앞에서 만든 step(action)을 반복해서 호출하면 조종 신호를 계속 보내면서 기체가 어떻게 반응하는지 관찰할 수 있다.  가장 단순한 형태의 실행 루프는 아래와 같다.
+이제 앞에서 만든 step(action)을 반복해서 호출하면 조종 신호를 계속 보내면서 기체가 어떻게 반응하는지 관찰할 수 있습니다.  가장 단순한 형태의 실행 루프는 아래와 같습니다.
 
 ```python
 while True:
@@ -175,13 +175,13 @@ time.sleep(0.1)
 
 ## 다음 단계
 
-하지만 아직 강화학습 환경으로 바로 사용할 수 있는 상태는 아니다.  지금은 action을 보낼 수 있고 state를 받을 수도 있지만 학습 루프를 구성하려면 그 사이를 이어주는 요소들이 더 필요하다.  다음으로 정리해야 할 것은 세 가지다.
+하지만 아직 강화학습 환경으로 바로 사용할 수 있는 상태는 아니다.  지금은 action을 보낼 수 있고 state를 받을 수도 있지만 학습 루프를 구성하려면 그 사이를 이어주는 요소들이 더 필요합니다.  다음으로 정리해야 할 것은 세 가지다.
 
 - reward 설계
 - observation 정의
 - Gymnasium 환경 구성
 
-reward는 에이전트가 어떤 행동을 좋은 것으로 배워야 하는지 알려주는 기준이 되고 observation은 정책이 어떤 상태 정보를 입력으로 사용할지 결정한다. 목표를 단일 스칼라 신호로 압축해 전달할 수 있다는 전제는 reward hypothesis([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)에 해당한다.  그리고 마지막으로 Gymnasium 환경까지 갖추면, 지금 만든 RealFlight Link 인터페이스를 강화학습 코드와 자연스럽게 연결할 수 있다.
+reward는 에이전트가 어떤 행동을 좋은 것으로 배워야 하는지 알려주는 기준이 되고 observation은 정책이 어떤 상태 정보를 입력으로 사용할지 결정합니다. 목표를 단일 스칼라 신호로 압축해 전달할 수 있다는 전제는 reward hypothesis([Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) 3.1절)에 해당합니다.  그리고 마지막으로 Gymnasium 환경까지 갖추면, 지금 만든 RealFlight Link 인터페이스를 강화학습 코드와 자연스럽게 연결할 수 있습니다.
 
 ## 함께 보기
 
