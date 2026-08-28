@@ -4,7 +4,7 @@ title: Ghostty 한글 입력, Herdr prefix, 원격 zsh 문제 해결
 subtitle: 한글 입력부터 원격 zsh까지, Ghostty로 옮긴 뒤 막힌 것들
 tags: [ghostty, herdr, macos, ime, ssh, zsh, ubuntu, troubleshooting]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/chatgpt.webp
+thumbnail-img: /assets/img/terminal.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 description: macOS의 Ghostty에서 한글 글꼴과 Ctrl 제어문자를 설정하고, Herdr prefix와 Ubuntu 원격 zsh Backspace 문제를 해결한 과정.
