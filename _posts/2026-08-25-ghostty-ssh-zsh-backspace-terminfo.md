@@ -10,7 +10,7 @@ author: 전경원
 description: macOS의 Ghostty에서 한글 글꼴과 Ctrl 제어문자를 설정하고, Herdr prefix와 Ubuntu 원격 zsh Backspace 문제를 해결한 과정.
 ---
 
-iTerm2 대신 Ghostty를 쓰기 시작하면서 설정은 가능한 한 적게 가져가기로 했다. 기본값만으로도 충분히 쓸 만했다. 다만 한글 입력 상태에서 셸과 Herdr를 쓰고 Ubuntu에 원격으로 붙자 서로 다른 문제가 차례로 드러났다.
+iTerm2 대신 Ghostty를 쓰기 시작하면서 설정은 가능한 한 적게 가져가기로 했습니다. 기본값만으로도 충분히 쓸 만했습니다. 다만 한글 입력 상태에서 셸과 Herdr를 쓰고 Ubuntu에 원격으로 붙자 서로 다른 문제가 차례로 드러났습니다.
 
 한글 모양은 Ghostty의 글꼴 설정으로 고치고 한글 입력 중 셸의 제어문자는 물리 키 바인딩으로 보냅니다. Herdr에서는 한글 입력 중 prefix 모드에 들어갈 때 입력 소스를 잠시 바꾸고 원격 zsh의 Backspace 문제는 SSH integration으로 `xterm-ghostty` terminfo를 설치해 해결합니다.
 
