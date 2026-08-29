@@ -10,7 +10,7 @@ author: 전경원
 description: Herdr의 workspace, tab, pane, agent가 무엇을 구분하는지와 Agents 목록의 이름을 읽는 방법을 정리한다.
 ---
 
-Herdr의 작업 단위는 다음 순서로 이어집니다.
+Herdr에서는 저장소나 독립된 작업을 workspace로 나누고 같은 프로젝트 안의 화면 구성은 tab과 pane으로 나눕니다. 각 pane에서 실행하는 Codex 같은 프로그램은 agent로 인식합니다. 이름이 비슷해 헷갈리기 쉬운 네 단위는 다음 순서로 이어집니다.
 
 ```text
 Workspace
@@ -28,7 +28,7 @@ Workspace
 
 ## Herdr 화면에서 이름은 어디에 표시될까?
 
-한 workspace의 tab을 두 pane으로 나누고, 각 pane에서 Codex를 실행한 화면을 단순화하면 다음과 같습니다.
+한 workspace의 tab을 두 pane으로 나누고 각 pane에서 Codex를 실행한 화면을 단순화하면 다음과 같습니다.
 
 ```text
 +----------------------+--------------------------------------------------+
@@ -45,9 +45,9 @@ Workspace
 +----------------------+--------------------------------------------------+
 ```
 
-왼쪽 위 `spaces`는 workspace 목록입니다. 오른쪽에는 선택한 tab이 있고, 그 안을 `writer`와 `reviewer`라는 두 pane으로 나눴습니다.
+왼쪽 위 `spaces`는 workspace 목록입니다. 오른쪽에는 선택한 tab이 있고 그 안을 `writer`와 `reviewer`라는 두 pane으로 나눴습니다.
 
-왼쪽 아래 Agents 목록에는 `project-a / codex`가 두 번 나타납니다. 두 agent가 같은 workspace에 속하고, 둘 다 Codex이기 때문입니다. pane 이름과 현재 디렉터리는 이 목록의 이름을 정하는 데 쓰이지 않습니다.
+왼쪽 아래 Agents 목록에는 `project-a / codex`가 두 번 나타납니다. 두 agent가 같은 workspace에 속하고 둘 다 Codex이기 때문입니다. pane 이름과 현재 디렉터리는 이 목록의 이름을 정하는 데 쓰이지 않습니다.
 
 | 화면에 보이는 이름 | 뜻 |
 | --- | --- |
@@ -117,7 +117,7 @@ herdr agent rename <target> writer
 herdr agent rename <target> reviewer
 ```
 
-`pane rename`은 화면의 터미널을 구분하고, `agent rename`은 Agents 목록과 agent 제어 대상을 구분합니다.
+`pane rename`은 화면의 터미널을 구분하고 `agent rename`은 Agents 목록과 agent 제어 대상을 구분합니다.
 
 ## 무엇을 나눠야 할까?
 
@@ -128,4 +128,4 @@ herdr agent rename <target> reviewer
 | 계속 함께 볼 터미널 | pane |
 | 같은 종류의 실행 중인 프로그램 | agent 이름 |
 
-Agents 목록의 첫째 줄이 겹치면 workspace 구성을 확인합니다. `codex`가 여러 개라서 헷갈리면 agent 이름을 붙이고, 분할된 터미널의 역할이 불분명하면 pane 이름을 붙입니다. 자세한 정의와 명령은 [Herdr Concepts](https://herdr.dev/docs/concepts/)와 [CLI Reference](https://herdr.dev/docs/cli-reference/)에서 확인할 수 있습니다.
+Agents 목록의 첫째 줄이 겹치면 workspace 구성을 확인합니다. `codex`가 여러 개라서 헷갈리면 agent 이름을 붙이고 분할된 터미널의 역할이 불분명하면 pane 이름을 붙입니다. 자세한 정의와 명령은 [Herdr Concepts](https://herdr.dev/docs/concepts/)와 [CLI Reference](https://herdr.dev/docs/cli-reference/)에서 확인할 수 있습니다.
