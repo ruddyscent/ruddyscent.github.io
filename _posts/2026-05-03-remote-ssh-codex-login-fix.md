@@ -4,7 +4,7 @@ title: Remote-SSH 환경에서 Codex 로그인이 멈출 때 해결하기
 subtitle: Mac 브라우저와 원격 Jetson의 localhost가 다를 때 생기는 OAuth 콜백 문제
 tags: [vscode, remote-ssh, codex, openai, oauth, ssh, jetson, troubleshooting]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/vscode.webp
+thumbnail-img: /assets/img/editor.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
