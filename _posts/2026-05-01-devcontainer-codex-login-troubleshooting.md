@@ -4,7 +4,7 @@ title: Dev Container에서 Codex 로그인 에러의 두 가지 해결책
 subtitle: 다중 컨테이너 포트 충돌과 자격증명 마운트까지
 tags: [vscode, devcontainer, codex, openai, docker, oauth, troubleshooting]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/vscode.webp
+thumbnail-img: /assets/img/editor.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
