@@ -119,6 +119,29 @@ herdr agent rename <target> reviewer
 
 `pane rename`은 화면의 터미널을 구분하고 `agent rename`은 Agents 목록과 agent 제어 대상을 구분합니다.
 
+## Agents 목록의 상태등은 무엇을 뜻할까?
+
+Agents 목록에서 agent 이름 앞에 붙는 점은 해당 agent의 현재 상태를 나타냅니다. 기본 설정에서는 같은 모양의 점이 색으로 바뀌므로 처음 보면 서로 다른 상태를 구분하기 어렵습니다. [Herdr의 agent 상태](https://herdr.dev/docs/agents/)는 다음 다섯 가지입니다.
+
+| <span style="white-space: nowrap;">기본 표시</span> | 상태 | 의미 |
+| --- | --- | --- |
+| <span style="white-space: nowrap;"><span style="color: #f9e2af; font-size: 1.25em; line-height: 1;" aria-label="노란색 채운 원">●</span> 노란색</span> | `working` | agent가 요청을 처리하고 있습니다. |
+| <span style="white-space: nowrap;"><span style="color: #f38ba8; font-size: 1.25em; line-height: 1;" aria-label="빨간색 채운 원">●</span> 빨간색</span> | `blocked` | 권한 승인이나 질문에 대한 답처럼 사용자의 입력을 기다립니다. |
+| <span style="white-space: nowrap;"><span style="color: #94e2d5; font-size: 1.25em; line-height: 1;" aria-label="청록색 채운 원">●</span> 청록색</span> | `done` | 작업을 마쳤지만 아직 결과를 확인하지 않았습니다. |
+| <span style="white-space: nowrap;"><span style="color: #a6e3a1; font-size: 1.25em; line-height: 1;" aria-label="초록색 빈 원">○</span> 초록색</span> | `idle` | 결과를 확인했거나 새 요청을 받을 수 있는 대기 상태입니다. |
+| <span style="white-space: nowrap;"><span style="color: #6c7086; font-size: 1.25em; line-height: 1;" aria-label="회색 가운데점">·</span> 회색</span> | `unknown` | Herdr가 agent 상태를 판별하지 못했습니다. 일반 셸이나 지원하지 않는 프로그램도 여기에 해당할 수 있습니다. |
+
+표의 모양과 색은 Herdr의 기본 `dots` 설정과 Catppuccin Mocha 테마를 기준으로 재현했습니다. 다른 테마를 선택하거나 색을 직접 설정하면 색조는 달라지지만 상태별 의미는 같습니다. `done`과 `idle`의 차이는 agent 프로세스가 끝났는지가 아니라 결과를 확인했는지에 있습니다. 작업이 끝난 agent는 청록색 `done`으로 남아 있다가 해당 agent를 열어 결과를 보면 초록색 `idle`로 바뀝니다. 빨간색 `blocked`가 보이면 agent가 실패했다고 단정하기보다 pane을 열어 승인이나 답변을 기다리는지 확인합니다.
+
+왼쪽 위 Spaces 목록의 상태등은 workspace 안에 있는 agent 상태를 모아서 보여 줍니다. [Herdr의 상태 집계](https://herdr.dev/docs/agents/#state-rollups)에서는 하나라도 `blocked`인 agent가 있으면 workspace도 빨간색으로 표시하고, 실행 중인 agent가 있으면 활성 상태로 표시합니다. 따라서 workspace의 점만 보고 끝내지 말고 Agents 목록에서 어느 agent에 입력이 필요한지 확인하는 편이 정확합니다.
+
+색만으로 구분하기 어렵다면 상태마다 다른 기호를 쓰도록 바꿀 수 있습니다. `~/.config/herdr/config.toml`에 다음 설정을 추가한 뒤 `herdr server reload-config`를 실행합니다. [Herdr 설정 문서](https://herdr.dev/docs/configuration/#ui-and-sidebar)에 따르면 이 설정은 `blocked`, `working`, `done`, `idle`, `unknown`을 색뿐 아니라 서로 다른 모양으로 표시합니다.
+
+```toml
+[ui]
+status_indicators = "symbols"
+```
+
 ## 무엇을 나눠야 할까?
 
 | 상황 | 사용할 단위 |
