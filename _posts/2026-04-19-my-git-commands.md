@@ -11,7 +11,7 @@ author: 전경원
 
 Git 명령어는 종류가 많지만 실제로 자주 쓰는 명령은 생각보다 많지 않습니다. 문제는 자주 쓰는 명령도 필요할 때마다 다시 검색하게 된다는 점입니다.
 
-이번 글에서는 내가 실제 작업에서 반복해서 사용하는 Git 명령어를 **설정**, **변경 확인**, **브랜치 작업**, **원격 저장소 작업**처럼 목적별로 정리해 보려고 합니다.  완전한 Git 문서라기보다, 자주 꺼내 보는 개인용 레퍼런스에 가깝습니다.
+이번 글에서는 내가 실제 작업에서 반복해서 사용하는 Git 명령어를 **설정**, **변경 확인**, **브랜치 작업**, **원격 저장소 작업**처럼 목적별로 정리해 보려고 합니다. 완전한 Git 문서라기보다 자주 꺼내 보는 개인용 레퍼런스에 가깝습니다.
 
 ## 1. 사용자 정보와 기본 설정
 
@@ -24,7 +24,7 @@ git config --global user.email <사용자_이메일주소>
 git config --global pull.rebase true
 ```
 
-특히 `pull.rebase true`는 개인적으로 자주 켜 두는 옵션입니다. `git pull` 할 때 불필요한 merge commit 생성을 줄여서 히스토리를 조금 더 단순하게 유지할 수 있습니다.
+특히 `pull.rebase true`는 개인적으로 자주 켜 두는 옵션입니다. `git pull` 할 때 불필요한 merge commit이 생기는 일을 줄여 히스토리를 조금 더 단순하게 유지할 수 있습니다.
 
 ## 2. 파일 스테이징
 
@@ -35,7 +35,7 @@ git add .
 git add -p
 ```
 
-`git add .`은 빠르게 전체 변경 사항을 스테이징할 때 편합니다.  반면 `git add -p`는 변경 내용을 덩어리 단위로 나눠서 선택적으로 올릴 수 있어서 커밋을 더 작고 명확하게 나누고 싶을 때 유용합니다.
+`git add .`은 빠르게 전체 변경 사항을 스테이징할 때 편합니다. 반면 `git add -p`는 변경 내용을 덩어리 단위로 나눠서 선택적으로 올릴 수 있어서 커밋을 더 작고 명확하게 나누고 싶을 때 유용합니다.
 
 ## 3. 변경 내용 확인
 
@@ -49,7 +49,7 @@ git diff --cached | xclip -selection clipboard
 
 `git diff --cached`는 현재 스테이징된 변경 사항만 보여 줍니다. 리뷰 요청 전에 diff를 복사해야 할 때는 macOS에서는 `pbcopy`, Linux에서는 `xclip` 조합이 편합니다.
 
-macOS 터미널(iTerm2)에서 SSH로 Linux 서버에 접속해 작업할 때도 비슷하게 쓸 수 있습니다. 서버의 `~/.bashrc`에 아래 함수를 추가해 두면, 원격 서버에서 실행한 결과를 로컬 macOS의 클립보드로 보낼 수 있습니다.
+macOS 터미널(iTerm2)에서 SSH로 Linux 서버에 접속해 작업할 때도 비슷하게 쓸 수 있습니다. 서버의 `~/.bashrc`에 아래 함수를 추가해 두면 원격 서버에서 실행한 결과를 로컬 macOS의 클립보드로 보낼 수 있습니다.
 
 ```bash
 pbcopy() {
@@ -66,7 +66,7 @@ git commit
 git commit --amend
 ```
 
-`git commit`은 기본 커밋이고, `git commit --amend`는 직전 커밋을 수정할 때 씁니다. 커밋 메시지 오타를 고치거나, 빠뜨린 파일 하나를 같은 커밋에 묶고 싶을 때 자주 사용합니다.
+`git commit`은 기본 커밋이고, `git commit --amend`는 직전 커밋을 수정할 때 씁니다. 커밋 메시지 오타를 고치거나 빠뜨린 파일 하나를 같은 커밋에 묶고 싶을 때 자주 사용합니다.
 
 ## 5. 브랜치 관리
 
@@ -105,7 +105,7 @@ git push origin master
 git push origin main --tags
 ```
 
-새 브랜치를 처음 푸시할 때는 `--set-upstream` 또는 `-u` 옵션을 자주 씁니다. 한 번 upstream이 연결되면 이후에는 보통 `git push`만으로 충분하다.
+새 브랜치를 처음 푸시할 때는 `--set-upstream` 또는 `-u` 옵션을 자주 씁니다. 한 번 upstream이 연결되면 이후에는 보통 `git push`만으로 충분합니다.
 
 ## 8. pull & rebase
 
@@ -126,7 +126,7 @@ git rebase --continue
 git cherry-pick <커밋_해시>
 ```
 
-예를 들어 핫픽스 커밋 하나만 별도 브랜치에 반영하거나, 실수로 다른 브랜치에서 작업한 변경을 옮겨야 할 때 많이 씁니다.
+예를 들어 핫픽스 커밋 하나만 별도 브랜치에 반영하거나 실수로 다른 브랜치에서 작업한 변경을 옮겨야 할 때 많이 씁니다.
 
 ## 10. 브랜치 이름 변경
 
@@ -140,7 +140,7 @@ git branch -M main
 
 ## 11. 태그 관리
 
-릴리즈 시점을 이름 붙여 남기고 싶을 때 사용하는 명령어다.
+릴리즈 시점을 이름 붙여 남기고 싶을 때 사용하는 명령어입니다.
 
 ```bash
 git tag v0.3-rflink-state-read
@@ -154,7 +154,7 @@ git push origin --delete tag rflink-state-read
 
 ## 12. 로그
 
-히스토리를 빠르게 훑어볼 때 가장 자주 쓰는 기본 명령어다.
+히스토리를 빠르게 훑어볼 때 가장 자주 쓰는 기본 명령어입니다.
 
 ```bash
 git log
@@ -162,3 +162,10 @@ git log --oneline
 ```
 
 `git log`는 자세한 정보를 확인할 때, `git log --oneline`은 흐름을 빠르게 볼 때 편합니다. 개인적으로는 대부분 `--oneline`부터 확인한 뒤 필요할 때만 자세한 로그를 다시 봅니다.
+
+## Git 치트시트
+
+명령어를 한눈에 훑어보고 싶을 때는 아래 치트시트를 참고할 수 있습니다. 같은 내용을 세로형과 가로형으로 정리한 PDF입니다.
+
+- [Git 치트시트 — 세로형 PDF](https://www.dropbox.com/scl/fi/mf84tfp0m31ut3tn6b59e/git-cheatsheet-en.pdf?rlkey=pixi5n79pzv3x2egokb3wf07g&st=qkugnoof&dl=0)
+- [Git 치트시트 — 가로형 PDF](https://www.dropbox.com/scl/fi/4zggw4ww5wqg10vnifybm/git-cheatsheet-landscape-en.pdf?rlkey=12t2rc2ndhg5w13gvd6jgen3s&st=a38epwt5&dl=0)
