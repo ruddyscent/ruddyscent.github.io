@@ -27,8 +27,8 @@ author: 전경원
 - `thumbnail-img`는 주제에 따라 다르다:
   - C#: `csharp.webp`
   - Git: `git.webp`
-  - Docker/DevContainer: `docker.webp`
-  - VSCode/IDE: `vscode.webp`
+  - Docker 자체 또는 일반 DevContainer 환경: `docker.webp`
+  - 편집기 및 Codex 개발 환경 문제 해결: `editor.webp`
   - Python/ML: `python.webp`
   - HoverPilot/RC: `toy-plane.webp`
   - 기타(기본): `develop.jpeg`
