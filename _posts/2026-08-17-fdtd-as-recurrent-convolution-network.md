@@ -4,7 +4,7 @@ title: FDTD를 펼쳐 보면 RNN이 된다
 subtitle: 공간 차분은 합성곱이고, 시간 갱신은 순환 구조다
 tags: [fdtd, rnn, cnn, deep-learning, pytorch, numerical-methods]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/pytorch-wood.webp
+thumbnail-img: /assets/img/fdtd-sinc-field.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 mathjax: true

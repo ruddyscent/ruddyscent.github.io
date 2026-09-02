@@ -4,7 +4,7 @@ title: IonosphereFDTD - PyTorch로 FDTD 계산을 가속하기
 subtitle: 전자기장 값과 계산 루틴을 같은 장치에 배치해야 GPU 활용도가 높아진다
 tags: [fdtd, simulation, ionosphere, pytorch, gpu, cuda, numerical-methods]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/pytorch-wood.webp
+thumbnail-img: /assets/img/ionosphere-fdtd-globe-simple.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 mathjax: true
