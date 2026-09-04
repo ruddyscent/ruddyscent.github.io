@@ -167,5 +167,5 @@ git log --oneline
 
 명령어를 한눈에 훑어보고 싶을 때는 아래 치트시트를 참고할 수 있습니다. 같은 내용을 세로형과 가로형으로 정리한 PDF입니다.
 
-- [Git 치트시트 — 세로형 PDF](https://www.dropbox.com/scl/fi/mf84tfp0m31ut3tn6b59e/git-cheatsheet-en.pdf?rlkey=pixi5n79pzv3x2egokb3wf07g&st=qkugnoof&dl=0)
-- [Git 치트시트 — 가로형 PDF](https://www.dropbox.com/scl/fi/4zggw4ww5wqg10vnifybm/git-cheatsheet-landscape-en.pdf?rlkey=12t2rc2ndhg5w13gvd6jgen3s&st=a38epwt5&dl=0)
+- [Git 치트시트 — 세로형 PDF](https://www.dropbox.com/scl/fi/bhqnsxap0k1b6gsm8wbpx/git-cheatsheet-en.pdf?rlkey=67c2j8lnu5m9r4anzgrtc1cm8&st=yju89how&dl=0)
+- [Git 치트시트 — 가로형 PDF](https://www.dropbox.com/scl/fi/eq68lfbhff0u2ek9zqzl3/git-cheatsheet-landscape-en.pdf?rlkey=ke6uuujx5ggsqkcja5a0f2ac8&st=ff9nscww&dl=0)
