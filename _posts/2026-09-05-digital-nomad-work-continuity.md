@@ -4,7 +4,7 @@ title: 장소가 바뀌어도 작업을 이어가는 원격 개발 환경
 subtitle: 노트북은 접속점으로 두고 실제 작업은 집의 여러 머신에 남겨 둔다
 tags: [remote-development, vpn, ssh, herdr, digital-nomad, security]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/editor.webp
+thumbnail-img: /assets/img/terminal.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 description: ASUS 공유기의 DDNS와 WireGuard VPN, SSH 공개키 인증, Herdr를 연결해 외부에서도 집의 GPU·Edge·Windows 머신에 안전하게 접속하고 작업 세션을 이어가는 구성.
