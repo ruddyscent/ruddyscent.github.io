@@ -4,7 +4,7 @@ title: "FrozenLake: Q 학습으로 얼음 호수 건너기"
 subtitle: "목표에 도착한 경험을 표에 조금씩 쌓습니다"
 tags: [python, reinforcement-learning, gymnasium, q-learning]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/python.webp
+thumbnail-img: /assets/img/gymnasium-playbook.png
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
