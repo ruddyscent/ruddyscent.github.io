@@ -9,11 +9,11 @@ share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 
-함수가 돌려준 값은 맞는데, 같은 함수에 같은 텐서를 다시 넣으면 결과가 틀릴 수 있을까요?
+함수가 돌려준 값은 맞는데 같은 함수에 같은 텐서를 다시 넣으면 결과가 틀릴 수 있을까요?
 
 입력 텐서(tensor)의 값을 함수가 직접 바꾸는 경우입니다. 반환값을 올바르게 계산하더라도 원래 텐서에 변경을 남기지 못하면 다음 호출은 잘못된 값에서 시작합니다.
 
-PyTorch의 [이슈 #195327](https://github.com/pytorch/pytorch/issues/195327)은 `torch.while_loop`를 컴파일할 때 나타나는 이런 오류를 다룹니다. 수정안인 [PR #195393](https://github.com/pytorch/pytorch/pull/195393)의 핵심은 반복문의 본문뿐 아니라 **조건을 검사하면서 바꾸는 값도 컴파일러가 추적해야 한다**는 것입니다.
+PyTorch의 [이슈 #195327](https://github.com/pytorch/pytorch/issues/195327)은 `torch.while_loop`를 컴파일할 때 나타나는 이런 오류를 다룹니다. 2026년 9월 4일 PyTorch에 반영된 [PR #195393](https://github.com/pytorch/pytorch/pull/195393)의 핵심은 반복문의 본문뿐 아니라 **조건을 검사하면서 바꾸는 값도 컴파일러가 추적해야 한다**는 것입니다.
 
 ## 1. 반환값과 원래 텐서는 따로 확인해야 한다
 
@@ -93,7 +93,9 @@ def f(state):
 
 따라서 함수가 끝나면 누적값은 약 `0.6`, `state`는 `0.1`입니다. 소수 계산은 읽기 쉽게 반올림했습니다.
 
-이 예제에서는 `i`, `acc`처럼 다음 반복에 넘기는 값을 **반복 전달 입력(carried inputs)**이라고 합니다. `state`는 여기에 포함되지 않고 바깥에서 참조하는 텐서입니다. 분석 대상 버전의 [`while_loop` 제약 사항](https://github.com/pytorch/pytorch/blob/e4d9b6187e6ef2635cc2b648fbb409d25d6a9d9a/torch/_higher_order_ops/while_loop.py#L192-L209)은 추론 중 이런 외부 텐서의 변경을 허용합니다. 반복 전달 입력 자체의 제자리 변경이나 외부 파이썬 사전·리스트의 변경까지 허용하는 것은 아닙니다.
+이 예제에서는 `i`, `acc`처럼 다음 반복에 넘기는 값을 **반복 전달 입력(carried inputs)**이라고 합니다. `state`는 여기에 포함되지 않고 바깥에서 참조하는 텐서입니다. 분석 대상 버전의 [`while_loop` 제약 사항](https://github.com/pytorch/pytorch/blob/fc660a81ddb088588f79920decaa9aabe7734cb7/torch/_higher_order_ops/while_loop.py#L192-L203)은 추론 중 이런 외부 텐서의 변경을 허용합니다. 반복 전달 입력 자체의 제자리 변경이나 외부 파이썬 사전·리스트의 변경은 허용하지 않습니다.
+
+외부 텐서와 반복 전달 입력을 함께 변경하면 검사가 우회될 수 있다는 [후속 이슈 #195966](https://github.com/pytorch/pytorch/issues/195966)도 보고되어 있습니다. 이 글은 문서에서 허용하는 외부 텐서만 변경하는 경우로 범위를 한정합니다.
 
 ## 3. 첫 호출에서는 숨고 두 번째 호출에서 드러나는 오류
 
@@ -147,7 +149,7 @@ def f(state):
 
 ## 5. 수정: 조건과 본문이 바꾸는 텐서를 모두 기록한다
 
-PR은 조건 함수의 변경을 찾고, 그 사실을 실행 순서에 반영합니다.
+PR은 조건 함수의 변경을 찾아 그 사실을 실행 순서에 반영합니다.
 
 ### 조건 함수도 조사하기
 
@@ -167,11 +169,9 @@ PR은 조건 함수의 변경을 찾고, 그 사실을 실행 순서에 반영�
 
 변경을 찾은 뒤에는 스케줄러에도 그 사실을 알려야 합니다.
 
-Inductor는 `MutationOutput`이라는 내부 기록으로 “이 연산은 기존 텐서의 저장 공간을 바꾼다”는 사실을 나타냅니다. 이름에 `Output`이 있지만 사용자에게 새 반환값을 하나 더 돌려준다는 뜻은 아닙니다. [`MutationOutput` 구현](https://github.com/pytorch/pytorch/blob/88db2f793a1ba3530bd13a45f5988bc219f9e714/torch/_inductor/ir.py#L8374-L8396)도 새 저장 공간을 할당하지 않고 기존 공간의 변경을 등록합니다.
+Inductor는 `MutationOutput`이라는 내부 기록으로 “이 연산은 기존 텐서의 저장 공간을 바꾼다”는 사실을 나타냅니다. 이름에 `Output`이 있지만 사용자에게 새 반환값을 하나 더 돌려준다는 뜻은 아닙니다. [`MutationOutput` 구현](https://github.com/pytorch/pytorch/blob/fc660a81ddb088588f79920decaa9aabe7734cb7/torch/_inductor/ir.py#L8374-L8396)도 새 저장 공간을 할당하지 않고 기존 공간의 변경을 등록합니다.
 
-PR의 [`WhileLoop.create` 수정](https://github.com/pytorch/pytorch/blob/88db2f793a1ba3530bd13a45f5988bc219f9e714/torch/_inductor/ir.py#L11795-L11865)은 조건과 본문 양쪽에서 변경을 찾고, `state` 같은 외부 입력의 변경도 이 방식으로 등록합니다. 그러면 스케줄러가 원래 텐서에 복사하는 연산을 반복문 앞으로 옮기지 않도록 필요한 의존성을 표현할 수 있습니다.
-
-PR에는 [입력 선택 방식의 수정](https://github.com/pytorch/pytorch/blob/88db2f793a1ba3530bd13a45f5988bc219f9e714/torch/_inductor/ir.py#L11833-L11841)도 있습니다. 변경을 발견한 순서대로 입력을 꺼내는 대신, 입력의 위치 번호로 정확한 대상을 고릅니다. 변경을 빠짐없이 찾는 것과 그 변경을 올바른 텐서에 연결하는 것 모두 필요합니다.
+PR은 [`WhileLoop.create`](https://github.com/pytorch/pytorch/blob/fc660a81ddb088588f79920decaa9aabe7734cb7/torch/_inductor/ir.py#L11791-L11872)에서 조건과 본문 양쪽의 변경을 찾습니다. `state` 같은 외부 입력의 변경도 이 방식으로 등록합니다. 그러면 스케줄러는 원래 텐서에 복사하는 연산을 반복문 앞으로 옮기지 않도록 필요한 의존성을 표현할 수 있습니다.
 
 ## 6. 확인: 같은 텐서로 다시 호출해 보기
 
@@ -182,9 +182,9 @@ PR에는 [입력 선택 방식의 수정](https://github.com/pytorch/pytorch/blo
 
 이어서 텐서를 초기화하지 않고 같은 함수에 다시 넣어 봐야 합니다. 매번 새 텐서로 시작하면 앞선 호출이 잘못 남긴 상태를 다음 호출에서 사용하는지 확인하지 못합니다.
 
-PR의 [반복 호출 테스트](https://github.com/pytorch/pytorch/blob/88db2f793a1ba3530bd13a45f5988bc219f9e714/test/functorch/test_control_flow.py#L12650-L12749)는 같은 상태로 세 번 호출하면서 반환값과 원래 텐서를 매번 비교합니다.
+PR의 [반복 호출 테스트](https://github.com/pytorch/pytorch/blob/fc660a81ddb088588f79920decaa9aabe7734cb7/test/functorch/test_control_flow.py#L13210-L13249)는 같은 상태로 세 번 호출하면서 반환값과 원래 텐서를 매번 비교합니다.
 
-본문을 한 번도 실행하지 않는 경우도 중요합니다. 조건이 처음부터 거짓이어도 조건 함수는 한 번 실행합니다. 위 예제에서 조건을 그렇게 바꾸면 `state`는 `1.0 × 0.8 × 0.5 = 0.4`가 되어야 합니다. “본문을 실행하지 않았으니 아무 값도 바뀌지 않았다”고 판단하면 이 경우도 놓칩니다.
+본문을 한 번도 실행하지 않는 경우도 중요합니다. PR의 테스트처럼 조건 함수가 거짓인 텐서를 반환하면 본문은 실행하지 않아도 조건 함수는 한 번 실행합니다. 위 예제에서 조건을 그렇게 바꾸면 `state`는 `1.0 × 0.8 × 0.5 = 0.4`가 되어야 합니다. 반면 파이썬 상수 `False`를 반환할 때는 Dynamo가 조건 함수의 외부 텐서 변경을 누락하는 [별도 이슈 #195970](https://github.com/pytorch/pytorch/issues/195970)이 남아 있습니다.
 
 ## 맺음말
 
@@ -192,4 +192,4 @@ PR의 [반복 호출 테스트](https://github.com/pytorch/pytorch/blob/88db2f79
 
 상태를 계속 갱신하는 코드를 검사할 때는 반환값과 함께 **이번 호출이 다음 호출에 어떤 값을 남기는지**도 확인해야 합니다.
 
-> 이 글은 2026년 9월 7일자 포스트입니다. 분석 기준은 PR의 `88db2f793a1ba3530bd13a45f5988bc219f9e714` 커밋과 관련 논의입니다. PyTorch 재현 코드나 PR 테스트를 새로 실행하지는 않았습니다. 실행 결과는 이슈·PR의 보고를 인용하고, 구현 설명은 해당 코드와 원인 분석을 바탕으로 합니다. AI의 도움으로 조사하고 작성한 글입니다.
+> 이 글은 2026년 9월 7일자 포스트입니다. 분석 기준은 PyTorch에 반영된 `fc660a81ddb088588f79920decaa9aabe7734cb7` 커밋과 관련 논의입니다. PyTorch 재현 코드나 PR 테스트를 새로 실행하지는 않았습니다. 실행 결과는 이슈·PR의 보고를 인용하며 구현 설명은 해당 코드와 원인 분석을 바탕으로 합니다. AI의 도움으로 조사하고 작성한 글입니다.
