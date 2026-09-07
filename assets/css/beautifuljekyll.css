@@ -559,9 +559,6 @@ footer .footer-custom-content {
   max-height: 100%;
   max-width: 100%;
 }
-.post-preview .post-image img[src$="/assets/img/gymnasium-playbook.png"] {
-  transform: scale(0.9);
-}
 .post-preview .post-image-short {
   margin-top: -2.1875rem;
 }
