@@ -1,6 +1,9 @@
 {% if page.mathjax %}
 <script type="text/javascript">
   window.MathJax = {
+    chtml: {
+      mtextInheritFont: true
+    },
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
       processEscapes: true
