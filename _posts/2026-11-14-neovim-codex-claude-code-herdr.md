@@ -48,6 +48,11 @@ workspace: my-project
     └── pane: codex   ── codex
 ```
 
+다음은 이 구성에서 `editor`와 `claude` 두 pane만 띄운 실제 화면입니다.
+
+![Herdr의 coding tab에서 왼쪽 editor pane에 Neovim, 오른쪽 claude pane에 Claude Code를 띄운 화면](/assets/img/herdr-neovim-claude-pane.webp)
+*Herdr tab 하나에 Neovim과 Claude Code를 나란히 띄운 화면 (Ghostty 1.4.0, Herdr 0.9.5, Neovim 0.12.6, Claude Code 2.1.311)*
+
 이렇게 나누면 앞에서 본 제약이 대부분 사라집니다.
 
 - 각 프로그램이 자기 키 입력을 그대로 받으므로 `Esc`를 두고 Neovim과 에이전트가 다투지 않습니다.
