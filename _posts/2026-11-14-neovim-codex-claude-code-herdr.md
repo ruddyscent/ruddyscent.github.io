@@ -51,7 +51,7 @@ workspace: my-project
 다음은 이 구성에서 `editor`와 `claude` 두 pane만 띄운 실제 화면입니다.
 
 ![Herdr의 coding tab에서 왼쪽 editor pane에 Neovim, 오른쪽 claude pane에 Claude Code를 띄운 화면](/assets/img/herdr-neovim-claude-pane.webp)
-*Herdr의 `coding` tab을 두 pane으로 나눠 왼쪽에서는 Neovim으로 [이전 글](/2026-11-07-neovim-github-highlight/)의 `demo.py`를 열고, 오른쪽에서는 Claude Code에게 같은 파일에 대해 물었습니다. Codex pane은 생략했고 Claude Code는 IDE 연동 없이 실행했습니다. macOS에서 Ghostty 1.4.0, Herdr 0.9.5, Neovim 0.12.6, Claude Code 2.1.311로 촬영했습니다.*
+*Herdr tab 하나에 Neovim과 Claude Code를 나란히 띄운 화면 (Ghostty 1.4.0, Herdr 0.9.5, Neovim 0.12.6, Claude Code 2.1.311)*
 
 이렇게 나누면 앞에서 본 제약이 대부분 사라집니다.
 
