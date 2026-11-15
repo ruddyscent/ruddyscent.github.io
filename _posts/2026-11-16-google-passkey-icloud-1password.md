@@ -1,10 +1,10 @@
 ---
 layout: post
-title: 구글 계정에 패스키 두 개 쓰기, iCloud 키체인과 1Password
+title: 구글 계정의 패스키를 1Password로 관리하기
 subtitle: iCloud 패스키는 바로 됐는데, 1Password 패스키는 한참을 찾아다녔다
 tags: [passkey, security, google, icloud, 1password, macos, ios]
 cover-img: /assets/img/develop.jpeg
-thumbnail-img: /assets/img/develop.jpeg
+thumbnail-img: /assets/img/security.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 description: 패스키의 동작 원리부터 iPhone·Mac 설정, 구글 계정에 iCloud 키체인과 1Password 패스키를 함께 등록하는 과정, 1Password 패스키가 로그인 창에 보이지 않을 때 확인할 설정까지 스크린샷으로 정리한다.
@@ -40,7 +40,7 @@ description: 패스키의 동작 원리부터 iPhone·Mac 설정, 구글 계정�
 
 패스키는 **패스키 관리자**에 저장됩니다. Apple 기기라면 **iCloud 키체인**(암호 앱)이 기본이고, 1Password나 Google 비밀번호 관리자 같은 서드파티 관리자를 쓸 수도 있습니다. 클라우드로 동기화되는 관리자를 쓰면 휴대폰을 잃어버려도 새 기기에서 그대로 쓸 수 있어요.
 
-저는 Apple 기기에서는 iCloud 키체인을, 다른 환경에서는 1Password를 쓰려고 **두 곳에 각각 패스키를 만들기로** 했습니다. 패스키는 한 계정에 여러 개를 등록할 수 있어서, 하나가 문제 생겨도 다른 하나로 로그인할 수 있다는 장점도 있어요.
+저는 Apple 외의 기기에서는 iCloud 키체인을, 다른 환경에서는 1Password를 쓰려고 **두 곳에 각각 패스키를 만들기로** 했습니다. 패스키는 한 계정에 여러 개를 등록할 수 있어서, 하나가 문제 생겨도 다른 하나로 로그인할 수 있다는 장점도 있어요.
 
 ## 2. 준비하기: iPhone과 Mac 설정
 

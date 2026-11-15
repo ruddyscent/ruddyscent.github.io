@@ -32,6 +32,7 @@ author: 전경원
   - Python/ML: `python.webp`
   - PyTorch: `pytorch-wood.webp`
   - HoverPilot/RC: `toy-plane.webp`
+  - 암호, 인증, 패스키 등 보안: `security.webp`
   - 기타(기본): `develop.jpeg`
 - SEO가 필요한 포스트는 `description` 필드를 추가한다.
 - `author`는 항상 `전경원`.
