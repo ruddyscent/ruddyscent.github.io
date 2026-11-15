@@ -3,7 +3,7 @@ layout: post
 title: 에이전트마다 브라우저를 따로 쥐여 주기
 subtitle: 에이전트는 여럿 띄워도, 브라우저를 함께 쓰지 못하면 동시에 개발할 수 없다
 tags: [codex, claude-code, playwright, mcp, workflow]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/terminal.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

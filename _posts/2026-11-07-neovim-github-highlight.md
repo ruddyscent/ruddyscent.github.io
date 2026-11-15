@@ -3,7 +3,7 @@ layout: post
 title: Neovim에 Tree-sitter와 GitHub 색상 테마 적용하기
 subtitle: 터미널에서도 익숙한 GitHub 색상으로 코드를 읽습니다
 tags: [neovim, treesitter, development]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/editor.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

@@ -3,7 +3,7 @@ layout: post
 title: 내가 자주 쓰는 Git 명령어 정리
 subtitle: 매번 검색하지 않으려고 모아둔 실전 Git 커맨드
 tags: [git, github, version-control, developer-tools]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/git.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

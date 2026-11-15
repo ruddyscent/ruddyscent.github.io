@@ -3,7 +3,7 @@ layout: post
 title: 구글 계정의 패스키를 1Password로 관리하기
 subtitle: iCloud 키체인과 1Password에 하나씩 두고 쓰는 구글 패스키
 tags: [passkey, security, google, icloud, 1password, macos, ios]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/security.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

@@ -3,7 +3,7 @@ layout: post
 title: 니시무라 야스히로의 "그림으로 배우는 서버 구조"를 읽고
 subtitle: 담백하고 정확한 서버 입문 사전
 tags: [book, review, server]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/reading.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

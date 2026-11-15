@@ -3,7 +3,7 @@ layout: post
 title: "무덤덤함은 죄가 되는가 — 카뮈의 『이방인』을 읽고"
 subtitle: 우리는 타인의 삶을 자신의 잣대로 함부로 재단하는 야만적인 태도에서 벗어났을까요?
 tags: [book, review, camus]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/reading.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

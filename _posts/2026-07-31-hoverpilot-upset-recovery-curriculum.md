@@ -9,7 +9,7 @@ tags:
 - curriculum
 - realflight
 - python
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/toy-plane.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

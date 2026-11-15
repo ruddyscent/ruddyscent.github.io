@@ -3,7 +3,7 @@ layout: post
 title: "EdgeTrader - 강화학습 기반 암호화폐 자동매매 프로젝트를 시작하며"
 subtitle: 모델보다 데이터와 비용 모델을 먼저 세우기로 한 이유
 tags: [reinforcement-learning, trading, cryptocurrency, korbit, jetson, ppo, timescaledb, python]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/edge-trader.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

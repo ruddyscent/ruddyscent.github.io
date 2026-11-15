@@ -3,7 +3,7 @@ layout: post
 title: 10년 넘게 멈춘 GMES를 다시 시작한다
 subtitle: 오래된 FDTD 코드를 현대 개발 환경으로 옮겨, 다시 믿고 실험할 수 있는 도구로
 tags: [gmes, fdtd, simulation, electromagnetics, python, numerical-methods]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/fdtd-sinc-field.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

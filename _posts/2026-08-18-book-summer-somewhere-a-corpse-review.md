@@ -3,7 +3,7 @@ layout: post
 title: 박연선 작가의 "여름, 어디선가 시체가"를 읽고
 subtitle: 서정적인 시골 분위기에 속지 마시길, 이건 추리소설이다
 tags: [book, review, mystery]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/reading.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

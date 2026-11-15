@@ -2,7 +2,7 @@
 layout: page
 title: 진행 중(?)인 프로젝트
 subtitle: 고민하거나 만지작거리는 것들
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/toy-plane.webp
 share-img: /assets/img/develop.jpeg
 ---

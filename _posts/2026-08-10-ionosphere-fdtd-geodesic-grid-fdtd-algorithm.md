@@ -3,7 +3,7 @@ layout: post
 title: IonosphereFDTD - 측지 격자로 구면 계산 공간 만들기
 subtitle: 정이십면체를 세분해 전자기장이 놓일 격자를 구성한다
 tags: [fdtd, simulation, ionosphere, electromagnetics, geophysics, numerical-methods]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/ionosphere-fdtd-globe-simple.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

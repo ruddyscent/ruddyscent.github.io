@@ -3,7 +3,7 @@ layout: post
 title: IonosphereFDTD - 지표와 전리층이 구성하는 도파관의 시뮬레이션
 subtitle: 지표와 하부 전리층 사이에서 ELF 전파가 전파되어 간다
 tags: [fdtd, simulation, ionosphere, electromagnetics, geophysics]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/ionosphere-fdtd-globe-simple.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

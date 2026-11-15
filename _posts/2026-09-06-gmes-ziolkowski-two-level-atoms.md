@@ -3,7 +3,7 @@ layout: post
 title: GMES로 재현한 초단 펄스와 두 준위 원자의 상호작용
 subtitle: 논문의 그림 12개로 살펴본 빛과 원자의 상호작용
 tags: [gmes, fdtd, simulation, electromagnetics, photonics]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/fdtd-sinc-field.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

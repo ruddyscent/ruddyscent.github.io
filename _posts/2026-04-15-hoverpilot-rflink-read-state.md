@@ -3,7 +3,7 @@ layout: post
 title: HoverPilot - RealFlight Link로 상태 정보 읽어오기
 subtitle: SOAP 요청을 통해 XML 응답에서 비행 상태를 추출해보자
 tags: [hoverpilot, realflight, realflight-link, flightaxis, python, sitl, rc-airplane]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/toy-plane.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
