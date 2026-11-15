@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 구글 계정의 패스키를 1Password로 관리하기
-subtitle: iCloud 패스키는 바로 됐는데, 1Password 패스키는 한참을 찾아다녔다
+subtitle: iCloud 키체인과 1Password에 하나씩 두고 쓰는 구글 패스키
 tags: [passkey, security, google, icloud, 1password, macos, ios]
 cover-img: /assets/img/develop.jpeg
 thumbnail-img: /assets/img/security.webp
@@ -10,7 +10,7 @@ author: 전경원
 description: 패스키의 동작 원리부터 iPhone·Mac 설정, 구글 계정에 iCloud 키체인과 1Password 패스키를 함께 등록하는 과정, 1Password 패스키가 로그인 창에 보이지 않을 때 확인할 설정까지 스크린샷으로 정리한다.
 ---
 
-비밀번호 없이 지문이나 Face ID만으로 구글에 로그인하는 **[패스키(passkey)](https://fidoalliance.org/passkeys/)**를 설정해 봤습니다. 저는 패스키를 두 개 만들어서 하나는 **iCloud 키체인**에, 하나는 **1Password**에 저장했어요. 그런데 iCloud 쪽은 바로 됐는데 1Password 쪽은 로그인할 때 패스키가 안 보여서 한참 헤맸습니다.
+비밀번호 없이 지문이나 Face ID만으로 구글에 로그인하는 **[패스키(passkey)](https://fidoalliance.org/passkeys/)**를 설정해 봤습니다. 저는 패스키를 두 개 만들어서 하나는 **iCloud 키체인**에, 하나는 **1Password**에 저장해 두었습니다.
 
 이 글에서는 패스키가 무엇인지부터 시작해서 Mac과 iPhone 설정, 구글 계정에 패스키를 등록하는 과정, 그리고 제가 겪은 문제를 해결한 방법까지 순서대로 정리했습니다.
 
@@ -40,7 +40,7 @@ description: 패스키의 동작 원리부터 iPhone·Mac 설정, 구글 계정�
 
 패스키는 **패스키 관리자**에 저장됩니다. Apple 기기라면 **iCloud 키체인**(암호 앱)이 기본이고, 1Password나 Google 비밀번호 관리자 같은 서드파티 관리자를 쓸 수도 있습니다. 클라우드로 동기화되는 관리자를 쓰면 휴대폰을 잃어버려도 새 기기에서 그대로 쓸 수 있어요.
 
-저는 Apple 외의 기기에서는 iCloud 키체인을, 다른 환경에서는 1Password를 쓰려고 **두 곳에 각각 패스키를 만들기로** 했습니다. 패스키는 한 계정에 여러 개를 등록할 수 있어서, 하나가 문제 생겨도 다른 하나로 로그인할 수 있다는 장점도 있어요.
+저는 Apple 기기에서는 iCloud 키체인을, 그 밖의 환경에서는 1Password를 쓰려고 **두 곳에 각각 패스키를 만들기로** 했습니다. 패스키는 한 계정에 여러 개를 등록할 수 있어서, 하나가 문제 생겨도 다른 하나로 로그인할 수 있다는 장점도 있어요.
 
 ## 2. 준비하기: iPhone과 Mac 설정
 
@@ -111,6 +111,7 @@ Chrome에서 1Password 확장 프로그램을 쓴다면 확장 프로그램 쪽 
 ![1Password 확장 프로그램 설정의 자동으로 채우기 영역. 패스키로 로그인하도록 제안 스위치가 켜져 있다](/assets/img/passkey-1password-extension-passkey.webp)
 
 데스크톱 앱 설정(③)은 macOS 자동 완성을 거치는 경로를, 확장 프로그램 설정(④)은 Chrome 페이지 안에서 1Password 창을 바로 띄우는 경로를 맡습니다. 둘 다 켜 두는 게 가장 편해요. 이 설정들은 뒤의 5절 문제 해결에서 다시 다룹니다.
+
 ## 3. 구글 계정에 패스키 만들기
 
 ### 3-1. 패스키 메뉴 찾아가기
