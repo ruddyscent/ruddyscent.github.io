@@ -28,11 +28,11 @@ author: 전경원
   - C#: `csharp.webp`
   - Git: `git.webp`
   - Docker 자체 또는 일반 DevContainer 환경: `docker.webp`
-  - 편집기 및 Codex 개발 환경 문제 해결: `editor.webp`
+  - 편집기 및 Codex 개발 환경 문제 해결(로그인·인증 문제 제외): `editor.webp`
   - Python/ML: `python.webp`
   - PyTorch: `pytorch-wood.webp`
   - HoverPilot/RC: `toy-plane.webp`
-  - 암호, 인증, 패스키 등 보안: `security.webp`
+  - 암호, 인증, 패스키, 원격 접속 보안, Codex 로그인 문제 해결: `security.webp`
   - 기타(기본): `develop.webp`
 - SEO가 필요한 포스트는 `description` 필드를 추가한다.
 - `author`는 항상 `전경원`.
