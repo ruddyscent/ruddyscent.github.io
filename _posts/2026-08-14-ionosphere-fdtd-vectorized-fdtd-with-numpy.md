@@ -3,7 +3,7 @@ layout: post
 title: IonosphereFDTD - 불규칙한 구면 격자를 NumPy 배열로 계산하기
 subtitle: 오각형과 육각형도 접속 관계를 표로 만들면 한 번에 계산할 수 있다
 tags: [fdtd, simulation, ionosphere, numpy, python, numerical-methods]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/ionosphere-fdtd-globe-simple.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

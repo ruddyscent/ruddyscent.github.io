@@ -1,6 +1,6 @@
 ---
 author: 전경원
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 layout: post
 share-img: /assets/img/develop.jpeg
 subtitle: state, action, reward를 하나의 RL environment로 묶는 과정

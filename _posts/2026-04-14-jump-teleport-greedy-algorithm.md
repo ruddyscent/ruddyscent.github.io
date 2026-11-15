@@ -3,7 +3,7 @@ layout: post
 title: 점프와 순간이동 문제 — 탐욕 알고리즘
 subtitle: 이진수로 바라보는 깔끔한 그리디 풀이
 tags: [algorithm, greedy, csharp, codingtest]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/csharp.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

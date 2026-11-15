@@ -3,7 +3,7 @@ layout: post
 title: 심볼릭 링크로 Claude Code와 Codex의 리뷰 스킬 공유하기
 subtitle: PyTorch의 리뷰 지침은 하나로 두고 탐색 경로만 연결한다
 tags: [codex, git, troubleshooting, skills, pytorch]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/pytorch-wood.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

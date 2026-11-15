@@ -3,7 +3,7 @@ layout: post
 title: Ghostty와 Herdr로 Codex CLI 작업 환경 나누기
 subtitle: 터미널 창이 아니라 코드가 있는 머신에서 AI 에이전트 세션을 유지한다
 tags: [codex, herdr, ghostty, remote-development, workflow]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/terminal.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

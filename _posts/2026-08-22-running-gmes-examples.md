@@ -3,7 +3,7 @@ layout: post
 title: GMES 예제 9개를 Python 3.14에서 다시 돌려봤다
 subtitle: 공기 중 원통파부터 금 박막의 Fresnel 반사까지, 오래된 예제가 다시 움직였다
 tags: [gmes, fdtd, simulation, electromagnetics, python, photonics]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/fdtd-sinc-field.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

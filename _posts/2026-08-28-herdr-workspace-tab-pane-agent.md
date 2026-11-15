@@ -3,7 +3,7 @@ layout: post
 title: Herdr의 workspace, tab, pane, agent 구분하기
 subtitle: 다른 저장소는 workspace로, 같은 프로젝트의 화면은 tab과 pane으로 나눈다
 tags: [codex, herdr, terminal, workflow]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/terminal.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

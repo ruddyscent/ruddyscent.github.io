@@ -3,7 +3,7 @@ layout: post
 title: PyTorch Inductor의 불필요한 텐서 복사 줄이기
 subtitle: PyTorch 함수형 변환과 제자리 연산 복원을 작은 예제로 이해하기
 tags: [pytorch, compiler, optimization, python, inductor, functionalization, reinplacing]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/pytorch-wood.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

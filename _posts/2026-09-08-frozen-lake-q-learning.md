@@ -3,7 +3,7 @@ layout: post
 title: "Q 학습: FrozenLake에서 목표까지의 길 배우기"
 subtitle: "다음 칸의 값을 빌려 지금의 선택을 고칩니다"
 tags: [python, reinforcement-learning, gymnasium, q-learning]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/parchment-map.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

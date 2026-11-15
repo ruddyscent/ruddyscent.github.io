@@ -16,14 +16,14 @@ layout: post
 title: 제목
 subtitle: 부제목
 tags: [tag1, tag2]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/TOPIC.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
 ---
 ```
 
-- `cover-img`와 `share-img`는 기본적으로 `/assets/img/develop.jpeg`를 쓴다.
+- `cover-img`는 기본적으로 `/assets/img/develop.webp`를 쓴다. `share-img`는 링크 미리보기 호환성을 위해 JPEG인 `/assets/img/develop.jpeg`를 유지한다.
 - `thumbnail-img`는 주제에 따라 다르다:
   - C#: `csharp.webp`
   - Git: `git.webp`
@@ -33,7 +33,7 @@ author: 전경원
   - PyTorch: `pytorch-wood.webp`
   - HoverPilot/RC: `toy-plane.webp`
   - 암호, 인증, 패스키 등 보안: `security.webp`
-  - 기타(기본): `develop.jpeg`
+  - 기타(기본): `develop.webp`
 - SEO가 필요한 포스트는 `description` 필드를 추가한다.
 - `author`는 항상 `전경원`.
 
@@ -148,7 +148,7 @@ author: 전경원
 - 기존 Markdown 구조와 Jekyll frontmatter를 보존합니다.
 - 제목, 링크, 이미지, 이미지 설명, 표, 인용문, 코드 블록, 수식은 삭제하거나 손상하지 않습니다.
 - 명령어, 코드, 파일명, 옵션, API 이름은 정확히 유지합니다.
-- `cover-img`와 `share-img`는 특별한 이유가 없으면 `/assets/img/develop.jpeg`를 사용합니다.
+- `cover-img`는 특별한 이유가 없으면 `/assets/img/develop.webp`를, `share-img`는 `/assets/img/develop.jpeg`를 사용합니다.
 - `author`는 항상 `전경원`으로 유지합니다.
 - `subtitle`은 짧고 직접적으로 작성하며, 본문 첫 문장과 자연스럽게 이어지게 합니다.
 - subtitle에 “~하는 방법”, “~부터 확인한다”와 같은 기계적인 절차형 표현을 사용하지 않습니다.

@@ -3,7 +3,7 @@ layout: post
 title: Neovim에서 Codex·Claude Code 쓰기
 subtitle: 편집기와 에이전트를 Herdr pane에 하나씩 띄운다
 tags: [neovim, codex, claude-code, herdr, workflow]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/editor.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

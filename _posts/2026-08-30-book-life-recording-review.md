@@ -3,7 +3,7 @@ layout: post
 title: 인생 녹음 중 부부의 "인생 녹음 중"을 읽고
 subtitle: 오래도록 말이 통하는 한 사람과 살아간다는 것
 tags: [book, review]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/reading.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

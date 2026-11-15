@@ -3,7 +3,7 @@ layout: post
 title: VSCode의 DevContainer로 Jekyll 블로그 로컬 서버 띄우기
 subtitle: 환경 설정 없이 바로 실행하는 재현 가능한 블로그 개발 환경
 description: VSCode DevContainer를 활용해 Jekyll 블로그를 로컬에서 실행하고 테스트하는 방법을 단계별로 정리한다.
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/docker.webp
 share-img: /assets/img/develop.jpeg
 tags: [jekyll, devcontainer, vscode, beautiful-jekyll, github-pages]

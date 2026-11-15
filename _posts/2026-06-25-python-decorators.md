@@ -4,7 +4,7 @@ title: 파이썬 장식자, 제대로 이해하기
 subtitle: 함수의 동작을 깔끔하게 확장하는 파이썬 장식자 기본기
 description: 파이썬 장식자의 기본 구조, functools.wraps, 인자 처리, 캐싱, 클래스 기반 장식자, 장식자 중첩과 인자를 받는 장식자 패턴을 정리한다.
 tags: [python, decorator, functools, programming, devtips]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/python.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

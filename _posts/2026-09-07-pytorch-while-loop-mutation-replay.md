@@ -3,7 +3,7 @@ layout: post
 title: PyTorch Inductor에서 반복문의 상태 변경 보존하기
 subtitle: 반환값이 맞아도 다음 호출이 틀리는 이유
 tags: [pytorch, compiler, inductor, python, troubleshooting]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/pytorch-wood.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

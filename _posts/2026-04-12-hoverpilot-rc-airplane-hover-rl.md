@@ -3,7 +3,7 @@ layout: post
 title: HoverPilot - AI로 RC 비행기를 조종하는 프로젝트를 시작했다
 subtitle: 강화학습으로 RealFlight 안에서 호버링을 해보자.
 tags: [hoverpilot, reinforcement-learning, rc-airplane, simulation, realflight, python]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/toy-plane.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원

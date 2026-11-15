@@ -3,7 +3,7 @@ layout: post
 title: 커밋 접두사 규칙 정리
 subtitle: 커밋 메시지를 읽기 쉽게 만드는 가장 간단한 규칙
 tags: [git, commit, conventional-commit-prefix, convention, collaboration, devtips]
-cover-img: /assets/img/develop.jpeg
+cover-img: /assets/img/develop.webp
 thumbnail-img: /assets/img/git.webp
 share-img: /assets/img/develop.jpeg
 author: 전경원
